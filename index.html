@@ -2,8 +2,8 @@
 <html lang="zh-HK">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>NAPELL × 富豪酒店 | 零碳咖啡 · ESG仪表盘</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>NAPELL × 富豪酒店 | 全球首创零碳咖啡 · ESG仪表盘</title>
   <style>
     * {
       margin: 0;
@@ -11,72 +11,67 @@
       box-sizing: border-box;
     }
 
-    body {
+    html, body {
+      height: 100%;
       background: #0f1419;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       color: #e7e9ea;
       line-height: 1.4;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
+      overflow: hidden; /* 防止全局滚动，让仪表盘容器内部滚动 */
     }
 
     /* 悬浮导航栏 */
     .floating-nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(21, 25, 30, 0.85);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      height: 56px;
+      background: rgba(21, 25, 30, 0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 0 20px;
+      padding: 0 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 56px;
-      flex-shrink: 0;
+      position: relative;
+      z-index: 110;
     }
 
     .nav-left {
       display: flex;
       align-items: center;
-      gap: 28px;
+      gap: 32px;
     }
 
     .logo {
       font-weight: 700;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       letter-spacing: -0.5px;
       color: #fff;
       display: flex;
       align-items: center;
       gap: 8px;
-      white-space: nowrap;
     }
 
     .logo span {
       background: #1d9bf0;
-      color: #fff;
-      padding: 2px 10px;
+      color: white;
+      padding: 2px 12px;
       border-radius: 20px;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       font-weight: 600;
     }
 
     .nav-links {
       display: flex;
-      gap: 20px;
+      gap: 24px;
       list-style: none;
     }
 
     .nav-links a {
       color: #8b98a5;
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 500;
-      padding: 4px 2px;
+      padding: 4px 4px;
       border-bottom: 2px solid transparent;
       transition: 0.2s;
       cursor: pointer;
@@ -92,7 +87,7 @@
       background: #1d9bf0;
       color: #fff;
       border: none;
-      padding: 8px 18px;
+      padding: 8px 20px;
       border-radius: 24px;
       font-weight: 600;
       font-size: 0.9rem;
@@ -105,15 +100,34 @@
       background: #1a8cd8;
     }
 
-    /* 主仪表盘区域：全屏剩余高度，可滚动 */
-    .dashboard-container {
-      flex: 1;
+    /* 仪表盘全屏容器 */
+    .dashboard-viewport {
+      height: calc(100vh - 56px);
       overflow-y: auto;
-      padding: 20px 20px 30px;
+      overflow-x: hidden;
+      scrollbar-width: thin;
+      scrollbar-color: #2f3336 #0f1419;
+    }
+
+    .dashboard-viewport::-webkit-scrollbar {
+      width: 6px;
+    }
+    .dashboard-viewport::-webkit-scrollbar-track {
+      background: #0f1419;
+    }
+    .dashboard-viewport::-webkit-scrollbar-thumb {
+      background: #2f3336;
+      border-radius: 6px;
+    }
+
+    .dashboard-container {
+      min-height: 100%;
       display: grid;
       grid-template-columns: repeat(12, 1fr);
-      gap: 16px;
-      align-content: start;
+      gap: 14px;
+      padding: 16px;
+      max-width: 100%;
+      margin: 0 auto;
     }
 
     /* 卡片通用 */
@@ -124,10 +138,6 @@
       border: 1px solid #2f3336;
       padding: 20px;
       transition: border-color 0.2s;
-    }
-
-    .card-full:hover {
-      border-color: #1d9bf0;
     }
 
     .card-half {
@@ -145,37 +155,50 @@
       background: #16181c;
       border-radius: 18px;
       border: 1px solid #2f3336;
-      padding: 16px;
+      padding: 18px;
     }
 
-    /* 原本4个指标卡片，删除一个后剩下3个，改为span4均分 */
     .card-quarter {
-      grid-column: span 4;
+      grid-column: span 4; /* 三个并排占满12列 */
       background: #16181c;
       border-radius: 18px;
       border: 1px solid #2f3336;
       padding: 16px;
     }
 
-    @media (max-width: 900px) {
+    .card-full:hover,
+    .card-half:hover,
+    .card-third:hover,
+    .card-quarter:hover {
+      border-color: #1d9bf0;
+    }
+
+    /* 响应式 */
+    @media (max-width: 950px) {
       .card-half, .card-third, .card-quarter {
         grid-column: span 6;
+      }
+      .card-quarter {
+        grid-column: span 6;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .card-half, .card-third, .card-quarter {
+        grid-column: span 12;
       }
       .nav-links {
         display: none;
       }
-    }
-
-    @media (max-width: 600px) {
-      .card-half, .card-third, .card-quarter {
-        grid-column: span 12;
+      .floating-nav {
+        padding: 0 14px;
       }
     }
 
     .section-title {
       font-size: 0.75rem;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.6px;
       color: #8b98a5;
       margin-bottom: 12px;
       display: flex;
@@ -191,7 +214,7 @@
     }
 
     .big-number span {
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 500;
       color: #8b98a5;
       margin-left: 4px;
@@ -200,7 +223,7 @@
     .metric-label {
       font-size: 0.85rem;
       color: #8b98a5;
-      margin-top: 4px;
+      margin-top: 6px;
     }
 
     .trend-up {
@@ -226,14 +249,14 @@
       height: 6px;
       border-radius: 10px;
       width: 0%;
-      transition: width 1.2s ease;
+      transition: width 1s ease;
     }
 
     .grid-2col {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 14px;
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
     .certificate-preview {
@@ -268,7 +291,7 @@
     }
 
     .btn-outline:hover {
-      background: rgba(29, 155, 240, 0.1);
+      background: rgba(29, 155, 240, 0.12);
     }
 
     .link-blue {
@@ -282,52 +305,53 @@
       text-align: center;
       color: #536471;
       font-size: 0.75rem;
-      margin-top: 16px;
+      margin-top: 8px;
       border-top: 1px solid #2f3336;
-      padding-top: 16px;
+      padding-top: 14px;
     }
 
     hr {
       border: 0.5px solid #2f3336;
-      margin: 14px 0;
+      margin: 12px 0;
     }
 
     .badge {
       background: #1d9bf0;
-      color: #fff;
+      color: white;
       border-radius: 12px;
-      padding: 2px 8px;
-      font-size: 0.65rem;
+      padding: 2px 10px;
+      font-size: 0.7rem;
       font-weight: 600;
       margin-left: 6px;
     }
 
-    /* 模态框 (悬浮子页面) */
+    /* 模态框 (悬浮子页面/弹窗) 统一风格 */
     .modal-overlay {
-      display: none;
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0,0,0,0.65);
       backdrop-filter: blur(6px);
-      z-index: 200;
+      display: none;
       align-items: center;
       justify-content: center;
+      z-index: 200;
+      padding: 20px;
     }
 
     .modal-content {
       background: #16181c;
       border: 1px solid #2f3336;
-      border-radius: 20px;
-      max-width: 520px;
-      width: 90%;
-      padding: 24px;
+      border-radius: 24px;
+      max-width: 580px;
+      width: 100%;
+      padding: 28px 24px;
       color: #e7e9ea;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
       position: relative;
-      animation: modalFade 0.2s ease;
+      animation: modalFade 0.25s ease;
     }
 
     @keyframes modalFade {
@@ -337,23 +361,23 @@
 
     .modal-close {
       position: absolute;
-      top: 12px;
-      right: 16px;
+      top: 16px;
+      right: 20px;
       background: none;
       border: none;
       color: #8b98a5;
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       cursor: pointer;
-      transition: 0.2s;
+      line-height: 1;
     }
 
     .modal-close:hover {
-      color: #fff;
+      color: #e7e9ea;
     }
 
     .modal-title {
-      font-weight: 700;
       font-size: 1.3rem;
+      font-weight: 700;
       margin-bottom: 16px;
       display: flex;
       align-items: center;
@@ -364,23 +388,38 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      margin: 12px 0;
-      font-size: 1rem;
+      background: #0f1419;
+      border-radius: 14px;
+      padding: 14px;
+      margin: 10px 0;
+      border: 1px solid #2f3336;
     }
 
     .contact-icon {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
     }
 
-    .btn-copy {
-      background: #1d9bf0;
-      border: none;
+    .contact-detail {
+      font-size: 1.1rem;
+      font-weight: 600;
       color: #fff;
-      padding: 6px 14px;
-      border-radius: 16px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      margin-left: auto;
+    }
+
+    .contact-label {
+      font-size: 0.75rem;
+      color: #8b98a5;
+    }
+
+    .nav-modal-list {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .nav-modal-list li {
+      margin-bottom: 12px;
+      color: #bbb;
+      border-left: 3px solid #1d9bf0;
+      padding-left: 14px;
     }
   </style>
 </head>
@@ -392,242 +431,192 @@
         NAPELL<span>×富豪</span>
       </div>
       <ul class="nav-links">
-        <li><a href="#" class="active" data-modal="dashboard">仪表板</a></li>
-        <li><a href="#" data-modal="guest">住客体验</a></li>
-        <li><a href="#" data-modal="esg">ESG数据</a></li>
-        <li><a href="#" data-modal="business">商业拓展</a></li>
-        <li><a href="#" data-modal="tech">技术亮点</a></li>
+        <li><a class="active" data-modal="dashboard">仪表板</a></li>
+        <li><a data-modal="experience">住客体验</a></li>
+        <li><a data-modal="esg">ESG数据</a></li>
+        <li><a data-modal="business">商业拓展</a></li>
+        <li><a data-modal="tech">技术亮点</a></li>
       </ul>
     </div>
-    <button class="nav-cta" id="btnContactNav">共创联络</button>
+    <button class="nav-cta" id="openContactModal">共创联络</button>
   </nav>
 
-  <!-- 仪表盘主体（全屏滚动区域） -->
-  <div class="dashboard-container" id="dashboard">
-    
-    <!-- 欢迎卡片：核心命题 -->
-    <div class="card-full" style="background: linear-gradient(135deg, #1a2b3c, #0f1419); border-color: #1d9bf0;">
-      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
-        <div>
-          <div class="section-title" style="color:#1d9bf0;">🌱 全球第一间自产零碳咖啡酒店</div>
-          <h2 style="font-size: 1.9rem; font-weight: 700; margin: 4px 0 8px;">雾化水培 · 每一杯咖啡都是ESG行动</h2>
-          <p style="color: #8b98a5; max-width: 600px;">我们邀请富豪酒店集团共同打造「全球首创」零碳咖啡酒店，让住客亲手参与碳足迹清零。</p>
-        </div>
-        <div style="background:#16181c; border-radius: 22px; padding: 14px 20px; text-align: center;">
-          <div style="font-size: 0.7rem; color: #8b98a5;">致 罗宝文小姐</div>
-          <div style="font-weight: 700; font-size: 1.2rem;">2026.05.20</div>
-          <div style="margin-top: 6px; color: #1d9bf0;">NAPELL BIOTECH</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 核心KPI卡片：3个均分（删除了鲜豆产量） -->
-    <div class="card-quarter">
-      <div class="section-title">💧 节水效率</div>
-      <div class="big-number" id="waterSavings">97<span>%</span></div>
-      <div class="metric-label">对比传统土培咖啡</div>
-      <div class="progress-bg"><div class="progress-fill" style="width:97%"></div></div>
-      <div class="trend-up">↑ 零废水排放 · 闭环循环</div>
-    </div>
-
-    <div class="card-quarter">
-      <div class="section-title">🌍 每杯减碳 (vs 进口豆)</div>
-      <div class="big-number" id="carbonPerCup">0.32<span>kg CO₂</span></div>
-      <div class="metric-label">减少食物里程与物流</div>
-      <div class="progress-bg"><div class="progress-fill" style="width:65%"></div></div>
-      <div class="trend-up">↓ 供应链碳足迹削减</div>
-    </div>
-
-    <div class="card-quarter">
-      <div class="section-title">🧑‍🤝‍🧑 住客参与率</div>
-      <div class="big-number" id="guestEngagement">84<span>%</span></div>
-      <div class="metric-label">扫码互动 & 认养咖啡树</div>
-      <div class="progress-bg"><div class="progress-fill" style="width:84%"></div></div>
-      <div class="trend-up">↑ 社交媒体自愿分享</div>
-    </div>
-
-    <!-- 住客体验模块：数字咖啡树与证书 -->
-    <div class="card-half">
-      <div class="section-title">🌳 入住即认养 · 数字咖啡树</div>
-      <div style="display: flex; align-items: center; gap: 18px; margin-top: 8px;">
-        <div style="font-size: 3rem;">🌱</div>
-        <div>
-          <div style="font-weight: 600; font-size: 1.1rem;">专属树 #0001</div>
-          <div style="color: #8b98a5;">当前固碳模拟: <span id="treeCarbon">0.42</span> kg</div>
-          <div style="color: #8b98a5;">雾化营养: 活跃 · 光照周期: 12h</div>
-          <div style="margin-top: 8px; font-size: 0.75rem; color: #1d9bf0;">客房电视 / 手机实时查看</div>
+  <!-- 全屏仪表盘滚动区域 -->
+  <div class="dashboard-viewport">
+    <div class="dashboard-container">
+      
+      <!-- 欢迎卡片：核心主张 -->
+      <div class="card-full" style="background: linear-gradient(135deg, #132433, #0f1419); border-color: #1d9bf0;">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+          <div>
+            <div class="section-title" style="color:#1d9bf0;">🌱 全球第一间自产零碳咖啡酒店</div>
+            <h2 style="font-size: 1.9rem; font-weight: 700; margin: 2px 0 6px;">雾化水培 · 每一杯咖啡都是ESG行动</h2>
+            <p style="color: #8b98a5; max-width: 650px;">我们邀请富豪酒店集团共同打造「全球首创」零碳咖啡酒店，让住客亲手参与碳足迹清零。</p>
+          </div>
+          <div style="background:#16181c; border-radius: 20px; padding: 14px 22px; text-align: center;">
+            <div style="font-size: 0.7rem; color: #8b98a5;">致 罗宝文小姐</div>
+            <div style="font-weight: 700; font-size: 1.2rem;">2026.05.20</div>
+            <div style="margin-top: 6px; color: #1d9bf0;">NAPELL BIOTECH</div>
+          </div>
         </div>
       </div>
-      <div class="certificate-preview">
-        <div class="tree-icon">🏆</div>
-        <strong>《低碳住宿贡献证书》</strong><br>
-        您本次入住减少碳排放 <span id="certCarbon">0.32</span> kg，节约水 28 L<br>
-        <span style="color:#1d9bf0;">一键分享 · 富豪酒店 ESG 荣誉</span>
-      </div>
-    </div>
 
-    <!-- ESG数据中台预览 -->
-    <div class="card-half">
-      <div class="section-title">📊 酒店ESG数据中台 (IoT实时)</div>
-      <div class="grid-2col">
-        <div>
-          <div class="metric-label">低碳食材自产率</div>
-          <div class="big-number" style="font-size:1.5rem;">12<span>%</span></div>
+      <!-- KPI 指标卡片 (移除了年预估鲜豆产量) -->
+      <div class="card-quarter">
+        <div class="section-title">💧 节水效率</div>
+        <div class="big-number" id="waterSavings">97<span>%</span></div>
+        <div class="metric-label">对比传统土培咖啡</div>
+        <div class="progress-bg"><div class="progress-fill" style="width:97%"></div></div>
+        <div class="trend-up">↑ 零废水排放</div>
+      </div>
+
+      <div class="card-quarter">
+        <div class="section-title">🌍 每杯减碳 (vs进口豆)</div>
+        <div class="big-number" id="carbonPerCup">0.32<span>kg CO₂</span></div>
+        <div class="metric-label">减少食物里程与物流</div>
+        <div class="progress-bg"><div class="progress-fill" style="width:65%"></div></div>
+        <div class="trend-up">↓ 供应链碳足迹</div>
+      </div>
+
+      <div class="card-quarter">
+        <div class="section-title">🧑‍🤝‍🧑 住客参与率</div>
+        <div class="big-number" id="guestEngagement">84<span>%</span></div>
+        <div class="metric-label">扫码互动 & 认养咖啡树</div>
+        <div class="progress-bg"><div class="progress-fill" style="width:84%"></div></div>
+        <div class="trend-up">↑ 社交媒体分享</div>
+      </div>
+
+      <!-- 住客体验模块 -->
+      <div class="card-half">
+        <div class="section-title">🌳 入住即认养 · 数字咖啡树</div>
+        <div style="display: flex; align-items: center; gap: 18px; margin-top: 6px;">
+          <div style="font-size: 3rem;">🌱</div>
+          <div>
+            <div style="font-weight: 600; font-size: 1.1rem;">专属树 #0001</div>
+            <div style="color: #8b98a5;">当前固碳模拟: <span id="treeCarbon">0.42</span> kg</div>
+            <div style="color: #8b98a5;">雾化营养: 活跃 · 光照: 12h</div>
+            <div style="margin-top: 8px; font-size: 0.75rem; color: #1d9bf0;">客房电视 / 手机实时查看</div>
+          </div>
         </div>
-        <div>
-          <div class="metric-label">生物固碳量 (累计)</div>
-          <div class="big-number" style="font-size:1.5rem;" id="bioCarbon">18.7<span>kg</span></div>
-        </div>
-        <div>
-          <div class="metric-label">减少食物里程</div>
-          <div class="big-number" style="font-size:1.5rem;">2,400<span>km</span></div>
-        </div>
-        <div>
-          <div class="metric-label">上链存证批次</div>
-          <div class="big-number" style="font-size:1.5rem;">8<span>批</span></div>
+        <div class="certificate-preview">
+          <div class="tree-icon">🏆</div>
+          <strong>《低碳住宿贡献证书》</strong><br>
+          您本次入住减少碳排放 <span id="certCarbon">0.32</span> kg，节约水 28 L<br>
+          <span style="color:#1d9bf0;">一键分享 · 富豪酒店 ESG 荣誉</span>
         </div>
       </div>
-      <div style="margin-top: 14px; background: #0f1419; border-radius: 12px; padding: 10px; font-size: 0.8rem; color: #1d9bf0; display: flex; align-items: center; gap: 6px;">
-        <span>🔗</span> 区块链碳减排证明 · 可审计 · 直接汇入ESG年报
+
+      <!-- ESG数据中台预览 -->
+      <div class="card-half">
+        <div class="section-title">📊 酒店ESG数据中台 (IoT实时)</div>
+        <div class="grid-2col">
+          <div>
+            <div class="metric-label">低碳食材自产率</div>
+            <div class="big-number" style="font-size:1.5rem;">12<span>%</span></div>
+          </div>
+          <div>
+            <div class="metric-label">生物固碳量 (累计)</div>
+            <div class="big-number" style="font-size:1.5rem;" id="bioCarbon">18.7<span>kg</span></div>
+          </div>
+          <div>
+            <div class="metric-label">减少食物里程</div>
+            <div class="big-number" style="font-size:1.5rem;">2,400<span>km</span></div>
+          </div>
+          <div>
+            <div class="metric-label">上链存证批次</div>
+            <div class="big-number" style="font-size:1.5rem;">8<span>批</span></div>
+          </div>
+        </div>
+        <div style="margin-top: 12px; background: #0f1419; border-radius: 12px; padding: 10px; font-size: 0.78rem; color: #1d9bf0; display: flex; align-items: center; gap: 6px;">
+          <span>🔗</span> 区块链碳减排证明 · 可审计 · 直接汇入ESG年报
+        </div>
       </div>
-    </div>
 
-    <!-- 商业延伸卡片 -->
-    <div class="card-third">
-      <div class="section-title">🛍️ 低碳咖啡零售</div>
-      <div style="font-weight: 600; font-size: 1.1rem;">碳足迹可溯源挂耳礼盒</div>
-      <div class="metric-label" style="margin: 6px 0;">企业客户伴手礼 · 酒店商城</div>
-      <div style="font-size: 0.8rem; color: #1d9bf0; margin-top: 12px;">把富豪的ESG故事带回家</div>
-    </div>
-
-    <div class="card-third">
-      <div class="section-title">🏢 MICE绿色会议</div>
-      <div style="font-weight: 600; font-size: 1.1rem;">零碳咖啡茶歇站</div>
-      <div class="metric-label" style="margin: 6px 0;">出具《会议减碳贡献证明》</div>
-      <div style="font-size: 0.8rem; color: #1d9bf0; margin-top: 12px;">企业客户ESG形象增值服务</div>
-    </div>
-
-    <div class="card-third">
-      <div class="section-title">📋 行业标准输出</div>
-      <div style="font-weight: 600; font-size: 1.1rem;">《酒店自产生物碳汇核算指引》</div>
-      <div class="metric-label" style="margin: 6px 0;">联合发布 · 规则定义者</div>
-      <div style="font-size: 0.8rem; color: #1d9bf0; margin-top: 12px;">从实践者到行业引领</div>
-    </div>
-
-    <!-- 技术亮点与愿景 -->
-    <div class="card-full" style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center;">
-      <div style="flex: 2; min-width: 240px;">
-        <div class="section-title">⚙️ 雾化水培咖啡种植机 · 技术速览</div>
-        <ul style="list-style: none; color: #8b98a5; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-          <li>✓ 节水率95%以上，零废水排放</li>
-          <li>✓ 模拟最适生长光谱，稳定年产</li>
-          <li>✓ 模块化设计，静音运行</li>
-          <li>✓ IoT数据端口 (Wi-Fi/蓝牙)</li>
-          <li>✓ 实时输出能耗、水耗、固碳模拟值</li>
-          <li>✓ 无需专业园艺人员维护</li>
-        </ul>
+      <!-- 商业延伸卡片 -->
+      <div class="card-third">
+        <div class="section-title">🛍️ 低碳咖啡零售</div>
+        <div style="font-weight: 600; font-size: 1.1rem;">碳足迹可溯源挂耳礼盒</div>
+        <div class="metric-label" style="margin: 6px 0;">企业客户伴手礼 · 酒店商城</div>
+        <div style="font-size: 0.8rem; color: #1d9bf0; margin-top: 12px;">把富豪的ESG故事带回家</div>
       </div>
-      <div style="flex: 1; text-align: center; border-left: 1px solid #2f3336; padding-left: 18px;">
-        <div style="font-size: 1.4rem; font-weight: 700;">🌏 每天20亿人</div>
-        <div style="color: #8b98a5;">参与碳排放的愿景</div>
-        <div style="margin-top: 10px; font-size: 0.9rem; color: #fff;">NAPELL BIOTECH</div>
-        <button class="btn-outline" style="margin-top: 12px;" id="btnContactInline">立即联系共创</button>
-      </div>
-    </div>
 
-    <!-- 页脚 -->
-    <div class="footer-note">
-      © 2026 NAPELL BIOTECH · 致罗宝文小姐及富豪酒店集团 · 共创全球第一间自产零碳咖啡酒店<br>
-      <span style="color: #1d9bf0;">Erik Wong · erik.wong@jebi.space · WhatsApp: 93188252</span>
+      <div class="card-third">
+        <div class="section-title">🏢 MICE绿色会议</div>
+        <div style="font-weight: 600; font-size: 1.1rem;">零碳咖啡茶歇站</div>
+        <div class="metric-label" style="margin: 6px 0;">出具《会议减碳贡献证明》</div>
+        <div style="font-size: 0.8rem; color: #1d9bf0; margin-top: 12px;">企业客户ESG形象增值服务</div>
+      </div>
+
+      <div class="card-third">
+        <div class="section-title">📋 行业标准输出</div>
+        <div style="font-weight: 600; font-size: 1.1rem;">《酒店自产生物碳汇核算指引》</div>
+        <div class="metric-label" style="margin: 6px 0;">联合发布 · 规则定义者</div>
+        <div style="font-size: 0.8rem; color: #1d9bf0; margin-top: 12px;">从实践者到行业引领</div>
+      </div>
+
+      <!-- 技术亮点与愿景 -->
+      <div class="card-full" style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center;">
+        <div style="flex: 2; min-width: 240px;">
+          <div class="section-title">⚙️ 雾化水培咖啡种植机 · 技术速览</div>
+          <ul style="list-style: none; color: #8b98a5; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+            <li>✓ 节水率95%以上，零废水排放</li>
+            <li>✓ 模拟最适生长光谱，稳定年产</li>
+            <li>✓ 模块化设计，静音运行</li>
+            <li>✓ IoT数据端口 (Wi-Fi/蓝牙)</li>
+            <li>✓ 实时输出能耗、水耗、固碳模拟值</li>
+            <li>✓ 无需专业园艺人员维护</li>
+          </ul>
+        </div>
+        <div style="flex: 1; text-align: center; border-left: 1px solid #2f3336; padding-left: 18px;">
+          <div style="font-size: 1.3rem; font-weight: 700;">🌏 每天20亿人</div>
+          <div style="color: #8b98a5;">参与碳排放的愿景</div>
+          <div style="margin-top: 10px; font-size: 0.9rem; color: #fff;">NAPELL BIOTECH</div>
+          <button class="btn-outline" style="margin-top: 12px;" id="openContactModal2">立即联系共创</button>
+        </div>
+      </div>
+
+      <!-- 页脚 -->
+      <div class="footer-note">
+        © 2026 NAPELL BIOTECH · 致罗宝文小姐及富豪酒店集团 · 共创全球第一间自产零碳咖啡酒店<br>
+        <span style="color: #1d9bf0;">Erik Wong · erik.wong@napell.bio · WhatsApp: 93188252</span>
+      </div>
     </div>
   </div>
 
-  <!-- 模态框：联系方式（共创联络/立即联系共创） -->
-  <div class="modal-overlay" id="modalContact">
+  <!-- 悬浮子页面：导航内容模态框 -->
+  <div class="modal-overlay" id="navModal">
     <div class="modal-content">
-      <button class="modal-close" id="closeContact">&times;</button>
+      <button class="modal-close" id="closeNavModal">&times;</button>
+      <div id="navModalContent"></div>
+    </div>
+  </div>
+
+  <!-- 联系信息专属弹窗 (共创联络 / 立即联系共创) -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal-content" style="max-width: 420px;">
+      <button class="modal-close" id="closeContactModal">&times;</button>
       <div class="modal-title">📬 联系 NAPELL BIOTECH</div>
-      <div style="margin: 8px 0 16px; color: #8b98a5;">Erik Wong · 共创零碳咖啡酒店</div>
       <div class="contact-row">
-        <span class="contact-icon">💬</span> WhatsApp<br>
-        <strong style="margin-left: 8px;">9318 8252</strong>
-        <button class="btn-copy" onclick="navigator.clipboard.writeText('93188252')">复制</button>
-      </div>
-      <div class="contact-row">
-        <span class="contact-icon">✉️</span> 电邮<br>
-        <strong style="margin-left: 8px;">erik.wong@jebi.space</strong>
-        <button class="btn-copy" onclick="navigator.clipboard.writeText('erik.wong@jebi.space')">复制</button>
-      </div>
-      <div style="margin-top: 16px; font-size: 0.8rem; color: #536471;">每天20亿人参与碳排放的愿景</div>
-    </div>
-  </div>
-
-  <!-- 模态框：住客体验子页面 -->
-  <div class="modal-overlay" id="modalGuest">
-    <div class="modal-content">
-      <button class="modal-close" id="closeGuest">&times;</button>
-      <div class="modal-title">🧑‍🤝‍🧑 住客体验 · 零碳旅程</div>
-      <p style="color: #8b98a5; margin-bottom: 14px;">入住即认养数字咖啡树，每一杯咖啡都清零碳足迹。</p>
-      <div style="background:#0f1419; border-radius:14px; padding:14px; margin:12px 0;">
-        <div style="display:flex; align-items:center; gap:14px;">
-          <span style="font-size:2.2rem;">🌱</span>
-          <div><strong>专属树 #0001</strong><br><span style="color:#8b98a5;">固碳 0.42 kg · 光照12h</span></div>
+        <span class="contact-icon">💬</span>
+        <div>
+          <div class="contact-label">WhatsApp</div>
+          <div class="contact-detail">+852 9318 8252</div>
         </div>
       </div>
-      <div class="certificate-preview" style="margin-top:10px;">
-        🏆 <strong>《低碳住宿贡献证书》</strong><br>减碳0.32kg · 节水28L<br>
-        <span style="color:#1d9bf0;">一键分享社交平台</span>
+      <div class="contact-row">
+        <span class="contact-icon">✉️</span>
+        <div>
+          <div class="contact-label">电邮</div>
+          <div class="contact-detail" style="word-break: break-all;">erik.wong@napell.bio</div>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <!-- 模态框：ESG数据 -->
-  <div class="modal-overlay" id="modalEsg">
-    <div class="modal-content">
-      <button class="modal-close" id="closeEsg">&times;</button>
-      <div class="modal-title">📊 ESG数据中台 · 实时审计</div>
-      <div class="grid-2col" style="margin-bottom:12px;">
-        <div><span class="metric-label">自产率</span><br><strong>12%</strong></div>
-        <div><span class="metric-label">固碳量</span><br><strong>18.7 kg</strong></div>
-        <div><span class="metric-label">减少里程</span><br><strong>2,400 km</strong></div>
-        <div><span class="metric-label">上链批次</span><br><strong>8 批</strong></div>
-      </div>
-      <div style="background:#0f1419; border-radius:10px; padding:10px; color:#1d9bf0;">
-        🔗 区块链碳减排证明 · 直接汇入富豪国际ESG年报
-      </div>
-    </div>
-  </div>
-
-  <!-- 模态框：商业拓展 -->
-  <div class="modal-overlay" id="modalBusiness">
-    <div class="modal-content">
-      <button class="modal-close" id="closeBusiness">&times;</button>
-      <div class="modal-title">💼 商业延伸 · ESG变现</div>
-      <div style="display:flex; flex-direction: column; gap:14px; margin-top:10px;">
-        <div><strong>🛍️ 低碳咖啡零售</strong><br><span style="color:#8b98a5;">挂耳礼盒 · 企业伴手礼</span></div>
-        <div><strong>🏢 MICE绿色会议</strong><br><span style="color:#8b98a5;">零碳茶歇 + 减碳证明</span></div>
-        <div><strong>📋 行业标准输出</strong><br><span style="color:#8b98a5;">《酒店自产生物碳汇核算指引》</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 模态框：技术亮点 -->
-  <div class="modal-overlay" id="modalTech">
-    <div class="modal-content">
-      <button class="modal-close" id="closeTech">&times;</button>
-      <div class="modal-title">⚙️ 雾化水培技术亮点</div>
-      <ul style="color:#8b98a5; list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-        <li>✓ 节水率95%+</li><li>✓ 零废水排放</li>
-        <li>✓ 最适生长光谱</li><li>✓ 模块化静音设计</li>
-        <li>✓ IoT实时数据</li><li>✓ 免专业维护</li>
-      </ul>
-      <div style="margin-top:12px; color:#1d9bf0;">支持Wi-Fi/蓝牙 · 能耗水耗固碳模拟值实时输出</div>
+      <div style="margin-top: 16px; font-size: 0.85rem; color: #8b98a5; text-align: center;">Erik Wong · NAPELL BIOTECH</div>
     </div>
   </div>
 
   <script>
     (function() {
-      // 数字动画（仪表盘加载后执行）
+      // 数字动画（仅初始加载）
       function animateValue(elementId, start, end, suffix = '', duration = 800) {
         const el = document.getElementById(elementId);
         if (!el) return;
@@ -656,62 +645,101 @@
         if (certEl) certEl.textContent = '0.32';
       });
 
-      // 模态框控制函数
-      function openModal(id) {
-        const modal = document.getElementById(id);
-        if (modal) modal.style.display = 'flex';
-      }
-      function closeModal(id) {
-        const modal = document.getElementById(id);
-        if (modal) modal.style.display = 'none';
-      }
+      // 导航悬浮子页面逻辑
+      const navLinks = document.querySelectorAll('.nav-links a[data-modal]');
+      const navModal = document.getElementById('navModal');
+      const navModalContent = document.getElementById('navModalContent');
+      const closeNavModal = document.getElementById('closeNavModal');
 
-      // 绑定导航链接 (data-modal 属性)
-      document.querySelectorAll('.nav-links a[data-modal]').forEach(link => {
-        link.addEventListener('click', function(e) {
+      const modalData = {
+        dashboard: `
+          <div class="modal-title">📋 仪表板概览</div>
+          <p style="color:#8b98a5;">当前展示核心ESG指标：节水效率、每杯减碳量、住客参与率，以及实时数据中台与商业模块。所有数据均来自雾化种植机IoT节点。</p>
+        `,
+        experience: `
+          <div class="modal-title">🧳 住客体验设计</div>
+          <ul class="nav-modal-list">
+            <li><strong>「这杯咖啡的碳足迹，由您清零」</strong> – 扫码即见减排数据，离店生成《低碳住宿贡献证书》。</li>
+            <li><strong>入住即认养数字咖啡树</strong> – 客房电视/手机实时查看专属咖啡树生长与固碳量。</li>
+            <li>亲子家庭与新世代旅客尤为触动，社交分享率高。</li>
+          </ul>
+        `,
+        esg: `
+          <div class="modal-title">📊 ESG数据融合</div>
+          <ul class="nav-modal-list">
+            <li>机器作为IoT节点，输出水循环量、能耗、固碳模拟值等。</li>
+            <li>自动生成低碳食材自产率、生物固碳量、减少食物里程等指标。</li>
+            <li>数据上链存证，形成可验证的“酒店自产咖啡碳减排证明”，直接汇入ESG年报。</li>
+          </ul>
+        `,
+        business: `
+          <div class="modal-title">💼 商业延伸</div>
+          <ul class="nav-modal-list">
+            <li><strong>低碳咖啡零售：</strong>碳足迹可溯源挂耳礼盒，企业伴手礼/酒店商城。</li>
+            <li><strong>MICE绿色会议：</strong>零碳咖啡茶歇 + 《会议减碳贡献证明》。</li>
+            <li><strong>行业标准输出：</strong>联合发布《酒店自产生物碳汇核算指引》。</li>
+          </ul>
+        `,
+        tech: `
+          <div class="modal-title">🔧 技术亮点</div>
+          <ul class="nav-modal-list">
+            <li>全球首创雾化流动水培系统，节水率>95%，零废水排放。</li>
+            <li>全封闭循环，模拟最适生长光谱，稳定年产优质咖啡鲜果。</li>
+            <li>模块化设计，静音运行，无需专业园艺维护。</li>
+            <li>IoT数据端口支持Wi-Fi/蓝牙，实时输出ESG关键指标。</li>
+          </ul>
+        `
+      };
+
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
           e.preventDefault();
-          const modalId = this.getAttribute('data-modal');
-          if (modalId === 'dashboard') {
-            // 仪表板：滚动到顶部或关闭所有模态框
-            document.getElementById('dashboard').scrollTo({top:0, behavior:'smooth'});
-            // 也可以不做弹窗
-            return;
+          // 移除所有active状态
+          navLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+          const key = link.getAttribute('data-modal');
+          if (modalData[key]) {
+            navModalContent.innerHTML = modalData[key];
+            navModal.style.display = 'flex';
           }
-          // 映射到对应的模态框ID
-          const modalMap = {
-            'guest': 'modalGuest',
-            'esg': 'modalEsg',
-            'business': 'modalBusiness',
-            'tech': 'modalTech'
-          };
-          if (modalMap[modalId]) openModal(modalMap[modalId]);
         });
       });
 
-      // 绑定关闭按钮
-      document.getElementById('closeContact')?.addEventListener('click', () => closeModal('modalContact'));
-      document.getElementById('closeGuest')?.addEventListener('click', () => closeModal('modalGuest'));
-      document.getElementById('closeEsg')?.addEventListener('click', () => closeModal('modalEsg'));
-      document.getElementById('closeBusiness')?.addEventListener('click', () => closeModal('modalBusiness'));
-      document.getElementById('closeTech')?.addEventListener('click', () => closeModal('modalTech'));
+      closeNavModal.addEventListener('click', () => {
+        navModal.style.display = 'none';
+      });
 
-      // 点击模态框遮罩关闭
-      window.addEventListener('click', function(e) {
-        if (e.target.classList.contains('modal-overlay')) {
-          e.target.style.display = 'none';
+      navModal.addEventListener('click', (e) => {
+        if (e.target === navModal) navModal.style.display = 'none';
+      });
+
+      // 联系弹窗逻辑 (两个按钮)
+      const contactModal = document.getElementById('contactModal');
+      const closeContactModal = document.getElementById('closeContactModal');
+      const openContactBtn = document.getElementById('openContactModal');
+      const openContactBtn2 = document.getElementById('openContactModal2');
+
+      function showContactModal() {
+        contactModal.style.display = 'flex';
+      }
+
+      openContactBtn.addEventListener('click', showContactModal);
+      openContactBtn2.addEventListener('click', showContactModal);
+
+      closeContactModal.addEventListener('click', () => {
+        contactModal.style.display = 'none';
+      });
+
+      contactModal.addEventListener('click', (e) => {
+        if (e.target === contactModal) contactModal.style.display = 'none';
+      });
+
+      // 键盘ESC关闭弹窗
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (navModal.style.display === 'flex') navModal.style.display = 'none';
+          if (contactModal.style.display === 'flex') contactModal.style.display = 'none';
         }
-      });
-
-      // 共创联络按钮
-      document.getElementById('btnContactNav')?.addEventListener('click', () => openModal('modalContact'));
-      document.getElementById('btnContactInline')?.addEventListener('click', () => openModal('modalContact'));
-
-      // 激活导航样式（简单处理：点击时添加active类）
-      document.querySelectorAll('.nav-links a').forEach(a => {
-        a.addEventListener('click', function() {
-          document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
-          this.classList.add('active');
-        });
       });
     })();
   </script>

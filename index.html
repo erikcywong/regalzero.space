@@ -170,7 +170,6 @@
       border-color: #1d9bf0;
     }
 
-    /* 视频卡片容器（用于嵌入YouTube Shorts） */
     .video-shorts-wrapper {
       max-width: 420px;
       margin: 0 auto;
@@ -184,7 +183,7 @@
     .video-shorts-inner {
       position: relative;
       width: 100%;
-      padding-top: 177.78%; /* 9:16 竖屏比例 */
+      padding-top: 177.78%;
     }
 
     .video-shorts-inner iframe {
@@ -458,13 +457,14 @@
           </div>
           <div style="background:#16181c; border-radius: 20px; padding: 14px 22px; text-align: center;">
             <div style="font-size: 0.7rem; color: #8b98a5;">致 罗宝文小姐</div>
-            <div style="font-weight: 700; font-size: 1.2rem;">2026.05.20</div>
+            <!-- 动态日期显示 -->
+            <div id="currentDate" style="font-weight: 700; font-size: 1.2rem;"></div>
             <div style="margin-top: 6px; color: #1d9bf0;">NAPELL BIOTECH</div>
           </div>
         </div>
       </div>
 
-      <!-- 视频展示卡片 (YouTube Shorts 嵌入) -->
+      <!-- 视频展示卡片 -->
       <div class="card-full" style="padding: 0; background: transparent; border: none;">
         <div class="section-title" style="padding-left: 4px;">🎬 种植机运行演示 & 零碳咖啡故事</div>
         <div class="video-shorts-wrapper">
@@ -633,6 +633,17 @@
 
   <script>
     (function() {
+      // 设置当前日期 (格式 YYYY.MM.DD)
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      const dateString = `${year}.${month}.${day}`;
+      const dateElement = document.getElementById('currentDate');
+      if (dateElement) {
+        dateElement.textContent = dateString;
+      }
+
       // 数字动画
       function animateValue(elementId, start, end, suffix = '', duration = 800) {
         const el = document.getElementById(elementId);

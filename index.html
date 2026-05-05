@@ -17,10 +17,9 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       color: #e7e9ea;
       line-height: 1.4;
-      overflow: hidden; /* 防止全局滚动，让仪表盘容器内部滚动 */
+      overflow: hidden;
     }
 
-    /* 悬浮导航栏 */
     .floating-nav {
       height: 56px;
       background: rgba(21, 25, 30, 0.88);
@@ -100,7 +99,6 @@
       background: #1a8cd8;
     }
 
-    /* 仪表盘全屏容器 */
     .dashboard-viewport {
       height: calc(100vh - 56px);
       overflow-y: auto;
@@ -130,7 +128,6 @@
       margin: 0 auto;
     }
 
-    /* 卡片通用 */
     .card-full {
       grid-column: span 12;
       background: #16181c;
@@ -159,7 +156,7 @@
     }
 
     .card-quarter {
-      grid-column: span 4; /* 三个并排占满12列 */
+      grid-column: span 4;
       background: #16181c;
       border-radius: 18px;
       border: 1px solid #2f3336;
@@ -173,12 +170,34 @@
       border-color: #1d9bf0;
     }
 
-    /* 响应式 */
+    /* 视频卡片容器（用于嵌入YouTube Shorts） */
+    .video-shorts-wrapper {
+      max-width: 420px;
+      margin: 0 auto;
+      width: 100%;
+      background: #000;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #2f3336;
+    }
+
+    .video-shorts-inner {
+      position: relative;
+      width: 100%;
+      padding-top: 177.78%; /* 9:16 竖屏比例 */
+    }
+
+    .video-shorts-inner iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
     @media (max-width: 950px) {
       .card-half, .card-third, .card-quarter {
-        grid-column: span 6;
-      }
-      .card-quarter {
         grid-column: span 6;
       }
     }
@@ -192,6 +211,9 @@
       }
       .floating-nav {
         padding: 0 14px;
+      }
+      .video-shorts-wrapper {
+        max-width: 100%;
       }
     }
 
@@ -294,12 +316,6 @@
       background: rgba(29, 155, 240, 0.12);
     }
 
-    .link-blue {
-      color: #1d9bf0;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
     .footer-note {
       grid-column: span 12;
       text-align: center;
@@ -315,17 +331,6 @@
       margin: 12px 0;
     }
 
-    .badge {
-      background: #1d9bf0;
-      color: white;
-      border-radius: 12px;
-      padding: 2px 10px;
-      font-size: 0.7rem;
-      font-weight: 600;
-      margin-left: 6px;
-    }
-
-    /* 模态框 (悬浮子页面/弹窗) 统一风格 */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -424,7 +429,6 @@
   </style>
 </head>
 <body>
-  <!-- 悬浮导航 -->
   <nav class="floating-nav">
     <div class="nav-left">
       <div class="logo">
@@ -441,11 +445,10 @@
     <button class="nav-cta" id="openContactModal">共创联络</button>
   </nav>
 
-  <!-- 全屏仪表盘滚动区域 -->
   <div class="dashboard-viewport">
     <div class="dashboard-container">
       
-      <!-- 欢迎卡片：核心主张 -->
+      <!-- 欢迎卡片 -->
       <div class="card-full" style="background: linear-gradient(135deg, #132433, #0f1419); border-color: #1d9bf0;">
         <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
           <div>
@@ -461,7 +464,22 @@
         </div>
       </div>
 
-      <!-- KPI 指标卡片 (移除了年预估鲜豆产量) -->
+      <!-- 视频展示卡片 (YouTube Shorts 嵌入) -->
+      <div class="card-full" style="padding: 0; background: transparent; border: none;">
+        <div class="section-title" style="padding-left: 4px;">🎬 种植机运行演示 & 零碳咖啡故事</div>
+        <div class="video-shorts-wrapper">
+          <div class="video-shorts-inner">
+            <iframe 
+              src="https://www.youtube-nocookie.com/embed/jMIaC40I5_E?rel=0&modestbranding=1&showinfo=0" 
+              title="NAPELL 雾化水培咖啡种植机演示" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI 指标卡片 -->
       <div class="card-quarter">
         <div class="section-title">💧 节水效率</div>
         <div class="big-number" id="waterSavings">97<span>%</span></div>
@@ -486,7 +504,7 @@
         <div class="trend-up">↑ 社交媒体分享</div>
       </div>
 
-      <!-- 住客体验模块 -->
+      <!-- 住客体验 -->
       <div class="card-half">
         <div class="section-title">🌳 入住即认养 · 数字咖啡树</div>
         <div style="display: flex; align-items: center; gap: 18px; margin-top: 6px;">
@@ -506,7 +524,7 @@
         </div>
       </div>
 
-      <!-- ESG数据中台预览 -->
+      <!-- ESG数据中台 -->
       <div class="card-half">
         <div class="section-title">📊 酒店ESG数据中台 (IoT实时)</div>
         <div class="grid-2col">
@@ -532,7 +550,7 @@
         </div>
       </div>
 
-      <!-- 商业延伸卡片 -->
+      <!-- 商业延伸 -->
       <div class="card-third">
         <div class="section-title">🛍️ 低碳咖啡零售</div>
         <div style="font-weight: 600; font-size: 1.1rem;">碳足迹可溯源挂耳礼盒</div>
@@ -554,7 +572,7 @@
         <div style="font-size: 0.8rem; color: #1d9bf0; margin-top: 12px;">从实践者到行业引领</div>
       </div>
 
-      <!-- 技术亮点与愿景 -->
+      <!-- 技术亮点 -->
       <div class="card-full" style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center;">
         <div style="flex: 2; min-width: 240px;">
           <div class="section-title">⚙️ 雾化水培咖啡种植机 · 技术速览</div>
@@ -575,7 +593,6 @@
         </div>
       </div>
 
-      <!-- 页脚 -->
       <div class="footer-note">
         © 2026 NAPELL BIOTECH · 致罗宝文小姐及富豪酒店集团 · 共创全球第一间自产零碳咖啡酒店<br>
         <span style="color: #1d9bf0;">Erik Wong · erik.wong@napell.bio · WhatsApp: 93188252</span>
@@ -583,7 +600,7 @@
     </div>
   </div>
 
-  <!-- 悬浮子页面：导航内容模态框 -->
+  <!-- 导航模态框 -->
   <div class="modal-overlay" id="navModal">
     <div class="modal-content">
       <button class="modal-close" id="closeNavModal">&times;</button>
@@ -591,7 +608,7 @@
     </div>
   </div>
 
-  <!-- 联系信息专属弹窗 (共创联络 / 立即联系共创) -->
+  <!-- 联系模态框 -->
   <div class="modal-overlay" id="contactModal">
     <div class="modal-content" style="max-width: 420px;">
       <button class="modal-close" id="closeContactModal">&times;</button>
@@ -616,7 +633,7 @@
 
   <script>
     (function() {
-      // 数字动画（仅初始加载）
+      // 数字动画
       function animateValue(elementId, start, end, suffix = '', duration = 800) {
         const el = document.getElementById(elementId);
         if (!el) return;
@@ -645,7 +662,7 @@
         if (certEl) certEl.textContent = '0.32';
       });
 
-      // 导航悬浮子页面逻辑
+      // 导航弹窗逻辑
       const navLinks = document.querySelectorAll('.nav-links a[data-modal]');
       const navModal = document.getElementById('navModal');
       const navModalContent = document.getElementById('navModalContent');
@@ -694,7 +711,6 @@
       navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
-          // 移除所有active状态
           navLinks.forEach(l => l.classList.remove('active'));
           link.classList.add('active');
           const key = link.getAttribute('data-modal');
@@ -713,28 +729,16 @@
         if (e.target === navModal) navModal.style.display = 'none';
       });
 
-      // 联系弹窗逻辑 (两个按钮)
+      // 联系弹窗
       const contactModal = document.getElementById('contactModal');
       const closeContactModal = document.getElementById('closeContactModal');
-      const openContactBtn = document.getElementById('openContactModal');
-      const openContactBtn2 = document.getElementById('openContactModal2');
-
-      function showContactModal() {
-        contactModal.style.display = 'flex';
-      }
-
-      openContactBtn.addEventListener('click', showContactModal);
-      openContactBtn2.addEventListener('click', showContactModal);
-
-      closeContactModal.addEventListener('click', () => {
-        contactModal.style.display = 'none';
-      });
-
+      document.getElementById('openContactModal').addEventListener('click', () => contactModal.style.display = 'flex');
+      document.getElementById('openContactModal2').addEventListener('click', () => contactModal.style.display = 'flex');
+      closeContactModal.addEventListener('click', () => contactModal.style.display = 'none');
       contactModal.addEventListener('click', (e) => {
         if (e.target === contactModal) contactModal.style.display = 'none';
       });
 
-      // 键盘ESC关闭弹窗
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           if (navModal.style.display === 'flex') navModal.style.display = 'none';

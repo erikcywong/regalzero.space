@@ -1,762 +1,1333 @@
 <!DOCTYPE html>
-<html lang="zh-HK">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>NAPELL × 富豪酒店 | 全球首创零碳咖啡 · ESG仪表盘</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>NAPELL × Regal Hotel Group | Zero-Carbon Coffee · ESG Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0f1117;
+  --ink-60: rgba(15,17,23,0.6);
+  --ink-30: rgba(15,17,23,0.3);
+  --ink-10: rgba(15,17,23,0.08);
+  --white: #ffffff;
+  --surface: #f7f7f5;
+  --surface-2: #efefeb;
+  --forest: #1a4a35;
+  --forest-lt: #2d6b4e;
+  --forest-pale: #e8f2ec;
+  --navy: #1c2e48;
+  --navy-lt: #2c4468;
+  --gold: #c8a84b;
+  --gold-lt: #e2c97a;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --font-sans: 'Inter', -apple-system, sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --nav-h: 68px;
+  --max-w: 1320px;
+}
 
-    html, body {
-      height: 100%;
-      background: #0f1419;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      color: #e7e9ea;
-      line-height: 1.4;
-      overflow: hidden;
-    }
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-    .floating-nav {
-      height: 56px;
-      background: rgba(21, 25, 30, 0.88);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 0 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
-      z-index: 110;
-    }
+html { scroll-behavior: smooth; }
 
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-    }
+body {
+  font-family: var(--font-sans);
+  background: var(--white);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
 
-    .logo {
-      font-weight: 700;
-      font-size: 1.4rem;
-      letter-spacing: -0.5px;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+/* ─── NAV ─── */
+.nav {
+  position: fixed; top:0; left:0; width:100%; height:var(--nav-h);
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--ink-10);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+  z-index: 1000;
+}
 
-    .logo span {
-      background: #1d9bf0;
-      color: white;
-      padding: 2px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
+.nav-brand {
+  display: flex; align-items: center; gap: 12px;
+  font-family: var(--font-sans);
+  font-size: 0.95rem; font-weight: 600; letter-spacing: 0.02em;
+  color: var(--ink); text-decoration: none;
+}
 
-    .nav-links {
-      display: flex;
-      gap: 24px;
-      list-style: none;
-    }
+.nav-brand .sep {
+  width: 1px; height: 18px; background: var(--ink-30);
+}
 
-    .nav-links a {
-      color: #8b98a5;
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 500;
-      padding: 4px 4px;
-      border-bottom: 2px solid transparent;
-      transition: 0.2s;
-      cursor: pointer;
-    }
+.nav-brand .partner {
+  font-weight: 400; color: var(--ink-60); font-size: 0.85rem;
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
 
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: #e7e9ea;
-      border-bottom-color: #1d9bf0;
-    }
+.nav-links {
+  display: flex; gap: 32px; list-style: none;
+}
 
-    .nav-cta {
-      background: #1d9bf0;
-      color: #fff;
-      border: none;
-      padding: 8px 20px;
-      border-radius: 24px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: background 0.2s;
-      white-space: nowrap;
-    }
+.nav-links a {
+  font-size: 0.83rem; font-weight: 500; color: var(--ink-60);
+  text-decoration: none; letter-spacing: 0.01em;
+  padding-bottom: 2px;
+  border-bottom: 1.5px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
 
-    .nav-cta:hover {
-      background: #1a8cd8;
-    }
+.nav-links a:hover, .nav-links a.active {
+  color: var(--forest);
+  border-bottom-color: var(--forest);
+}
 
-    .dashboard-viewport {
-      height: calc(100vh - 56px);
-      overflow-y: auto;
-      overflow-x: hidden;
-      scrollbar-width: thin;
-      scrollbar-color: #2f3336 #0f1419;
-    }
+.nav-actions { display: flex; align-items: center; gap: 12px; }
 
-    .dashboard-viewport::-webkit-scrollbar {
-      width: 6px;
-    }
-    .dashboard-viewport::-webkit-scrollbar-track {
-      background: #0f1419;
-    }
-    .dashboard-viewport::-webkit-scrollbar-thumb {
-      background: #2f3336;
-      border-radius: 6px;
-    }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 22px; border-radius: var(--radius-sm);
+  font-size: 0.83rem; font-weight: 600; letter-spacing: 0.02em;
+  cursor: pointer; transition: all 0.2s; border: none;
+  font-family: var(--font-sans); white-space: nowrap;
+}
 
-    .dashboard-container {
-      min-height: 100%;
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 14px;
-      padding: 16px;
-      max-width: 100%;
-      margin: 0 auto;
-    }
+.btn-primary {
+  background: var(--forest); color: var(--white);
+}
+.btn-primary:hover { background: var(--forest-lt); transform: translateY(-1px); }
 
-    .card-full {
-      grid-column: span 12;
-      background: #16181c;
-      border-radius: 18px;
-      border: 1px solid #2f3336;
-      padding: 20px;
-      transition: border-color 0.2s;
-    }
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid var(--ink-30);
+  color: var(--ink);
+}
+.btn-outline:hover { border-color: var(--forest); color: var(--forest); }
 
-    .card-half {
-      grid-column: span 6;
-      background: #16181c;
-      border-radius: 18px;
-      border: 1px solid #2f3336;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-    }
+/* ─── LAYOUT ─── */
+.page { padding-top: var(--nav-h); }
+.wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 40px; }
 
-    .card-third {
-      grid-column: span 4;
-      background: #16181c;
-      border-radius: 18px;
-      border: 1px solid #2f3336;
-      padding: 18px;
-    }
+section { padding: 96px 0; }
+section + section { border-top: 1px solid var(--ink-10); }
 
-    .card-quarter {
-      grid-column: span 4;
-      background: #16181c;
-      border-radius: 18px;
-      border: 1px solid #2f3336;
-      padding: 16px;
-    }
+.section-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--forest); margin-bottom: 20px;
+}
 
-    .card-full:hover,
-    .card-half:hover,
-    .card-third:hover,
-    .card-quarter:hover {
-      border-color: #1d9bf0;
-    }
+.section-label::before {
+  content: ''; display: block;
+  width: 20px; height: 1.5px; background: var(--forest);
+}
 
-    .video-shorts-wrapper {
-      max-width: 420px;
-      margin: 0 auto;
-      width: 100%;
-      background: #000;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid #2f3336;
-    }
+h1, h2 {
+  font-family: var(--font-serif);
+}
 
-    .video-shorts-inner {
-      position: relative;
-      width: 100%;
-      padding-top: 177.78%;
-    }
+h1 {
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  line-height: 1.12; letter-spacing: -0.02em;
+  font-weight: 400; color: var(--ink);
+}
 
-    .video-shorts-inner iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
+h2 {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  line-height: 1.2; font-weight: 400; color: var(--ink);
+}
 
-    @media (max-width: 950px) {
-      .card-half, .card-third, .card-quarter {
-        grid-column: span 6;
-      }
-    }
+/* ─── HERO ─── */
+.hero {
+  min-height: calc(100vh - var(--nav-h));
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 0;
+}
 
-    @media (max-width: 650px) {
-      .card-half, .card-third, .card-quarter {
-        grid-column: span 12;
-      }
-      .nav-links {
-        display: none;
-      }
-      .floating-nav {
-        padding: 0 14px;
-      }
-      .video-shorts-wrapper {
-        max-width: 100%;
-      }
-    }
+.hero-left {
+  background: var(--ink);
+  padding: 80px 60px 80px 40px;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  min-height: 600px;
+}
 
-    .section-title {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: #8b98a5;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+.hero-eyebrow {
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold); display: flex; align-items: center; gap: 8px;
+}
 
-    .big-number {
-      font-size: 2.4rem;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.1;
-    }
+.hero-eyebrow::before {
+  content: ''; display: block;
+  width: 24px; height: 1.5px; background: var(--gold);
+}
 
-    .big-number span {
-      font-size: 1rem;
-      font-weight: 500;
-      color: #8b98a5;
-      margin-left: 4px;
-    }
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.6rem, 5vw, 4.4rem);
+  line-height: 1.1;
+  color: var(--white);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin: 32px 0 24px;
+}
 
-    .metric-label {
-      font-size: 0.85rem;
-      color: #8b98a5;
-      margin-top: 6px;
-    }
+.hero-title em {
+  font-style: italic;
+  color: var(--gold-lt);
+}
 
-    .trend-up {
-      color: #00ba7c;
-      font-weight: 600;
-      font-size: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      margin-top: 6px;
-    }
+.hero-body {
+  font-size: 1rem; color: rgba(255,255,255,0.6);
+  max-width: 480px; line-height: 1.7; margin-bottom: 40px;
+}
 
-    .progress-bg {
-      background: #2f3336;
-      border-radius: 10px;
-      height: 6px;
-      width: 100%;
-      margin: 10px 0 4px;
-    }
+.hero-meta {
+  display: flex; align-items: center; gap: 20px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
 
-    .progress-fill {
-      background: #1d9bf0;
-      height: 6px;
-      border-radius: 10px;
-      width: 0%;
-      transition: width 1s ease;
-    }
+.hero-meta-item {
+  display: flex; flex-direction: column; gap: 2px;
+}
 
-    .grid-2col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-top: 8px;
-    }
+.hero-meta-label {
+  font-size: 0.7rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(255,255,255,0.35);
+}
 
-    .certificate-preview {
-      background: #0f1419;
-      border: 1px solid #2f3336;
-      border-radius: 14px;
-      padding: 12px;
-      text-align: center;
-      font-size: 0.8rem;
-      color: #8b98a5;
-      margin-top: 12px;
-    }
+.hero-meta-val {
+  font-family: var(--font-mono);
+  font-size: 1.05rem; color: var(--white); font-weight: 500;
+}
 
-    .tree-icon {
-      font-size: 1.8rem;
-      margin-bottom: 4px;
-    }
+.hero-meta-divider {
+  width: 1px; height: 36px;
+  background: rgba(255,255,255,0.12);
+}
 
-    .btn-outline {
-      background: transparent;
-      border: 1px solid #1d9bf0;
-      color: #1d9bf0;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: 0.2s;
-      text-decoration: none;
-      display: inline-block;
-      text-align: center;
-    }
+/* Hero Right — KPI panel */
+.hero-right {
+  background: var(--surface);
+  padding: 60px 40px 60px 60px;
+  display: flex; flex-direction: column; gap: 32px;
+  justify-content: center;
+}
 
-    .btn-outline:hover {
-      background: rgba(29, 155, 240, 0.12);
-    }
+.hero-kpi-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
 
-    .footer-note {
-      grid-column: span 12;
-      text-align: center;
-      color: #536471;
-      font-size: 0.75rem;
-      margin-top: 8px;
-      border-top: 1px solid #2f3336;
-      padding-top: 14px;
-    }
+.kpi-card {
+  background: var(--white);
+  border: 1px solid var(--ink-10);
+  border-radius: var(--radius-md);
+  padding: 24px 20px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
 
-    hr {
-      border: 0.5px solid #2f3336;
-      margin: 12px 0;
-    }
+.kpi-card:hover {
+  border-color: rgba(15,17,23,0.2);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
 
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.65);
-      backdrop-filter: blur(6px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-      padding: 20px;
-    }
+.kpi-label {
+  font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-60); margin-bottom: 10px;
+}
 
-    .modal-content {
-      background: #16181c;
-      border: 1px solid #2f3336;
-      border-radius: 24px;
-      max-width: 580px;
-      width: 100%;
-      padding: 28px 24px;
-      color: #e7e9ea;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-      position: relative;
-      animation: modalFade 0.25s ease;
-    }
+.kpi-value {
+  font-family: var(--font-mono);
+  font-size: 2rem; font-weight: 500;
+  color: var(--ink); line-height: 1;
+}
 
-    @keyframes modalFade {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+.kpi-value.green { color: var(--forest); }
+.kpi-value.navy  { color: var(--navy); }
 
-    .modal-close {
-      position: absolute;
-      top: 16px;
-      right: 20px;
-      background: none;
-      border: none;
-      color: #8b98a5;
-      font-size: 1.6rem;
-      cursor: pointer;
-      line-height: 1;
-    }
+.kpi-unit {
+  font-size: 0.75rem; color: var(--ink-60);
+  margin-top: 4px;
+}
 
-    .modal-close:hover {
-      color: #e7e9ea;
-    }
+.kpi-trend {
+  position: absolute; top: 16px; right: 16px;
+  font-size: 0.68rem; font-weight: 600;
+  padding: 2px 7px; border-radius: 20px;
+}
 
-    .modal-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+.kpi-trend.up {
+  background: var(--forest-pale); color: var(--forest);
+}
 
-    .contact-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: #0f1419;
-      border-radius: 14px;
-      padding: 14px;
-      margin: 10px 0;
-      border: 1px solid #2f3336;
-    }
+/* Chart inside hero right */
+.hero-chart-wrap {
+  background: var(--white);
+  border: 1px solid var(--ink-10);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
 
-    .contact-icon {
-      font-size: 1.8rem;
-    }
+.chart-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
 
-    .contact-detail {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: #fff;
-    }
+.chart-title {
+  font-size: 0.78rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink-60);
+}
 
-    .contact-label {
-      font-size: 0.75rem;
-      color: #8b98a5;
-    }
+.chart-legend {
+  display: flex; gap: 12px;
+}
 
-    .nav-modal-list {
-      list-style: none;
-      margin-top: 12px;
-    }
+.legend-dot {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.68rem; color: var(--ink-60);
+}
 
-    .nav-modal-list li {
-      margin-bottom: 12px;
-      color: #bbb;
-      border-left: 3px solid #1d9bf0;
-      padding-left: 14px;
-    }
-  </style>
+.legend-dot span {
+  width: 8px; height: 8px; border-radius: 2px;
+}
+
+/* ─── VIDEO STRIP ─── */
+.video-strip {
+  background: var(--ink);
+  padding: 72px 0;
+}
+
+.video-inner {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 64px;
+  align-items: center;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.video-copy .section-label { color: var(--gold); }
+.video-copy .section-label::before { background: var(--gold); }
+
+.video-copy h2 {
+  color: var(--white); font-size: clamp(1.8rem, 3vw, 2.6rem);
+  margin: 8px 0 20px;
+}
+
+.video-copy p {
+  color: rgba(255,255,255,0.55); font-size: 0.95rem; line-height: 1.75;
+  max-width: 480px;
+}
+
+.video-frame {
+  background: #000;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+}
+
+.video-aspect {
+  position: relative; width: 100%; padding-top: 177.78%;
+}
+
+.video-aspect iframe {
+  position: absolute; top:0; left:0; width:100%; height:100%; border:0;
+}
+
+/* ─── PRODUCT GRID ─── */
+.products-section { background: var(--white); }
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--ink-10);
+  border: 1px solid var(--ink-10);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 48px;
+}
+
+.product-tile {
+  background: var(--white);
+  padding: 36px 28px;
+  transition: background 0.25s;
+  display: flex; flex-direction: column; gap: 14px;
+  cursor: default;
+}
+
+.product-tile:hover { background: var(--surface); }
+
+.product-tile-icon {
+  width: 40px; height: 40px;
+  background: var(--forest-pale);
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+}
+
+.product-tile-name {
+  font-size: 1rem; font-weight: 600; color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.product-tile-desc {
+  font-size: 0.84rem; color: var(--ink-60); line-height: 1.6;
+  flex: 1;
+}
+
+.product-tile-tag {
+  display: inline-block;
+  font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 20px;
+  background: var(--forest-pale); color: var(--forest);
+  width: fit-content;
+}
+
+/* ─── ESG DATA ─── */
+.esg-section { background: var(--surface); }
+
+.esg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+
+.esg-card {
+  background: var(--white);
+  border: 1px solid var(--ink-10);
+  border-radius: var(--radius-md);
+  padding: 28px 24px;
+  display: flex; flex-direction: column; gap: 12px;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.esg-card:hover {
+  border-color: rgba(15,17,23,0.15);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+}
+
+.esg-card-head {
+  display: flex; align-items: flex-start;
+  justify-content: space-between;
+}
+
+.esg-card-icon {
+  font-size: 1.3rem; color: var(--forest);
+}
+
+.esg-card-metric {
+  font-family: var(--font-mono);
+  font-size: 1.8rem; font-weight: 500;
+  color: var(--forest); line-height: 1;
+}
+
+.esg-card-title {
+  font-size: 0.88rem; font-weight: 600;
+  color: var(--ink); letter-spacing: -0.01em;
+}
+
+.esg-card-desc {
+  font-size: 0.8rem; color: var(--ink-60); line-height: 1.55;
+}
+
+.esg-card-bar {
+  height: 3px; background: var(--ink-10);
+  border-radius: 99px; overflow: hidden;
+}
+
+.esg-card-bar-fill {
+  height: 100%; background: var(--forest);
+  border-radius: 99px;
+  transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ─── TECH CTA ─── */
+.tech-section {
+  background: var(--ink);
+  padding: 96px 0;
+}
+
+.tech-inner {
+  max-width: var(--max-w); margin: 0 auto;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.tech-left .section-label { color: var(--gold); }
+.tech-left .section-label::before { background: var(--gold); }
+
+.tech-left h2 {
+  color: var(--white);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  margin: 12px 0 24px;
+}
+
+.tech-left p {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.95rem; line-height: 1.75;
+}
+
+.tech-specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  list-style: none;
+  margin-top: 32px;
+}
+
+.tech-specs li {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.85rem; color: rgba(255,255,255,0.75);
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-sm);
+}
+
+.tech-specs li .check {
+  width: 16px; height: 16px; flex-shrink: 0;
+  background: var(--forest); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; color: #fff;
+}
+
+.tech-right {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-xl);
+  padding: 40px 36px;
+}
+
+.vision-headline {
+  font-family: var(--font-serif);
+  font-size: 1.5rem; color: var(--white);
+  line-height: 1.3; margin-bottom: 8px;
+}
+
+.vision-headline em { color: var(--gold-lt); font-style: italic; }
+
+.vision-sub {
+  font-size: 0.85rem; color: rgba(255,255,255,0.45);
+  margin-bottom: 32px; line-height: 1.6;
+}
+
+.vision-stat {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 20px 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.vision-stat-num {
+  font-family: var(--font-mono);
+  font-size: 2.4rem; color: var(--gold); font-weight: 500;
+}
+
+.vision-stat-label {
+  font-size: 0.78rem; color: rgba(255,255,255,0.4);
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  background: #0a0d12;
+  padding: 72px 40px 32px;
+}
+
+.footer-inner {
+  max-width: var(--max-w); margin: 0 auto;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  margin-bottom: 32px;
+}
+
+.footer-brand-name {
+  font-family: var(--font-sans);
+  font-size: 1rem; font-weight: 600;
+  color: var(--white); margin-bottom: 12px;
+}
+
+.footer-brand-desc {
+  font-size: 0.83rem; color: rgba(255,255,255,0.35);
+  line-height: 1.7; max-width: 260px;
+}
+
+.footer-col-head {
+  font-size: 0.7rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.4); margin-bottom: 16px;
+}
+
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 10px; }
+.footer-col ul li a {
+  font-size: 0.83rem; color: rgba(255,255,255,0.45);
+  text-decoration: none; transition: color 0.2s;
+}
+.footer-col ul li a:hover { color: var(--white); }
+
+.footer-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+}
+
+.footer-copy {
+  font-size: 0.75rem; color: rgba(255,255,255,0.25);
+}
+
+.footer-copy a {
+  color: var(--gold); text-decoration: none;
+  font-family: var(--font-mono); font-size: 0.72rem;
+}
+
+.footer-contact-pill {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+
+.contact-chip {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.72rem; color: rgba(255,255,255,0.4);
+  font-family: var(--font-mono);
+  padding: 5px 12px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  cursor: pointer; transition: border-color 0.2s, color 0.2s;
+}
+
+.contact-chip:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ─── MODAL ─── */
+.overlay {
+  position: fixed; inset:0;
+  background: rgba(10,13,18,0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: none; align-items: center;
+  justify-content: center;
+  z-index: 2000; padding: 20px;
+}
+
+.overlay.open { display: flex; }
+
+.modal {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  width: 100%; max-width: 480px;
+  padding: 36px 32px;
+  position: relative;
+  animation: modal-in 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+
+@keyframes modal-in {
+  from { opacity:0; transform: translateY(16px) scale(0.97); }
+  to   { opacity:1; transform: none; }
+}
+
+.modal-x {
+  position: absolute; top:16px; right:18px;
+  background: var(--surface); border: none;
+  width: 30px; height: 30px; border-radius: 50%;
+  font-size: 1.1rem; cursor: pointer; color: var(--ink-60);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.modal-x:hover { background: var(--surface-2); }
+
+.modal-heading {
+  font-family: var(--font-serif);
+  font-size: 1.4rem; color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.modal-sub {
+  font-size: 0.82rem; color: var(--ink-60); margin-bottom: 24px;
+}
+
+.contact-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--ink-10);
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.contact-item:hover {
+  background: var(--surface);
+  border-color: rgba(15,17,23,0.15);
+}
+
+.contact-ico {
+  width: 36px; height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--forest-pale);
+  display: flex; align-items: center;
+  justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+
+.contact-type {
+  font-size: 0.68rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--ink-60); font-weight: 600;
+}
+
+.contact-val {
+  font-family: var(--font-mono);
+  font-size: 0.9rem; font-weight: 500; color: var(--ink);
+}
+
+.nav-modal-list {
+  list-style: none; margin-top: 8px; display: flex; flex-direction: column; gap: 12px;
+}
+
+.nav-modal-list li {
+  padding: 12px 16px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem; line-height: 1.5; color: var(--ink);
+  border-left: 3px solid var(--forest);
+}
+
+.nav-modal-list li strong { color: var(--forest); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-left { min-height: auto; padding: 60px 40px; }
+  .hero-right { padding: 40px; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .tech-inner { grid-template-columns: 1fr; gap: 48px; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+
+@media (max-width: 768px) {
+  .nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .wrap { padding: 0 20px; }
+  section { padding: 64px 0; }
+  .hero-left { padding: 48px 20px; }
+  .hero-right { padding: 32px 20px; }
+  .hero-kpi-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .video-inner { grid-template-columns: 1fr; padding: 0 20px; }
+  .video-frame { max-width: 320px; margin: 0 auto; }
+  .products-grid { grid-template-columns: 1fr; }
+  .esg-grid { grid-template-columns: 1fr; }
+  .tech-inner { padding: 0 20px; }
+  .tech-specs { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; gap: 24px; }
+  .footer { padding: 48px 20px 24px; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+</style>
 </head>
 <body>
-  <nav class="floating-nav">
-    <div class="nav-left">
-      <div class="logo">
-        NAPELL<span>×富豪</span>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-brand" href="#">
+    NAPELL
+    <span class="sep"></span>
+    <span class="partner">Regal Hotel Group</span>
+  </a>
+  <ul class="nav-links">
+    <li><a class="active" data-modal="dashboard">Dashboard</a></li>
+    <li><a data-modal="experience">Guest Experience</a></li>
+    <li><a data-modal="esg">ESG Data</a></li>
+    <li><a data-modal="business">Business</a></li>
+    <li><a data-modal="tech">Technology</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn btn-outline" id="openContactModal">Contact Us</button>
+    <button class="btn btn-primary" id="openContactModal2">Partner With Us</button>
+  </div>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- HERO -->
+  <section class="hero" style="padding:0; border-top:none;">
+    <div class="hero-left wrap" style="padding-left:40px; padding-right:40px;">
+      <div>
+        <div class="hero-eyebrow">World's First Zero-Carbon Coffee Hotel</div>
+        <h1 class="hero-title">Every cup<br>is an <em>ESG</em><br>commitment.</h1>
+        <p class="hero-body">NAPELL's aeroponic hydroponic technology transforms Regal Hotel Group into the world's first self-producing zero-carbon coffee hotel — where every guest becomes part of the climate solution.</p>
       </div>
-      <ul class="nav-links">
-        <li><a class="active" data-modal="dashboard">仪表板</a></li>
-        <li><a data-modal="experience">住客体验</a></li>
-        <li><a data-modal="esg">ESG数据</a></li>
-        <li><a data-modal="business">商业拓展</a></li>
-        <li><a data-modal="tech">技术亮点</a></li>
-      </ul>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Addressed to</span>
+          <span class="hero-meta-val">Ms. Lo Bo Man</span>
+        </div>
+        <div class="hero-meta-divider"></div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Date</span>
+          <span class="hero-meta-val" id="currentDate"></span>
+        </div>
+        <div class="hero-meta-divider"></div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">From</span>
+          <span class="hero-meta-val">NAPELL BIOTECH</span>
+        </div>
+      </div>
     </div>
-    <button class="nav-cta" id="openContactModal">共创联络</button>
-  </nav>
 
-  <div class="dashboard-viewport">
-    <div class="dashboard-container">
-      
-      <!-- 欢迎卡片 -->
-      <div class="card-full" style="background: linear-gradient(135deg, #132433, #0f1419); border-color: #1d9bf0;">
-        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
-          <div>
-            <div class="section-title" style="color:#1d9bf0;">🌱 全球第一间自产零碳咖啡酒店</div>
-            <h2 style="font-size: 1.9rem; font-weight: 700; margin: 2px 0 6px;">雾化水培 · 每一杯咖啡都是ESG行动</h2>
-            <p style="color: #8b98a5; max-width: 650px;">我们邀请富豪酒店集团共同打造「全球首创」零碳咖啡酒店，让住客亲手参与碳足迹清零。</p>
-          </div>
-          <div style="background:#16181c; border-radius: 20px; padding: 14px 22px; text-align: center;">
-            <div style="font-size: 0.7rem; color: #8b98a5;">致 罗宝文小姐</div>
-            <!-- 动态日期显示 -->
-            <div id="currentDate" style="font-weight: 700; font-size: 1.2rem;"></div>
-            <div style="margin-top: 6px; color: #1d9bf0;">NAPELL BIOTECH</div>
-          </div>
+    <div class="hero-right">
+      <div class="hero-kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Water Savings</div>
+          <div class="kpi-value green" id="waterSavings">—</div>
+          <div class="kpi-unit">vs. conventional</div>
+          <span class="kpi-trend up">↑ Live</span>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">CO₂ per Cup</div>
+          <div class="kpi-value navy" id="carbonPerCup">—</div>
+          <div class="kpi-unit">kg CO₂ reduced</div>
+          <span class="kpi-trend up">Verified</span>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Guest Engagement</div>
+          <div class="kpi-value green" id="guestEngagement">—</div>
+          <div class="kpi-unit">QR scan rate</div>
+          <span class="kpi-trend up">↑ YoY</span>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Carbon Captured</div>
+          <div class="kpi-value navy" id="treeCarbon">—</div>
+          <div class="kpi-unit">kg simulated</div>
+          <span class="kpi-trend up">IoT</span>
         </div>
       </div>
 
-      <!-- 视频展示卡片 -->
-      <div class="card-full" style="padding: 0; background: transparent; border: none;">
-        <div class="section-title" style="padding-left: 4px;">🎬 种植机运行演示 & 零碳咖啡故事</div>
-        <div class="video-shorts-wrapper">
-          <div class="video-shorts-inner">
-            <iframe 
-              src="https://www.youtube-nocookie.com/embed/jMIaC40I5_E?rel=0&modestbranding=1&showinfo=0" 
-              title="NAPELL 雾化水培咖啡种植机演示" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-              allowfullscreen>
-            </iframe>
+      <div class="hero-chart-wrap">
+        <div class="chart-head">
+          <span class="chart-title">Carbon Reduction Trend</span>
+          <div class="chart-legend">
+            <span class="legend-dot"><span style="background:#1a4a35;"></span>Carbon offset</span>
+            <span class="legend-dot"><span style="background:#c8a84b;"></span>Guest engagement</span>
+          </div>
+        </div>
+        <div style="position:relative;height:140px;">
+          <canvas id="heroChart" role="img" aria-label="Carbon reduction and guest engagement trend chart">Carbon reduction trend data</canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  <div class="video-strip">
+    <div class="video-inner">
+      <div class="video-copy">
+        <div class="section-label">System Demo</div>
+        <h2>See the machine<br>in action.</h2>
+        <p>Our aeroponic cultivation system runs silently, requires zero horticultural expertise, and generates real-time ESG data — automatically logged and audit-ready for your annual report.</p>
+        <div style="display:flex; gap:12px; margin-top:32px;">
+          <button class="btn btn-primary" id="openContactModal3">Schedule a Demo</button>
+        </div>
+      </div>
+      <div class="video-frame" id="videoBox" style="cursor:pointer;" onclick="loadYouTube(this)">
+        <div class="video-aspect">
+          <img
+            src="https://img.youtube.com/vi/jMIaC40I5_E/maxresdefault.jpg"
+            alt="NAPELL aeroponic coffee cultivation demo"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"
+            onerror="this.src='https://img.youtube.com/vi/jMIaC40I5_E/hqdefault.jpg'"
+          >
+          <!-- Play button overlay -->
+          <div style="
+            position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+            background:rgba(0,0,0,0.35);transition:background 0.2s;
+          " class="play-overlay">
+            <div style="
+              width:64px;height:64px;border-radius:50%;
+              background:rgba(255,255,255,0.92);
+              display:flex;align-items:center;justify-content:center;
+              box-shadow:0 8px 32px rgba(0,0,0,0.5);
+              transition:transform 0.2s,background 0.2s;
+            " class="play-btn">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <polygon points="8,5 19,12 8,19" fill="#1a4a35"/>
+              </svg>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <!-- KPI 指标卡片 -->
-      <div class="card-quarter">
-        <div class="section-title">💧 节水效率</div>
-        <div class="big-number" id="waterSavings">97<span>%</span></div>
-        <div class="metric-label">对比传统土培咖啡</div>
-        <div class="progress-bg"><div class="progress-fill" style="width:97%"></div></div>
-        <div class="trend-up">↑ 零废水排放</div>
-      </div>
-
-      <div class="card-quarter">
-        <div class="section-title">🌍 每杯减碳 (vs进口豆)</div>
-        <div class="big-number" id="carbonPerCup">0.32<span>kg CO₂</span></div>
-        <div class="metric-label">减少食物里程与物流</div>
-        <div class="progress-bg"><div class="progress-fill" style="width:65%"></div></div>
-        <div class="trend-up">↓ 供应链碳足迹</div>
-      </div>
-
-      <div class="card-quarter">
-        <div class="section-title">🧑‍🤝‍🧑 住客参与率</div>
-        <div class="big-number" id="guestEngagement">84<span>%</span></div>
-        <div class="metric-label">扫码互动 & 认养咖啡树</div>
-        <div class="progress-bg"><div class="progress-fill" style="width:84%"></div></div>
-        <div class="trend-up">↑ 社交媒体分享</div>
-      </div>
-
-      <!-- 住客体验 -->
-      <div class="card-half">
-        <div class="section-title">🌳 入住即认养 · 数字咖啡树</div>
-        <div style="display: flex; align-items: center; gap: 18px; margin-top: 6px;">
-          <div style="font-size: 3rem;">🌱</div>
-          <div>
-            <div style="font-weight: 600; font-size: 1.1rem;">专属树 #0001</div>
-            <div style="color: #8b98a5;">当前固碳模拟: <span id="treeCarbon">0.42</span> kg</div>
-            <div style="color: #8b98a5;">雾化营养: 活跃 · 光照: 12h</div>
-            <div style="margin-top: 8px; font-size: 0.75rem; color: #1d9bf0;">客房电视 / 手机实时查看</div>
-          </div>
+  <!-- PRODUCTS -->
+  <section class="products-section">
+    <div class="wrap">
+      <div class="section-label">Hotel ESG Ecosystem</div>
+      <h2>Four pillars.<br>One carbon-zero story.</h2>
+      <div class="products-grid">
+        <div class="product-tile">
+          <div class="product-tile-icon">🛍️</div>
+          <div class="product-tile-name">Low-Carbon Retail</div>
+          <div class="product-tile-desc">Traceable carbon-footprint pour-over gift boxes — corporate client amenities and hotel boutique. Take the Regal Hotel Group ESG story home.</div>
+          <span class="product-tile-tag">Revenue stream</span>
         </div>
-        <div class="certificate-preview">
-          <div class="tree-icon">🏆</div>
-          <strong>《低碳住宿贡献证书》</strong><br>
-          您本次入住减少碳排放 <span id="certCarbon">0.32</span> kg，节约水 28 L<br>
-          <span style="color:#1d9bf0;">一键分享 · 富豪酒店 ESG 荣誉</span>
+        <div class="product-tile">
+          <div class="product-tile-icon">🏢</div>
+          <div class="product-tile-name">MICE Green Meetings</div>
+          <div class="product-tile-desc">Zero-carbon coffee break stations with issued Carbon Reduction Contribution Certificates — elevating corporate clients' ESG credentials.</div>
+          <span class="product-tile-tag">B2B upsell</span>
+        </div>
+        <div class="product-tile">
+          <div class="product-tile-icon">📋</div>
+          <div class="product-tile-name">Industry Standards</div>
+          <div class="product-tile-desc">Co-publish the "Hotel In-House Bio-Carbon Accounting Guidelines" — moving from practitioner to industry rule-setter.</div>
+          <span class="product-tile-tag">Thought leadership</span>
+        </div>
+        <div class="product-tile">
+          <div class="product-tile-icon">🌳</div>
+          <div class="product-tile-name">Digital Tree Adoption</div>
+          <div class="product-tile-desc">Check in and adopt a dedicated coffee tree. Track live carbon sequestration on room TV or mobile. Receive a Low-Carbon Stay Certificate on departure.</div>
+          <span class="product-tile-tag">Guest engagement</span>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- ESG数据中台 -->
-      <div class="card-half">
-        <div class="section-title">📊 酒店ESG数据中台 (IoT实时)</div>
-        <div class="grid-2col">
-          <div>
-            <div class="metric-label">低碳食材自产率</div>
-            <div class="big-number" style="font-size:1.5rem;">12<span>%</span></div>
+  <!-- ESG DATA -->
+  <section class="esg-section">
+    <div class="wrap">
+      <div class="section-label">Real-Time ESG Intelligence</div>
+      <h2>Data that goes<br>straight into your annual report.</h2>
+      <div class="esg-grid">
+        <div class="esg-card">
+          <div class="esg-card-head">
+            <div class="esg-card-title">In-House Ingredient Rate</div>
+            <span class="esg-card-icon">📊</span>
           </div>
-          <div>
-            <div class="metric-label">生物固碳量 (累计)</div>
-            <div class="big-number" style="font-size:1.5rem;" id="bioCarbon">18.7<span>kg</span></div>
-          </div>
-          <div>
-            <div class="metric-label">减少食物里程</div>
-            <div class="big-number" style="font-size:1.5rem;">2,400<span>km</span></div>
-          </div>
-          <div>
-            <div class="metric-label">上链存证批次</div>
-            <div class="big-number" style="font-size:1.5rem;">8<span>批</span></div>
-          </div>
+          <div class="esg-card-metric">12%</div>
+          <div class="esg-card-desc">Self-produced coffee as a share of total hotel coffee consumption</div>
+          <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:12%;"></div></div>
         </div>
-        <div style="margin-top: 12px; background: #0f1419; border-radius: 12px; padding: 10px; font-size: 0.78rem; color: #1d9bf0; display: flex; align-items: center; gap: 6px;">
-          <span>🔗</span> 区块链碳减排证明 · 可审计 · 直接汇入ESG年报
+        <div class="esg-card">
+          <div class="esg-card-head">
+            <div class="esg-card-title">Biological Carbon Capture</div>
+            <span class="esg-card-icon">🌿</span>
+          </div>
+          <div class="esg-card-metric" id="bioCarbon">18.7 kg</div>
+          <div class="esg-card-desc">Cumulative real-time carbon simulation from IoT cultivation nodes</div>
+          <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:62%;"></div></div>
+        </div>
+        <div class="esg-card">
+          <div class="esg-card-head">
+            <div class="esg-card-title">Food Miles Eliminated</div>
+            <span class="esg-card-icon">🚚</span>
+          </div>
+          <div class="esg-card-metric">2,400 km</div>
+          <div class="esg-card-desc">Compared to standard imported coffee bean transportation routes</div>
+          <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:80%;"></div></div>
+        </div>
+        <div class="esg-card">
+          <div class="esg-card-head">
+            <div class="esg-card-title">Blockchain Certified Batches</div>
+            <span class="esg-card-icon">🔗</span>
+          </div>
+          <div class="esg-card-metric">8 batches</div>
+          <div class="esg-card-desc">Auditable on-chain carbon reduction proofs — direct ESG report input</div>
+          <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:45%;"></div></div>
+        </div>
+        <div class="esg-card">
+          <div class="esg-card-head">
+            <div class="esg-card-title">Zero Wastewater Discharge</div>
+            <span class="esg-card-icon">💧</span>
+          </div>
+          <div class="esg-card-metric">95%+</div>
+          <div class="esg-card-desc">Aeroponic closed-loop system water savings vs. traditional soil cultivation</div>
+          <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:95%;"></div></div>
+        </div>
+        <div class="esg-card">
+          <div class="esg-card-head">
+            <div class="esg-card-title">Guest Participation Rate</div>
+            <span class="esg-card-icon">📱</span>
+          </div>
+          <div class="esg-card-metric">84%</div>
+          <div class="esg-card-desc">QR scan interaction rate with social media sharing conversion</div>
+          <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:84%;"></div></div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- 商业延伸 -->
-      <div class="card-third">
-        <div class="section-title">🛍️ 低碳咖啡零售</div>
-        <div style="font-weight: 600; font-size: 1.1rem;">碳足迹可溯源挂耳礼盒</div>
-        <div class="metric-label" style="margin: 6px 0;">企业客户伴手礼 · 酒店商城</div>
-        <div style="font-size: 0.8rem; color: #1d9bf0; margin-top: 12px;">把富豪的ESG故事带回家</div>
+  <!-- TECH + CTA -->
+  <div class="tech-section">
+    <div class="tech-inner">
+      <div class="tech-left">
+        <div class="section-label">Technology Specs</div>
+        <h2>Built for hospitality.<br>Engineered for ESG.</h2>
+        <p>Every unit operates as an IoT node, continuously streaming water usage, energy consumption, and carbon sequestration data — all audit-ready, all in real time.</p>
+        <ul class="tech-specs">
+          <li><span class="check">✓</span> 95%+ water efficiency</li>
+          <li><span class="check">✓</span> Optimized growth spectrum</li>
+          <li><span class="check">✓</span> Modular, silent operation</li>
+          <li><span class="check">✓</span> Wi-Fi / Bluetooth IoT</li>
+          <li><span class="check">✓</span> Live energy &amp; carbon data</li>
+          <li><span class="check">✓</span> Zero horticultural expertise</li>
+        </ul>
       </div>
-
-      <div class="card-third">
-        <div class="section-title">🏢 MICE绿色会议</div>
-        <div style="font-weight: 600; font-size: 1.1rem;">零碳咖啡茶歇站</div>
-        <div class="metric-label" style="margin: 6px 0;">出具《会议减碳贡献证明》</div>
-        <div style="font-size: 0.8rem; color: #1d9bf0; margin-top: 12px;">企业客户ESG形象增值服务</div>
+      <div class="tech-right">
+        <div class="vision-headline">
+          <em>2 billion people</em> can<br>act on carbon daily.
+        </div>
+        <p class="vision-sub">NAPELL's mission: make zero-carbon living effortless — starting with the morning cup.</p>
+        <div class="vision-stat">
+          <div class="vision-stat-num">2B+</div>
+          <div class="vision-stat-label">Daily coffee consumers worldwide</div>
+        </div>
+        <div class="vision-stat">
+          <div class="vision-stat-num">0 kg</div>
+          <div class="vision-stat-label">Net carbon target per cup</div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:28px;width:100%;justify-content:center;" id="openContactModal4">Begin the Partnership</button>
       </div>
+    </div>
+  </div>
 
-      <div class="card-third">
-        <div class="section-title">📋 行业标准输出</div>
-        <div style="font-weight: 600; font-size: 1.1rem;">《酒店自产生物碳汇核算指引》</div>
-        <div class="metric-label" style="margin: 6px 0;">联合发布 · 规则定义者</div>
-        <div style="font-size: 0.8rem; color: #1d9bf0; margin-top: 12px;">从实践者到行业引领</div>
-      </div>
-
-      <!-- 技术亮点 -->
-      <div class="card-full" style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center;">
-        <div style="flex: 2; min-width: 240px;">
-          <div class="section-title">⚙️ 雾化水培咖啡种植机 · 技术速览</div>
-          <ul style="list-style: none; color: #8b98a5; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
-            <li>✓ 节水率95%以上，零废水排放</li>
-            <li>✓ 模拟最适生长光谱，稳定年产</li>
-            <li>✓ 模块化设计，静音运行</li>
-            <li>✓ IoT数据端口 (Wi-Fi/蓝牙)</li>
-            <li>✓ 实时输出能耗、水耗、固碳模拟值</li>
-            <li>✓ 无需专业园艺人员维护</li>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-col">
+          <div class="footer-brand-name">NAPELL BIOTECH</div>
+          <p class="footer-brand-desc">Building the world's first self-producing zero-carbon coffee hotel in partnership with Regal Hotel Group. Every cup, a climate action.</p>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-head">Products</div>
+          <ul>
+            <li><a href="#">Aeroponic Cultivation Unit</a></li>
+            <li><a href="#">ESG Intelligence Platform</a></li>
+            <li><a href="#">Carbon Traceability System</a></li>
           </ul>
         </div>
-        <div style="flex: 1; text-align: center; border-left: 1px solid #2f3336; padding-left: 18px;">
-          <div style="font-size: 1.3rem; font-weight: 700;">🌏 每天20亿人</div>
-          <div style="color: #8b98a5;">参与碳排放的愿景</div>
-          <div style="margin-top: 10px; font-size: 0.9rem; color: #fff;">NAPELL BIOTECH</div>
-          <button class="btn-outline" style="margin-top: 12px;" id="openContactModal2">立即联系共创</button>
+        <div class="footer-col">
+          <div class="footer-col-head">Resources</div>
+          <ul>
+            <li><a href="#">Technical Whitepaper</a></li>
+            <li><a href="#">API Documentation</a></li>
+            <li><a href="#">Reduction Methodology</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <div class="footer-col-head">Legal</div>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Contact NAPELL</a></li>
+          </ul>
         </div>
       </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">
+          © 2026 NAPELL BIOTECH · For Ms. Lo Bo Man &amp; Regal Hotel Group · Co-creating the world's first self-producing zero-carbon coffee hotel<br>
+          <a href="mailto:erik.wong@napell.bio">erik.wong@napell.bio</a>
+        </p>
+        <div class="footer-contact-pill">
+          <span class="contact-chip" id="footerContact1">💬 +852 9318 8252</span>
+          <span class="contact-chip" id="footerContact2">💚 JEBI_ONE</span>
+          <span class="contact-chip" id="footerContact3">📞 +86 158 0022 2338</span>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-      <div class="footer-note">
-        © 2026 NAPELL BIOTECH · 致罗宝文小姐及富豪酒店集团 · 共创全球第一间自产零碳咖啡酒店<br>
-        <span style="color: #1d9bf0;">Erik Wong · erik.wong@napell.bio · WhatsApp: 93188252</span>
+</div><!-- /page -->
+
+<!-- NAV MODAL -->
+<div class="overlay" id="navModal">
+  <div class="modal">
+    <button class="modal-x" id="closeNavModal">×</button>
+    <div id="navModalContent"></div>
+  </div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div class="overlay" id="contactModal">
+  <div class="modal">
+    <button class="modal-x" id="closeContactModal">×</button>
+    <div class="modal-heading">Connect with NAPELL</div>
+    <p class="modal-sub">Erik Wong · NAPELL BIOTECH · Let's build the future of sustainable hospitality together.</p>
+    <div class="contact-item">
+      <div class="contact-ico">💬</div>
+      <div>
+        <div class="contact-type">WhatsApp</div>
+        <div class="contact-val">+852 9318 8252</div>
+      </div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-ico">✉️</div>
+      <div>
+        <div class="contact-type">Email</div>
+        <div class="contact-val">erik.wong@napell.bio</div>
+      </div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-ico">💚</div>
+      <div>
+        <div class="contact-type">WeChat</div>
+        <div class="contact-val">JEBI_ONE</div>
+      </div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-ico">📞</div>
+      <div>
+        <div class="contact-type">Mobile</div>
+        <div class="contact-val">+86 158 0022 2338</div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- 导航模态框 -->
-  <div class="modal-overlay" id="navModal">
-    <div class="modal-content">
-      <button class="modal-close" id="closeNavModal">&times;</button>
-      <div id="navModalContent"></div>
-    </div>
-  </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+(function() {
+  // Date
+  const now = new Date();
+  const pad = n => String(n).padStart(2,'0');
+  document.getElementById('currentDate').textContent =
+    `${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())}`;
 
-  <!-- 联系模态框 -->
-  <div class="modal-overlay" id="contactModal">
-    <div class="modal-content" style="max-width: 420px;">
-      <button class="modal-close" id="closeContactModal">&times;</button>
-      <div class="modal-title">📬 联系 NAPELL BIOTECH</div>
-      <div class="contact-row">
-        <span class="contact-icon">💬</span>
-        <div>
-          <div class="contact-label">WhatsApp</div>
-          <div class="contact-detail">+852 9318 8252</div>
-        </div>
-      </div>
-      <div class="contact-row">
-        <span class="contact-icon">✉️</span>
-        <div>
-          <div class="contact-label">电邮</div>
-          <div class="contact-detail" style="word-break: break-all;">erik.wong@napell.bio</div>
-        </div>
-      </div>
-      <div style="margin-top: 16px; font-size: 0.85rem; color: #8b98a5; text-align: center;">Erik Wong · NAPELL BIOTECH</div>
-    </div>
-  </div>
+  // KPI counter animation
+  function animCount(el, start, end, decimals, suffix, duration) {
+    if (!el) return;
+    let s = null;
+    const step = ts => {
+      if (!s) s = ts;
+      const p = Math.min((ts - s) / duration, 1);
+      const ease = 1 - Math.pow(1 - p, 3);
+      const v = (start + (end - start) * ease).toFixed(decimals);
+      el.innerHTML = v + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
 
-  <script>
-    (function() {
-      // 设置当前日期 (格式 YYYY.MM.DD)
-      const today = new Date();
-      const year = today.getFullYear();
-      const month = String(today.getMonth() + 1).padStart(2, '0');
-      const day = String(today.getDate()).padStart(2, '0');
-      const dateString = `${year}.${month}.${day}`;
-      const dateElement = document.getElementById('currentDate');
-      if (dateElement) {
-        dateElement.textContent = dateString;
-      }
+  window.addEventListener('load', () => {
+    animCount(document.getElementById('waterSavings'), 85, 97, 0, '%', 900);
+    animCount(document.getElementById('guestEngagement'), 60, 84, 0, '%', 900);
+    const cpEl = document.getElementById('carbonPerCup');
+    if (cpEl) cpEl.textContent = '0.32';
+    const tcEl = document.getElementById('treeCarbon');
+    if (tcEl) tcEl.textContent = '0.42 kg';
 
-      // 数字动画
-      function animateValue(elementId, start, end, suffix = '', duration = 800) {
-        const el = document.getElementById(elementId);
-        if (!el) return;
-        let startTime = null;
-        const step = (timestamp) => {
-          if (!startTime) startTime = timestamp;
-          const progress = Math.min((timestamp - startTime) / duration, 1);
-          const current = Math.floor(progress * (end - start) + start);
-          el.innerHTML = current + (suffix ? `<span>${suffix}</span>` : '');
-          if (progress < 1) {
-            window.requestAnimationFrame(step);
-          } else {
-            el.innerHTML = end + (suffix ? `<span>${suffix}</span>` : '');
+    // animate bar fills
+    document.querySelectorAll('.esg-card-bar-fill').forEach(b => {
+      const w = b.style.width;
+      b.style.width = '0';
+      setTimeout(() => { b.style.width = w; }, 400);
+    });
+
+    // Hero chart
+    const ctx = document.getElementById('heroChart');
+    if (ctx && window.Chart) {
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+          datasets: [
+            {
+              label: 'Carbon offset (kg)',
+              data: [2.1, 3.8, 5.2, 8.4, 13.0, 18.7],
+              backgroundColor: '#1a4a35',
+              borderRadius: 4,
+              barPercentage: 0.55,
+              yAxisID: 'y'
+            },
+            {
+              label: 'Engagement (%)',
+              data: [61, 68, 73, 77, 81, 84],
+              type: 'line',
+              borderColor: '#c8a84b',
+              backgroundColor: 'rgba(200,168,75,0.08)',
+              pointBackgroundColor: '#c8a84b',
+              pointRadius: 3,
+              tension: 0.4,
+              fill: true,
+              yAxisID: 'y1'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0f1117',
+              titleColor: '#fff',
+              bodyColor: 'rgba(255,255,255,0.65)',
+              cornerRadius: 8,
+              padding: 10
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#888', font: { size: 11 } },
+              grid: { color: 'rgba(0,0,0,0.04)' }
+            },
+            y: {
+              ticks: { color: '#888', font: { size: 11 } },
+              grid: { color: 'rgba(0,0,0,0.04)' },
+              title: { display: false }
+            },
+            y1: {
+              position: 'right',
+              ticks: { color: '#c8a84b', font: { size: 11 } },
+              grid: { drawOnChartArea: false }
+            }
           }
-        };
-        window.requestAnimationFrame(step);
-      }
-
-      window.addEventListener('load', () => {
-        animateValue('waterSavings', 90, 97, '%', 700);
-        animateValue('carbonPerCup', 0.20, 0.32, 'kg CO₂', 800);
-        animateValue('guestEngagement', 70, 84, '%', 750);
-        animateValue('treeCarbon', 0.30, 0.42, '', 600);
-        animateValue('bioCarbon', 15.0, 18.7, 'kg', 700);
-        const certEl = document.getElementById('certCarbon');
-        if (certEl) certEl.textContent = '0.32';
-      });
-
-      // 导航弹窗逻辑
-      const navLinks = document.querySelectorAll('.nav-links a[data-modal]');
-      const navModal = document.getElementById('navModal');
-      const navModalContent = document.getElementById('navModalContent');
-      const closeNavModal = document.getElementById('closeNavModal');
-
-      const modalData = {
-        dashboard: `
-          <div class="modal-title">📋 仪表板概览</div>
-          <p style="color:#8b98a5;">当前展示核心ESG指标：节水效率、每杯减碳量、住客参与率，以及实时数据中台与商业模块。所有数据均来自雾化种植机IoT节点。</p>
-        `,
-        experience: `
-          <div class="modal-title">🧳 住客体验设计</div>
-          <ul class="nav-modal-list">
-            <li><strong>「这杯咖啡的碳足迹，由您清零」</strong> – 扫码即见减排数据，离店生成《低碳住宿贡献证书》。</li>
-            <li><strong>入住即认养数字咖啡树</strong> – 客房电视/手机实时查看专属咖啡树生长与固碳量。</li>
-            <li>亲子家庭与新世代旅客尤为触动，社交分享率高。</li>
-          </ul>
-        `,
-        esg: `
-          <div class="modal-title">📊 ESG数据融合</div>
-          <ul class="nav-modal-list">
-            <li>机器作为IoT节点，输出水循环量、能耗、固碳模拟值等。</li>
-            <li>自动生成低碳食材自产率、生物固碳量、减少食物里程等指标。</li>
-            <li>数据上链存证，形成可验证的“酒店自产咖啡碳减排证明”，直接汇入ESG年报。</li>
-          </ul>
-        `,
-        business: `
-          <div class="modal-title">💼 商业延伸</div>
-          <ul class="nav-modal-list">
-            <li><strong>低碳咖啡零售：</strong>碳足迹可溯源挂耳礼盒，企业伴手礼/酒店商城。</li>
-            <li><strong>MICE绿色会议：</strong>零碳咖啡茶歇 + 《会议减碳贡献证明》。</li>
-            <li><strong>行业标准输出：</strong>联合发布《酒店自产生物碳汇核算指引》。</li>
-          </ul>
-        `,
-        tech: `
-          <div class="modal-title">🔧 技术亮点</div>
-          <ul class="nav-modal-list">
-            <li>全球首创雾化流动水培系统，节水率>95%，零废水排放。</li>
-            <li>全封闭循环，模拟最适生长光谱，稳定年产优质咖啡鲜果。</li>
-            <li>模块化设计，静音运行，无需专业园艺维护。</li>
-            <li>IoT数据端口支持Wi-Fi/蓝牙，实时输出ESG关键指标。</li>
-          </ul>
-        `
-      };
-
-      navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          navLinks.forEach(l => l.classList.remove('active'));
-          link.classList.add('active');
-          const key = link.getAttribute('data-modal');
-          if (modalData[key]) {
-            navModalContent.innerHTML = modalData[key];
-            navModal.style.display = 'flex';
-          }
-        });
-      });
-
-      closeNavModal.addEventListener('click', () => {
-        navModal.style.display = 'none';
-      });
-
-      navModal.addEventListener('click', (e) => {
-        if (e.target === navModal) navModal.style.display = 'none';
-      });
-
-      // 联系弹窗
-      const contactModal = document.getElementById('contactModal');
-      const closeContactModal = document.getElementById('closeContactModal');
-      document.getElementById('openContactModal').addEventListener('click', () => contactModal.style.display = 'flex');
-      document.getElementById('openContactModal2').addEventListener('click', () => contactModal.style.display = 'flex');
-      closeContactModal.addEventListener('click', () => contactModal.style.display = 'none');
-      contactModal.addEventListener('click', (e) => {
-        if (e.target === contactModal) contactModal.style.display = 'none';
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          if (navModal.style.display === 'flex') navModal.style.display = 'none';
-          if (contactModal.style.display === 'flex') contactModal.style.display = 'none';
         }
       });
-    })();
-  </script>
+    }
+  });
+
+  // Nav modal data
+  const modalData = {
+    dashboard: {
+      title: 'Dashboard Overview',
+      content: `<ul class="nav-modal-list">
+        <li>Live ESG KPIs: water savings, carbon per cup, guest engagement, and carbon capture — all sourced from IoT cultivation nodes.</li>
+        <li>Six-month carbon offset trend with dual-axis engagement overlay.</li>
+        <li>All data auto-formatted for ESG annual reporting.</li>
+      </ul>`
+    },
+    experience: {
+      title: 'Guest Experience Design',
+      content: `<ul class="nav-modal-list">
+        <li><strong>"You zero this cup's carbon footprint."</strong> Scan on arrival to see live reduction data. Receive a Low-Carbon Stay Certificate on departure.</li>
+        <li>Check in, adopt a dedicated digital coffee tree — track it live on room TV or mobile app.</li>
+        <li>Especially resonant with families and Gen Z travelers. High social share rate.</li>
+      </ul>`
+    },
+    esg: {
+      title: 'ESG Data Integration',
+      content: `<ul class="nav-modal-list">
+        <li>Each unit acts as an IoT node: outputs water loop volume, energy draw, and carbon capture simulation in real time.</li>
+        <li>Auto-generates: in-house ingredient rate, cumulative bio-carbon, food miles eliminated.</li>
+        <li>On-chain certified reduction proofs — directly importable into ESG annual report frameworks.</li>
+      </ul>`
+    },
+    business: {
+      title: 'Business Extensions',
+      content: `<ul class="nav-modal-list">
+        <li><strong>Retail:</strong> Traceable carbon-footprint pour-over gift boxes — corporate amenities &amp; hotel boutique.</li>
+        <li><strong>MICE:</strong> Zero-carbon coffee breaks + Carbon Contribution Certificates for corporate clients.</li>
+        <li><strong>Standards:</strong> Co-publish the "Hotel In-House Bio-Carbon Accounting Guidelines."</li>
+      </ul>`
+    },
+    tech: {
+      title: 'Technology Highlights',
+      content: `<ul class="nav-modal-list">
+        <li>World-first aeroponic flow cultivation system — 95%+ water efficiency, zero wastewater.</li>
+        <li>Fully closed loop, optimized growth spectrum, consistent premium coffee cherry yield.</li>
+        <li>Modular &amp; silent — zero horticultural expertise required.</li>
+        <li>Wi-Fi/Bluetooth IoT port — real-time ESG KPI streaming.</li>
+      </ul>`
+    }
+  };
+
+  // Nav modal
+  const navModal = document.getElementById('navModal');
+  const navModalContent = document.getElementById('navModalContent');
+  document.querySelectorAll('.nav-links a[data-modal]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      const key = link.getAttribute('data-modal');
+      const d = modalData[key];
+      if (d) {
+        navModalContent.innerHTML = `<div class="modal-heading">${d.title}</div>${d.content}`;
+        navModal.classList.add('open');
+      }
+    });
+  });
+  document.getElementById('closeNavModal').onclick = () => navModal.classList.remove('open');
+  navModal.addEventListener('click', e => { if (e.target === navModal) navModal.classList.remove('open'); });
+
+  // Contact modal
+  const contactModal = document.getElementById('contactModal');
+  const openContact = () => contactModal.classList.add('open');
+  const closeContact = () => contactModal.classList.remove('open');
+
+  ['openContactModal','openContactModal2','openContactModal3','openContactModal4',
+   'footerContact1','footerContact2','footerContact3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', openContact);
+  });
+
+  document.getElementById('closeContactModal').onclick = closeContact;
+  contactModal.addEventListener('click', e => { if (e.target === contactModal) closeContact(); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      navModal.classList.remove('open');
+      contactModal.classList.remove('open');
+    }
+  });
+
+  // Video thumbnail hover effect
+  const videoBox = document.getElementById('videoBox');
+  if (videoBox) {
+    videoBox.addEventListener('mouseenter', () => {
+      const overlay = videoBox.querySelector('.play-overlay');
+      const btn = videoBox.querySelector('.play-btn');
+      if (overlay) overlay.style.background = 'rgba(0,0,0,0.2)';
+      if (btn) { btn.style.transform = 'scale(1.1)'; btn.style.background = '#fff'; }
+    });
+    videoBox.addEventListener('mouseleave', () => {
+      const overlay = videoBox.querySelector('.play-overlay');
+      const btn = videoBox.querySelector('.play-btn');
+      if (overlay) overlay.style.background = 'rgba(0,0,0,0.35)';
+      if (btn) { btn.style.transform = 'scale(1)'; btn.style.background = 'rgba(255,255,255,0.92)'; }
+    });
+  }
+})();
+
+// Load YouTube iframe on click (avoids Error 153 in local/file:// context)
+function loadYouTube(el) {
+  el.style.cursor = 'default';
+  el.onclick = null;
+  el.innerHTML = '<div class="video-aspect"><iframe src="https://www.youtube-nocookie.com/embed/jMIaC40I5_E?autoplay=1&rel=0&modestbranding=1" title="NAPELL aeroponic coffee cultivation demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"></iframe></div>';
+}
+</script>
 </body>
 </html>

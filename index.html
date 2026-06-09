@@ -32,6 +32,7 @@
   --font-mono: 'JetBrains Mono', monospace;
   --nav-h: 68px;
   --max-w: 1320px;
+  --max-w-content: 900px;
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -64,6 +65,7 @@ body {
   font-family: var(--font-sans);
   font-size: 0.95rem; font-weight: 600; letter-spacing: 0.02em;
   color: var(--ink); text-decoration: none;
+  cursor: pointer;
 }
 
 .nav-brand .sep {
@@ -76,22 +78,135 @@ body {
 }
 
 .nav-links {
-  display: flex; gap: 32px; list-style: none;
+  display: flex; gap: 2px; list-style: none;
 }
 
-.nav-links a {
+.nav-item {
+  position: relative;
+}
+
+.nav-item > a {
   font-size: 0.83rem; font-weight: 500; color: var(--ink-60);
   text-decoration: none; letter-spacing: 0.01em;
-  padding-bottom: 2px;
-  border-bottom: 1.5px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1.5px solid transparent;
+  transition: all 0.2s;
   cursor: pointer;
+  white-space: nowrap;
+  display: flex; align-items: center; gap: 5px;
 }
 
-.nav-links a:hover, .nav-links a.active {
-  color: var(--forest);
-  border-bottom-color: var(--forest);
+.nav-item > a .arrow {
+  display: inline-block;
+  width: 0; height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+  transition: transform 0.2s;
+  margin-top: 1px;
 }
+
+.nav-item > a:hover {
+  color: var(--forest);
+  background: var(--forest-pale);
+}
+
+.nav-item > a.active {
+  color: var(--white);
+  background: var(--forest);
+  border-color: var(--forest);
+}
+
+.nav-item > a.active .arrow {
+  border-top-color: var(--white);
+}
+
+/* Dropdown menu */
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: var(--white);
+  border: 1px solid var(--ink-10);
+  border-radius: var(--radius-md);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
+  min-width: 200px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  visibility: hidden;
+  transform-origin: top center;
+  transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+  z-index: 1001;
+}
+
+.nav-item:hover .nav-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(8px);
+}
+
+.nav-dropdown a {
+  display: block;
+  font-size: 0.82rem; font-weight: 500; color: var(--ink-60);
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.nav-dropdown a:hover {
+  color: var(--forest);
+  background: var(--forest-pale);
+}
+
+.nav-dropdown a.active {
+  color: var(--white);
+  background: var(--forest);
+}
+
+/* Mobile nav */
+.nav-hamburger {
+  display: none;
+  background: none; border: none;
+  width: 36px; height: 36px;
+  align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+  transition: background 0.2s;
+}
+.nav-hamburger:hover { background: var(--ink-10); }
+.nav-hamburger svg { width: 20px; height: 20px; }
+
+.mobile-nav-panel {
+  display: none;
+  position: fixed; top: var(--nav-h); left: 0; width: 100%;
+  background: rgba(255,255,255,0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--ink-10);
+  padding: 16px 24px;
+  z-index: 999;
+  flex-direction: column; gap: 4px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.08);
+}
+.mobile-nav-panel.open { display: flex; }
+.mobile-nav-panel a {
+  font-size: 0.9rem; font-weight: 500; color: var(--ink-60);
+  text-decoration: none; padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s;
+  cursor: pointer;
+}
+.mobile-nav-panel a:hover { color: var(--forest); background: var(--forest-pale); }
+.mobile-nav-panel a.active { color: var(--white); background: var(--forest); }
 
 .nav-actions { display: flex; align-items: center; gap: 12px; }
 
@@ -118,6 +233,7 @@ body {
 /* ─── LAYOUT ─── */
 .page { padding-top: var(--nav-h); }
 .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 40px; }
+.wrap-content { max-width: var(--max-w-content); margin: 0 auto; padding: 0 40px; }
 
 section { padding: 96px 0; }
 section + section { border-top: 1px solid var(--ink-10); }
@@ -148,6 +264,69 @@ h2 {
   line-height: 1.2; font-weight: 400; color: var(--ink);
 }
 
+h3 {
+  font-size: 1.05rem; font-weight: 600; color: var(--ink);
+  margin: 32px 0 12px;
+}
+
+p {
+  font-size: 0.95rem; color: var(--ink-60);
+  line-height: 1.8; margin-bottom: 16px;
+}
+
+ul, ol { padding-left: 20px; margin-bottom: 20px; }
+li { font-size: 0.93rem; color: var(--ink-60); line-height: 1.8; margin-bottom: 8px; }
+
+/* ─── PAGE SECTIONS ─── */
+.page-section {
+  display: none;
+}
+.page-section.active {
+  display: block;
+}
+
+/* Content page styles */
+.content-section {
+  padding: 64px 0;
+}
+.content-section + .content-section {
+  border-top: 1px solid var(--ink-10);
+}
+.hero-section {
+  padding: 120px 0 64px;
+  border-bottom: 1px solid var(--ink-10);
+}
+.hero-label {
+  font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--forest); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.hero-label::before {
+  content: ''; display: block;
+  width: 20px; height: 1.5px; background: var(--forest);
+}
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.15; font-weight: 400;
+  color: var(--ink); margin-bottom: 20px;
+}
+.hero-sub {
+  font-size: 1.05rem; color: var(--ink-60);
+  max-width: 640px; line-height: 1.7;
+}
+.section-num {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--gold); font-weight: 500; margin-bottom: 8px;
+}
+.effective-date {
+  font-family: var(--font-mono); font-size: 0.82rem;
+  color: var(--gold); background: var(--forest-pale);
+  display: inline-block; padding: 4px 12px;
+  border-radius: 20px; margin-bottom: 24px;
+}
+
 /* ─── HERO ─── */
 .hero {
   min-height: calc(100vh - var(--nav-h));
@@ -176,7 +355,7 @@ h2 {
   width: 24px; height: 1.5px; background: var(--gold);
 }
 
-.hero-title {
+.hero-title-custom {
   font-family: var(--font-serif);
   font-size: clamp(2.6rem, 5vw, 4.4rem);
   line-height: 1.1;
@@ -186,7 +365,7 @@ h2 {
   margin: 32px 0 24px;
 }
 
-.hero-title em {
+.hero-title-custom em {
   font-style: italic;
   color: var(--gold-lt);
 }
@@ -555,6 +734,93 @@ h2 {
   text-transform: uppercase; letter-spacing: 0.1em;
 }
 
+/* ─── CODE BLOCKS ─── */
+.code-block {
+  background: var(--ink);
+  color: rgba(255,255,255,0.8);
+  padding: 20px 24px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.8;
+  overflow-x: auto;
+  margin: 20px 0;
+  white-space: pre;
+}
+
+.inline-code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--surface);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--forest);
+}
+
+/* ─── TABLES ─── */
+.table-wrap { overflow-x: auto; margin: 20px 0; }
+table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+th { background: var(--surface); color: var(--ink); font-weight: 600; text-align: left; padding: 10px 16px; border-bottom: 2px solid var(--ink-10); }
+td { padding: 10px 16px; border-bottom: 1px solid var(--ink-10); color: var(--ink-60); }
+tr:last-child td { border-bottom: none; }
+
+/* ─── SPECIAL BOXES ─── */
+.highlight-box {
+  background: var(--forest-pale);
+  border-left: 3px solid var(--forest);
+  padding: 20px 24px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin: 24px 0;
+}
+.highlight-box p { color: var(--ink); margin: 0; font-size: 0.93rem; }
+
+.formula-box {
+  background: var(--surface);
+  border: 1px solid var(--ink-10);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  text-align: center;
+  margin: 24px 0;
+}
+.formula { font-family: var(--font-mono); font-size: 1.1rem; color: var(--ink); }
+
+.contact-box {
+  background: var(--surface);
+  border: 1px solid var(--ink-10);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  margin: 20px 0;
+}
+.contact-box p { margin: 0; font-size: 0.9rem; }
+
+.ref-table { overflow-x: auto; margin: 24px 0; }
+.ref-table table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.ref-table th { background: var(--surface); color: var(--ink); font-weight: 600; text-align: left; padding: 10px 16px; border-bottom: 2px solid var(--ink-10); }
+.ref-table td { padding: 10px 16px; border-bottom: 1px solid var(--ink-10); color: var(--ink-60); }
+.ref-table tr:last-child td { border-bottom: none; }
+
+/* ─── SPEC GRID ─── */
+.spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+.spec-card { background: var(--surface); border: 1px solid var(--ink-10); border-radius: var(--radius-md); padding: 20px 24px; }
+.spec-card h4 { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.spec-card p { font-size: 0.82rem; color: var(--ink-60); margin: 0; }
+
+.diagram-box {
+  background: var(--surface);
+  border: 1px solid var(--ink-10);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  margin: 24px 0;
+  text-align: center;
+}
+
+/* ─── BADGES ─── */
+.badge { display: inline-block; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 8px; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
+.badge-get { background: #e8f2ec; color: #1a4a35; }
+.badge-post { background: #fff3e0; color: #8a5a00; }
+.badge-put { background: #e0f0ff; color: #1a4a8a; }
+.badge-delete { background: #ffe8e8; color: #8a1a1a; }
+
 /* ─── FOOTER ─── */
 .footer {
   background: #0a0d12;
@@ -596,6 +862,7 @@ h2 {
 .footer-col ul li a {
   font-size: 0.83rem; color: rgba(255,255,255,0.45);
   text-decoration: none; transition: color 0.2s;
+  cursor: pointer;
 }
 .footer-col ul li a:hover { color: var(--white); }
 
@@ -725,6 +992,35 @@ h2 {
 
 .nav-modal-list li strong { color: var(--forest); }
 
+/* ─── BACK TO TOP ─── */
+.back-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  background: var(--forest);
+  color: var(--white);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 900;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.back-to-top.visible {
+  opacity: 1;
+}
+.back-to-top:hover {
+  transform: translateY(-2px);
+  background: var(--forest-lt);
+}
+
 /* ─── RESPONSIVE ─── */
 @media (max-width: 1024px) {
   .hero { grid-template-columns: 1fr; }
@@ -733,12 +1029,17 @@ h2 {
   .products-grid { grid-template-columns: repeat(2, 1fr); }
   .tech-inner { grid-template-columns: 1fr; gap: 48px; }
   .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .nav-links { gap: 4px; }
+  .nav-links a { padding: 6px 10px; font-size: 0.78rem; }
 }
 
 @media (max-width: 768px) {
   .nav { padding: 0 20px; }
   .nav-links { display: none; }
-  .wrap { padding: 0 20px; }
+  .nav-hamburger { display: flex; }
+  .nav-actions { gap: 8px; }
+  .nav-actions .btn-outline { display: none; }
+  .wrap, .wrap-content { padding: 0 20px; }
   section { padding: 64px 0; }
   .hero-left { padding: 48px 20px; }
   .hero-right { padding: 32px 20px; }
@@ -752,6 +1053,8 @@ h2 {
   .footer-top { grid-template-columns: 1fr; gap: 24px; }
   .footer { padding: 48px 20px 24px; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
+  .spec-grid { grid-template-columns: 1fr; }
+  .hero-section, .hero-section.content-page { padding: 96px 0 48px; }
 }
 </style>
 </head>
@@ -759,268 +1062,1287 @@ h2 {
 
 <!-- NAV -->
 <nav class="nav">
-  <a class="nav-brand" href="#">
+  <a class="nav-brand" onclick="showSection('home')">
     NAPELL
     <span class="sep"></span>
     <span class="partner">Regal Hotel Group</span>
   </a>
   <ul class="nav-links">
-    <li><a class="active" data-modal="dashboard">Dashboard</a></li>
-    <li><a data-modal="experience">Guest Experience</a></li>
-    <li><a data-modal="esg">ESG Data</a></li>
-    <li><a data-modal="business">Business</a></li>
-    <li><a data-modal="tech">Technology</a></li>
+    <!-- Home -->
+    <li class="nav-item">
+      <a class="active" data-section="home" onclick="showSection('home')">Home <span class="arrow"></span></a>
+      <div class="nav-dropdown">
+        <a class="active" data-section="home" onclick="showSection('home')">Overview</a>
+        <a data-section="home" onclick="scrollToElement('kpi-section')">ESG KPIs</a>
+        <a data-section="home" onclick="scrollToElement('video-section')">System Demo</a>
+        <a data-section="home" onclick="scrollToElement('products-section')">ESG Ecosystem</a>
+        <a data-section="home" onclick="scrollToElement('esg-section')">ESG Data Cards</a>
+        <a data-section="home" onclick="scrollToElement('tech-section')">Technology</a>
+      </div>
+    </li>
+    <!-- Documentation (dropdown) -->
+    <li class="nav-item">
+      <a data-section="whitepaper" onclick="showSection('whitepaper')">Documentation <span class="arrow"></span></a>
+      <div class="nav-dropdown">
+        <a data-section="whitepaper" onclick="showSection('whitepaper')">Whitepaper</a>
+        <a data-section="api-docs" onclick="showSection('api-docs')">API Docs</a>
+        <a data-section="methodology" onclick="showSection('methodology')">Methodology</a>
+      </div>
+    </li>
+    <!-- Legal (dropdown) -->
+    <li class="nav-item">
+      <a data-section="privacy" onclick="showSection('privacy')">Legal <span class="arrow"></span></a>
+      <div class="nav-dropdown">
+        <a data-section="privacy" onclick="showSection('privacy')">Privacy Policy</a>
+        <a data-section="terms" onclick="showSection('terms')">Terms of Service</a>
+      </div>
+    </li>
   </ul>
   <div class="nav-actions">
     <button class="btn btn-outline" id="openContactModal">Contact Us</button>
     <button class="btn btn-primary" id="openContactModal2">Partner With Us</button>
   </div>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="4" y1="6" x2="20" y2="6"/>
+      <line x1="4" y1="12" x2="20" y2="12"/>
+      <line x1="4" y1="18" x2="20" y2="18"/>
+    </svg>
+  </button>
 </nav>
+
+<!-- Mobile nav panel -->
+<div class="mobile-nav-panel" id="mobileNavPanel">
+  <a class="active" data-section="home" onclick="showSection('home');closeMobileNav()">Home</a>
+  <a data-section="home" onclick="showSection('home');closeMobileNav()">— ESG KPIs</a>
+  <a data-section="home" onclick="showSection('home');closeMobileNav()">— System Demo</a>
+  <a data-section="home" onclick="showSection('home');closeMobileNav()">— ESG Ecosystem</a>
+  <a data-section="home" onclick="showSection('home');closeMobileNav()">— ESG Data Cards</a>
+  <a data-section="home" onclick="showSection('home');closeMobileNav()">— Technology</a>
+  <a data-section="whitepaper" onclick="showSection('whitepaper');closeMobileNav()">Whitepaper</a>
+  <a data-section="api-docs" onclick="showSection('api-docs');closeMobileNav()">API Docs</a>
+  <a data-section="methodology" onclick="showSection('methodology');closeMobileNav()">Methodology</a>
+  <a data-section="privacy" onclick="showSection('privacy');closeMobileNav()">Privacy Policy</a>
+  <a data-section="terms" onclick="showSection('terms');closeMobileNav()">Terms of Service</a>
+</div>
 
 <!-- PAGE -->
 <div class="page">
 
-  <!-- HERO -->
-  <section class="hero" style="padding:0; border-top:none;">
-    <div class="hero-left wrap" style="padding-left:40px; padding-right:40px;">
-      <div>
-        <div class="hero-eyebrow">World's First Zero-Carbon Coffee Hotel</div>
-        <h1 class="hero-title">Every cup<br>is an <em>ESG</em><br>commitment.</h1>
-        <p class="hero-body">NAPELL's aeroponic hydroponic technology transforms Regal Hotel Group into the world's first self-producing zero-carbon coffee hotel — where every guest becomes part of the climate solution.</p>
-      </div>
-      <div class="hero-meta">
-        <div class="hero-meta-item">
-          <span class="hero-meta-label">Addressed to</span>
-          <span class="hero-meta-val">Ms. Lo Bo Man</span>
-        </div>
-        <div class="hero-meta-divider"></div>
-        <div class="hero-meta-item">
-          <span class="hero-meta-label">Date</span>
-          <span class="hero-meta-val" id="currentDate"></span>
-        </div>
-        <div class="hero-meta-divider"></div>
-        <div class="hero-meta-item">
-          <span class="hero-meta-label">From</span>
-          <span class="hero-meta-val">NAPELL BIOTECH</span>
-        </div>
-      </div>
-    </div>
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- HOME SECTION -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="section-home" class="page-section active">
 
-    <div class="hero-right">
-      <div class="hero-kpi-grid">
-        <div class="kpi-card">
-          <div class="kpi-label">Water Savings</div>
-          <div class="kpi-value green" id="waterSavings">—</div>
-          <div class="kpi-unit">vs. conventional</div>
-          <span class="kpi-trend up">↑ Live</span>
+    <!-- HERO -->
+    <section class="hero" style="padding:0; border-top:none;">
+      <div class="hero-left wrap" style="padding-left:40px; padding-right:40px;">
+        <div>
+          <div class="hero-eyebrow">World's First Zero-Carbon Coffee Hotel</div>
+          <h1 class="hero-title-custom">Every cup<br>is an <em>ESG</em><br>commitment.</h1>
+          <p class="hero-body">NAPELL's aeroponic hydroponic technology transforms Regal Hotel Group into the world's first self-producing zero-carbon coffee hotel — where every guest becomes part of the climate solution.</p>
         </div>
-        <div class="kpi-card">
-          <div class="kpi-label">CO₂ per Cup</div>
-          <div class="kpi-value navy" id="carbonPerCup">—</div>
-          <div class="kpi-unit">kg CO₂ reduced</div>
-          <span class="kpi-trend up">Verified</span>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Guest Engagement</div>
-          <div class="kpi-value green" id="guestEngagement">—</div>
-          <div class="kpi-unit">QR scan rate</div>
-          <span class="kpi-trend up">↑ YoY</span>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">Carbon Captured</div>
-          <div class="kpi-value navy" id="treeCarbon">—</div>
-          <div class="kpi-unit">kg simulated</div>
-          <span class="kpi-trend up">IoT</span>
-        </div>
-      </div>
-
-      <div class="hero-chart-wrap">
-        <div class="chart-head">
-          <span class="chart-title">Carbon Reduction Trend</span>
-          <div class="chart-legend">
-            <span class="legend-dot"><span style="background:#1a4a35;"></span>Carbon offset</span>
-            <span class="legend-dot"><span style="background:#c8a84b;"></span>Guest engagement</span>
+        <div class="hero-meta">
+          <div class="hero-meta-item">
+            <span class="hero-meta-label">Addressed to</span>
+            <span class="hero-meta-val">Ms. Lo Poman</span>
+          </div>
+          <div class="hero-meta-divider"></div>
+          <div class="hero-meta-item">
+            <span class="hero-meta-label">Date</span>
+            <span class="hero-meta-val" id="currentDate"></span>
+          </div>
+          <div class="hero-meta-divider"></div>
+          <div class="hero-meta-item">
+            <span class="hero-meta-label">From</span>
+            <span class="hero-meta-val">NAPELL BIOTECH</span>
           </div>
         </div>
-        <div style="position:relative;height:140px;">
-          <canvas id="heroChart" role="img" aria-label="Carbon reduction and guest engagement trend chart">Carbon reduction trend data</canvas>
-        </div>
       </div>
-    </div>
-  </section>
 
-  <!-- VIDEO -->
-  <div class="video-strip">
-    <div class="video-inner">
-      <div class="video-copy">
-        <div class="section-label">System Demo</div>
-        <h2>See the machine<br>in action.</h2>
-        <p>Our aeroponic cultivation system runs silently, requires zero horticultural expertise, and generates real-time ESG data — automatically logged and audit-ready for your annual report.</p>
-        <div style="display:flex; gap:12px; margin-top:32px;">
-          <button class="btn btn-primary" id="openContactModal3">Schedule a Demo</button>
+      <div class="hero-right" id="kpi-section">
+        <div class="hero-kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Water Savings</div>
+            <div class="kpi-value green" id="waterSavings">—</div>
+            <div class="kpi-unit">vs. conventional</div>
+            <span class="kpi-trend up">↑ Live</span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">CO₂ per Cup</div>
+            <div class="kpi-value navy" id="carbonPerCup">—</div>
+            <div class="kpi-unit">kg CO₂ reduced</div>
+            <span class="kpi-trend up">Verified</span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Guest Engagement</div>
+            <div class="kpi-value green" id="guestEngagement">—</div>
+            <div class="kpi-unit">QR scan rate</div>
+            <span class="kpi-trend up">↑ YoY</span>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Carbon Captured</div>
+            <div class="kpi-value navy" id="treeCarbon">—</div>
+            <div class="kpi-unit">kg simulated</div>
+            <span class="kpi-trend up">IoT</span>
+          </div>
+        </div>
+
+        <div class="hero-chart-wrap">
+          <div class="chart-head">
+            <span class="chart-title">Carbon Reduction Trend</span>
+            <div class="chart-legend">
+              <span class="legend-dot"><span style="background:#1a4a35;"></span>Carbon offset</span>
+              <span class="legend-dot"><span style="background:#c8a84b;"></span>Guest engagement</span>
+            </div>
+          </div>
+          <div style="position:relative;height:140px;">
+            <canvas id="heroChart" role="img" aria-label="Carbon reduction and guest engagement trend chart">Carbon reduction trend data</canvas>
+          </div>
         </div>
       </div>
-      <div class="video-frame" id="videoBox" style="cursor:pointer;" onclick="loadYouTube(this)">
-        <div class="video-aspect">
-          <img
-            src="https://img.youtube.com/vi/jMIaC40I5_E/maxresdefault.jpg"
-            alt="NAPELL aeroponic coffee cultivation demo"
-            style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"
-            onerror="this.src='https://img.youtube.com/vi/jMIaC40I5_E/hqdefault.jpg'"
-          >
-          <!-- Play button overlay -->
-          <div style="
-            position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-            background:rgba(0,0,0,0.35);transition:background 0.2s;
-          " class="play-overlay">
-            <div style="
-              width:64px;height:64px;border-radius:50%;
-              background:rgba(255,255,255,0.92);
-              display:flex;align-items:center;justify-content:center;
-              box-shadow:0 8px 32px rgba(0,0,0,0.5);
-              transition:transform 0.2s,background 0.2s;
-            " class="play-btn">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <polygon points="8,5 19,12 8,19" fill="#1a4a35"/>
-              </svg>
+    </section>
+
+    <!-- VIDEO -->
+    <div class="video-strip" id="video-section">
+      <div class="video-inner">
+        <div class="video-copy">
+          <div class="section-label">System Demo</div>
+          <h2>See the machine<br>in action.</h2>
+          <p>Our aeroponic cultivation system runs silently, requires zero horticultural expertise, and generates real-time ESG data — automatically logged and audit-ready for your annual report.</p>
+          <div style="display:flex; gap:12px; margin-top:32px;">
+            <button class="btn btn-primary" id="openContactModal3">Schedule a Demo</button>
+          </div>
+        </div>
+        <div class="video-frame" id="videoBox" style="cursor:pointer;" onclick="loadYouTube(this)">
+          <div class="video-aspect">
+            <img
+              src="https://img.youtube.com/vi/jMIaC40I5_E/maxresdefault.jpg"
+              alt="NAPELL aeroponic coffee cultivation demo"
+              style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;"
+              onerror="this.src='https://img.youtube.com/vi/jMIaC40I5_E/hqdefault.jpg'"
+            >
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.35);transition:background 0.2s;" class="play-overlay">
+              <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.92);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(0,0,0,0.5);transition:transform 0.2s,background 0.2s;" class="play-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <polygon points="8,5 19,12 8,19" fill="#1a4a35"/>
+                </svg>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- PRODUCTS -->
-  <section class="products-section">
-    <div class="wrap">
-      <div class="section-label">Hotel ESG Ecosystem</div>
-      <h2>Four pillars.<br>One carbon-zero story.</h2>
-      <div class="products-grid">
-        <div class="product-tile">
-          <div class="product-tile-icon">🛍️</div>
-          <div class="product-tile-name">Low-Carbon Retail</div>
-          <div class="product-tile-desc">Traceable carbon-footprint pour-over gift boxes — corporate client amenities and hotel boutique. Take the Regal Hotel Group ESG story home.</div>
-          <span class="product-tile-tag">Revenue stream</span>
+    <!-- PRODUCTS -->
+    <section class="products-section" id="products-section">
+      <div class="wrap">
+        <div class="section-label">Hotel ESG Ecosystem</div>
+        <h2>Four pillars.<br>One carbon-zero story.</h2>
+        <div class="products-grid">
+          <div class="product-tile">
+            <div class="product-tile-icon">🛍️</div>
+            <div class="product-tile-name">Low-Carbon Retail</div>
+            <div class="product-tile-desc">Traceable carbon-footprint pour-over gift boxes — corporate client amenities and hotel boutique. Take the Regal Hotel Group ESG story home.</div>
+            <span class="product-tile-tag">Revenue stream</span>
+          </div>
+          <div class="product-tile">
+            <div class="product-tile-icon">🏢</div>
+            <div class="product-tile-name">MICE Green Meetings</div>
+            <div class="product-tile-desc">Zero-carbon coffee break stations with issued Carbon Reduction Contribution Certificates — elevating corporate clients' ESG credentials.</div>
+            <span class="product-tile-tag">B2B upsell</span>
+          </div>
+          <div class="product-tile">
+            <div class="product-tile-icon">📋</div>
+            <div class="product-tile-name">Industry Standards</div>
+            <div class="product-tile-desc">Co-publish the "Hotel In-House Bio-Carbon Accounting Guidelines" — moving from practitioner to industry rule-setter.</div>
+            <span class="product-tile-tag">Thought leadership</span>
+          </div>
+          <div class="product-tile">
+            <div class="product-tile-icon">🌳</div>
+            <div class="product-tile-name">Digital Tree Adoption</div>
+            <div class="product-tile-desc">Check in and adopt a dedicated coffee tree. Track live carbon sequestration on room TV or mobile. Receive a Low-Carbon Stay Certificate on departure.</div>
+            <span class="product-tile-tag">Guest engagement</span>
+          </div>
         </div>
-        <div class="product-tile">
-          <div class="product-tile-icon">🏢</div>
-          <div class="product-tile-name">MICE Green Meetings</div>
-          <div class="product-tile-desc">Zero-carbon coffee break stations with issued Carbon Reduction Contribution Certificates — elevating corporate clients' ESG credentials.</div>
-          <span class="product-tile-tag">B2B upsell</span>
+      </div>
+    </section>
+
+    <!-- ESG DATA -->
+    <section class="esg-section" id="esg-section">
+      <div class="wrap">
+        <div class="section-label">Real-Time ESG Intelligence</div>
+        <h2>Data that goes<br>straight into your annual report.</h2>
+        <div class="esg-grid">
+          <div class="esg-card">
+            <div class="esg-card-head">
+              <div class="esg-card-title">In-House Ingredient Rate</div>
+              <span class="esg-card-icon">📊</span>
+            </div>
+            <div class="esg-card-metric">12%</div>
+            <div class="esg-card-desc">Self-produced coffee as a share of total hotel coffee consumption</div>
+            <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:12%;"></div></div>
+          </div>
+          <div class="esg-card">
+            <div class="esg-card-head">
+              <div class="esg-card-title">Biological Carbon Capture</div>
+              <span class="esg-card-icon">🌿</span>
+            </div>
+            <div class="esg-card-metric" id="bioCarbon">18.7 kg</div>
+            <div class="esg-card-desc">Cumulative real-time carbon simulation from IoT cultivation nodes</div>
+            <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:62%;"></div></div>
+          </div>
+          <div class="esg-card">
+            <div class="esg-card-head">
+              <div class="esg-card-title">Food Miles Eliminated</div>
+              <span class="esg-card-icon">🚚</span>
+            </div>
+            <div class="esg-card-metric">2,400 km</div>
+            <div class="esg-card-desc">Compared to standard imported coffee bean transportation routes</div>
+            <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:80%;"></div></div>
+          </div>
+          <div class="esg-card">
+            <div class="esg-card-head">
+              <div class="esg-card-title">Blockchain Certified Batches</div>
+              <span class="esg-card-icon">🔗</span>
+            </div>
+            <div class="esg-card-metric">8 batches</div>
+            <div class="esg-card-desc">Auditable on-chain carbon reduction proofs — direct ESG report input</div>
+            <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:45%;"></div></div>
+          </div>
+          <div class="esg-card">
+            <div class="esg-card-head">
+              <div class="esg-card-title">Zero Wastewater Discharge</div>
+              <span class="esg-card-icon">💧</span>
+            </div>
+            <div class="esg-card-metric">95%+</div>
+            <div class="esg-card-desc">Aeroponic closed-loop system water savings vs. traditional soil cultivation</div>
+            <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:95%;"></div></div>
+          </div>
+          <div class="esg-card">
+            <div class="esg-card-head">
+              <div class="esg-card-title">Guest Participation Rate</div>
+              <span class="esg-card-icon">📱</span>
+            </div>
+            <div class="esg-card-metric">84%</div>
+            <div class="esg-card-desc">QR scan interaction rate with social media sharing conversion</div>
+            <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:84%;"></div></div>
+          </div>
         </div>
-        <div class="product-tile">
-          <div class="product-tile-icon">📋</div>
-          <div class="product-tile-name">Industry Standards</div>
-          <div class="product-tile-desc">Co-publish the "Hotel In-House Bio-Carbon Accounting Guidelines" — moving from practitioner to industry rule-setter.</div>
-          <span class="product-tile-tag">Thought leadership</span>
+      </div>
+    </section>
+
+    <!-- TECH + CTA -->
+    <div class="tech-section" id="tech-section">
+      <div class="tech-inner">
+        <div class="tech-left">
+          <div class="section-label">Technology Specs</div>
+          <h2>Built for hospitality.<br>Engineered for ESG.</h2>
+          <p>Every unit operates as an IoT node, continuously streaming water usage, energy consumption, and carbon sequestration data — all audit-ready, all in real time.</p>
+          <ul class="tech-specs">
+            <li><span class="check">✓</span> 95%+ water efficiency</li>
+            <li><span class="check">✓</span> Optimized growth spectrum</li>
+            <li><span class="check">✓</span> Modular, silent operation</li>
+            <li><span class="check">✓</span> Wi-Fi / Bluetooth IoT</li>
+            <li><span class="check">✓</span> Live energy &amp; carbon data</li>
+            <li><span class="check">✓</span> Zero horticultural expertise</li>
+          </ul>
         </div>
-        <div class="product-tile">
-          <div class="product-tile-icon">🌳</div>
-          <div class="product-tile-name">Digital Tree Adoption</div>
-          <div class="product-tile-desc">Check in and adopt a dedicated coffee tree. Track live carbon sequestration on room TV or mobile. Receive a Low-Carbon Stay Certificate on departure.</div>
-          <span class="product-tile-tag">Guest engagement</span>
+        <div class="tech-right">
+          <div class="vision-headline">
+            <em>2 billion people</em> can<br>act on carbon daily.
+          </div>
+          <p class="vision-sub">NAPELL's mission: make zero-carbon living effortless — starting with the morning cup.</p>
+          <div class="vision-stat">
+            <div class="vision-stat-num">2B+</div>
+            <div class="vision-stat-label">Daily coffee consumers worldwide</div>
+          </div>
+          <div class="vision-stat">
+            <div class="vision-stat-num">0 kg</div>
+            <div class="vision-stat-label">Net carbon target per cup</div>
+          </div>
+          <button class="btn btn-primary" style="margin-top:28px;width:100%;justify-content:center;" id="openContactModal4">Begin the Partnership</button>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- ESG DATA -->
-  <section class="esg-section">
-    <div class="wrap">
-      <div class="section-label">Real-Time ESG Intelligence</div>
-      <h2>Data that goes<br>straight into your annual report.</h2>
-      <div class="esg-grid">
-        <div class="esg-card">
-          <div class="esg-card-head">
-            <div class="esg-card-title">In-House Ingredient Rate</div>
-            <span class="esg-card-icon">📊</span>
-          </div>
-          <div class="esg-card-metric">12%</div>
-          <div class="esg-card-desc">Self-produced coffee as a share of total hotel coffee consumption</div>
-          <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:12%;"></div></div>
+  </div><!-- /section-home -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- WHITEPAPER SECTION -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="section-whitepaper" class="page-section">
+    <div class="hero-section content-page">
+      <div class="wrap-content">
+        <div class="hero-label">Technical Documentation</div>
+        <h1 class="hero-title">Technical<br><em style="font-style:italic;color:var(--gold-lt);">Whitepaper</em></h1>
+        <p class="hero-sub">A comprehensive technical overview of NAPELL's aeroponic hydroponic cultivation system, IoT data architecture, and ESG quantification methodology.</p>
+      </div>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">01</div>
+        <h2>System Architecture</h2>
+        <p>NAPELL's aeroponic cultivation unit is a fully enclosed, modular system designed specifically for hospitality environments. The system operates on a closed-loop water cycle, delivering atomized nutrient solution directly to root zones via high-frequency misting nozzles.</p>
+        
+        <div class="diagram-box" style="color:var(--ink-30); font-size:0.85rem;">
+          <svg viewBox="0 0 600 200" width="600" height="200" xmlns="http://www.w3.org/2000/svg">
+            <rect x="40" y="80" width="80" height="80" rx="8" fill="#e8f2ec" stroke="#1a4a35" stroke-width="1.5"/>
+            <text x="80" y="125" text-anchor="middle" font-size="11" fill="#1a4a35" font-weight="600">Water Tank</text>
+            <rect x="180" y="90" width="60" height="60" rx="6" fill="#fff" stroke="#1a4a35" stroke-width="1.5"/>
+            <text x="210" y="125" text-anchor="middle" font-size="11" fill="#1a4a35" font-weight="600">Pump</text>
+            <rect x="320" y="50" width="100" height="140" rx="10" fill="#f7f7f5" stroke="#1a4a35" stroke-width="1.5" stroke-dasharray="4 2"/>
+            <text x="370" y="125" text-anchor="middle" font-size="11" fill="#1a4a35" font-weight="600">Growth</text>
+            <text x="370" y="140" text-anchor="middle" font-size="11" fill="#1a4a35" font-weight="600">Chamber</text>
+            <rect x="470" y="70" width="90" height="30" rx="4" fill="#1a4a35"/>
+            <text x="515" y="90" text-anchor="middle" font-size="10" fill="#fff">LED Array</text>
+            <path d="M120 120 L180 120" stroke="#1a4a35" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+            <path d="M240 120 L320 120" stroke="#1a4a35" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+            <path d="M420 120 L470 120" stroke="#1a4a35" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+            <path d="M420 160 L150 160 L150 140 L120 140" stroke="#1a4a35" stroke-width="1" fill="none" stroke-dasharray="3 2" marker-end="url(#arrow-light)"/>
+            <text x="250" y="180" text-anchor="middle" font-size="9" fill="#5f6b7a">Closed-loop recirculation</text>
+            <defs>
+              <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#1a4a35"/></marker>
+              <marker id="arrow-light" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#5f6b7a"/></marker>
+            </defs>
+          </svg>
         </div>
-        <div class="esg-card">
-          <div class="esg-card-head">
-            <div class="esg-card-title">Biological Carbon Capture</div>
-            <span class="esg-card-icon">🌿</span>
+
+        <h3>1.1 Aeroponic Mist Generation</h3>
+        <p>The system uses high-pressure piezoelectric transducers operating at 2.4 MHz to generate a homogeneous mist with droplet diameter of 5–20 μm. This droplet size maximizes surface area for nutrient absorption while minimizing water consumption.</p>
+
+        <h3>1.2 Closed-Loop Water Management</h3>
+        <p>Unabsorbed mist condenses on chamber walls and returns to the reservoir via gravity-fed collection channels. The system maintains &gt;95% water use efficiency compared to traditional soil-based cultivation (≈30–40%).</p>
+
+        <div class="spec-grid">
+          <div class="spec-card">
+            <h4>Water Consumption</h4>
+            <p>0.8 L/day per unit (vs. 15–20 L/day for soil cultivation)</p>
           </div>
-          <div class="esg-card-metric" id="bioCarbon">18.7 kg</div>
-          <div class="esg-card-desc">Cumulative real-time carbon simulation from IoT cultivation nodes</div>
-          <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:62%;"></div></div>
-        </div>
-        <div class="esg-card">
-          <div class="esg-card-head">
-            <div class="esg-card-title">Food Miles Eliminated</div>
-            <span class="esg-card-icon">🚚</span>
+          <div class="spec-card">
+            <h4>Cycle Time</h4>
+            <p>7–9 days from flower to harvest-ready cherry (accelerated by optimized spectrum)</p>
           </div>
-          <div class="esg-card-metric">2,400 km</div>
-          <div class="esg-card-desc">Compared to standard imported coffee bean transportation routes</div>
-          <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:80%;"></div></div>
-        </div>
-        <div class="esg-card">
-          <div class="esg-card-head">
-            <div class="esg-card-title">Blockchain Certified Batches</div>
-            <span class="esg-card-icon">🔗</span>
+          <div class="spec-card">
+            <h4>Operating Noise</h4>
+            <p>&lt;38 dB(A) at 1 m — suitable for guest-room-adjacent installation</p>
           </div>
-          <div class="esg-card-metric">8 batches</div>
-          <div class="esg-card-desc">Auditable on-chain carbon reduction proofs — direct ESG report input</div>
-          <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:45%;"></div></div>
-        </div>
-        <div class="esg-card">
-          <div class="esg-card-head">
-            <div class="esg-card-title">Zero Wastewater Discharge</div>
-            <span class="esg-card-icon">💧</span>
+          <div class="spec-card">
+            <h4>Power Draw</h4>
+            <p>120 W average (LED 80 W + pump 25 W + control 15 W)</p>
           </div>
-          <div class="esg-card-metric">95%+</div>
-          <div class="esg-card-desc">Aeroponic closed-loop system water savings vs. traditional soil cultivation</div>
-          <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:95%;"></div></div>
-        </div>
-        <div class="esg-card">
-          <div class="esg-card-head">
-            <div class="esg-card-title">Guest Participation Rate</div>
-            <span class="esg-card-icon">📱</span>
-          </div>
-          <div class="esg-card-metric">84%</div>
-          <div class="esg-card-desc">QR scan interaction rate with social media sharing conversion</div>
-          <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:84%;"></div></div>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- TECH + CTA -->
-  <div class="tech-section">
-    <div class="tech-inner">
-      <div class="tech-left">
-        <div class="section-label">Technology Specs</div>
-        <h2>Built for hospitality.<br>Engineered for ESG.</h2>
-        <p>Every unit operates as an IoT node, continuously streaming water usage, energy consumption, and carbon sequestration data — all audit-ready, all in real time.</p>
-        <ul class="tech-specs">
-          <li><span class="check">✓</span> 95%+ water efficiency</li>
-          <li><span class="check">✓</span> Optimized growth spectrum</li>
-          <li><span class="check">✓</span> Modular, silent operation</li>
-          <li><span class="check">✓</span> Wi-Fi / Bluetooth IoT</li>
-          <li><span class="check">✓</span> Live energy &amp; carbon data</li>
-          <li><span class="check">✓</span> Zero horticultural expertise</li>
+    <!-- Section 2 -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">02</div>
+        <h2>LED Spectrum Optimization</h2>
+        <p>The integrated LED array delivers a proprietary full-spectrum output optimized for Coffea arabica physiological requirements. The spectrum is dynamically adjusted across growth phases using a 6-channel programmable driver.</p>
+
+        <div class="code-block">// Spectrum configuration (JSON)
+{
+  "phase": "cherry_development",
+  "channels": {
+    "deep_blue_450nm":  22,
+    "blue_470nm":         14,
+    "green_530nm":         8,
+    "red_660nm":          38,
+    "far_red_730nm":      10,
+    "warm_white_3000K":   18
+  },
+  "ppfd_target": "280 ± 20 μmol/m²/s",
+  "dli_target": "16.8 mol/m²/d",
+  "photoperiod": "16h light / 8h dark"
+}</div>
+
+        <h3>2.1 Photosynthetic Photon Flux Density (PPFD)</h3>
+        <p>The system maintains a uniform PPFD of 260–300 μmol/m²/s across the canopy, measured at plant surface level. Daily Light Integral (DLI) is controlled at 15–18 mol/m²/d, within the optimal range for C. arabica.</p>
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">03</div>
+        <h2>IoT Data Architecture</h2>
+        <p>Each cultivation unit functions as an independent IoT node, streaming telemetry data via Wi-Fi (802.11 b/g/n) or Bluetooth Low Energy (BLE 5.2). Data is transmitted to the NAPELL ESG Intelligence Platform at 60-second intervals.</p>
+
+        <h3>3.1 Data Payload Schema</h3>
+        <div class="code-block">POST /api/v1/telemetry HTTP/1.1
+Content-Type: application/json
+X-Device-ID: NPL-REGAL-0042
+X-API-Key: [64-hex-char-key]
+
+{
+  "ts": 1717238400,
+  "water_tank_level_pct": 87.3,
+  "water_consumed_ml": 320,
+  "energy_draw_w": 118,
+  "mist_duty_cycle_pct": 42,
+  "led_ppfd_est": 275,
+  "ambient_temp_c": 23.1,
+  "ambient_rh_pct": 68,
+  "est_carbon_captured_g": 12.7
+}</div>
+
+        <h3>3.2 Carbon Sequestration Estimation</h3>
+        <p>Carbon capture is estimated using the dry biomass accumulation method. Each gram of dry coffee plant biomass sequesters approximately 0.43 g CO₂ through photosynthetic fixation. The system uses continuous biomass accumulation modeling based on:</p>
+        <ul>
+          <li>Leaf area index (LAI) progression — measured via onboard RGB vision</li>
+          <li>Stem diameter growth rate — measured via capacitive sensor</li>
+          <li>Chlorophyll fluorescence (Fv/Fm) — indicator of photosynthetic efficiency</li>
         </ul>
-      </div>
-      <div class="tech-right">
-        <div class="vision-headline">
-          <em>2 billion people</em> can<br>act on carbon daily.
-        </div>
-        <p class="vision-sub">NAPELL's mission: make zero-carbon living effortless — starting with the morning cup.</p>
-        <div class="vision-stat">
-          <div class="vision-stat-num">2B+</div>
-          <div class="vision-stat-label">Daily coffee consumers worldwide</div>
-        </div>
-        <div class="vision-stat">
-          <div class="vision-stat-num">0 kg</div>
-          <div class="vision-stat-label">Net carbon target per cup</div>
-        </div>
-        <button class="btn btn-primary" style="margin-top:28px;width:100%;justify-content:center;" id="openContactModal4">Begin the Partnership</button>
+        <p>The estimated uncertainty of the carbon capture model is ±12% (95% CI), validated against destructively sampled dry biomass measurements (n=40).</p>
       </div>
     </div>
-  </div>
+
+    <!-- Section 4 -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">04</div>
+        <h2>Water Use Efficiency Analysis</h2>
+        <p>A side-by-side controlled study (n=12 units, 90-day period) compared NAPELL aeroponic system vs. traditional soil cultivation under identical environmental conditions.</p>
+
+        <div class="spec-grid">
+          <div class="spec-card" style="border-color:var(--forest);">
+            <h4 style="color:var(--forest);">NAPELL Aeroponic</h4>
+            <p><strong>Water per cup:</strong> 0.18 L<br>
+            <strong>Transpiration loss:</strong> &lt;3%<br>
+            <strong>Nutrient use efficiency:</strong> 94%</p>
+          </div>
+          <div class="spec-card" style="border-color:#ccc;">
+            <h4 style="color:#888;">Traditional Soil</h4>
+            <p><strong>Water per cup:</strong> 5.2 L<br>
+            <strong>Transpiration loss:</strong> 62%<br>
+            <strong>Nutrient runoff:</strong> 40–60%</p>
+          </div>
+        </div>
+
+        <p><strong>Conclusion:</strong> The NAPELL system achieves a 96.5% reduction in water consumption per cup of coffee produced, with zero nutrient runoff due to closed-loop design.</p>
+      </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">05</div>
+        <h2>Integration & Deployment</h2>
+        <p>For hotel deployment, each unit requires only a standard grounded power outlet (IEC 60320 C13) and Wi-Fi connectivity (2.4 GHz or 5 GHz). No plumbing, drainage, or specialized HVAC modifications are required.</p>
+
+        <h3>5.1 Footprint & Clearances</h3>
+        <div class="spec-grid">
+          <div class="spec-card"><h4>Unit Dimensions</h4><p>480 × 480 × 1,820 mm (W × D × H)</p></div>
+          <div class="spec-card"><h4>Required Clearance</h4><p>100 mm rear, 300 mm top (air intake/exhaust)</p></div>
+          <div class="spec-card"><h4>Weight (dry)</h4><p>38 kg (58 kg when fully watered)</p></div>
+          <div class="spec-card"><h4>Certifications</h4><p>CE, FCC Part 15 Class B, RoHS 3, IPX4 (splash-resistant)</p></div>
+        </div>
+
+        <h3>5.2 Maintenance Schedule</h3>
+        <ol>
+          <li><strong>Weekly:</strong> Visual inspection of misting nozzles (automated alert if blockage detected)</li>
+          <li><strong>Monthly:</strong> Nutrient solution replacement (automated reminder via ESG dashboard)</li>
+          <li><strong>Quarterly:</strong> LED output calibration check (automated, no action required)</li>
+          <li><strong>Annual:</strong> Comprehensive system diagnostic (remote, performed by NAPELL)</li>
+        </ol>
+        <p>No horticultural expertise is required at any stage. The system is designed for zero-touch operation.</p>
+      </div>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">06</div>
+        <h2>ESG Data Output</h2>
+        <p>All telemetry data is automatically aggregated into ESG report-ready formats, compatible with GRI 305 (Emissions), SASB AF-WH (Water & Waste), and TCFD climate-related disclosures.</p>
+
+        <div class="code-block"># Example: Monthly ESG data export (CSV)
+period_start,period_end,water_saved_l,co2_reduced_kg,wastewater_discharged_l,energy_kwh
+2026-01-01,2026-01-31,3840,18.7,0,89.3
+2026-02-01,2026-02-28,3520,17.1,0,82.1
+# ... auto-generated, audit-ready, blockchain-timestamped</div>
+
+        <p>Data integrity is ensured via SHA-256 hashing of each telemetry batch, with the hash recorded on the Hedera Hashgraph public ledger (energy-efficient consusus). This provides tamper-evident verification suitable for third-party ESG audit.</p>
+      </div>
+    </div>
+
+    <div class="content-section" style="background:var(--surface);">
+      <div class="wrap-content">
+        <div class="section-num">Contact</div>
+        <h2>Technical Inquiries</h2>
+        <p>For technical specifications, integration support, or to request the full 42-page whitepaper with appendices, contact our technical team.</p>
+        <p style="font-family:var(--font-mono); font-size:0.95rem; color:var(--ink);">Erik Wong · erik.wong@napell.bio · +852 9318 8252</p>
+      </div>
+    </div>
+  </div><!-- /section-whitepaper -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- API DOCS SECTION -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="section-api-docs" class="page-section">
+    <div class="hero-section content-page">
+      <div class="wrap-content">
+        <div class="hero-label">Developer Documentation</div>
+        <h1 class="hero-title">API<br><em style="font-style:italic;color:var(--gold-lt);">Documentation</em></h1>
+        <p class="hero-sub">RESTful API reference for the NAPELL ESG Intelligence Platform. Authenticate, retrieve telemetry, and export ESG reports programmatically.</p>
+      </div>
+    </div>
+
+    <!-- Authentication -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">01</div>
+        <h2>Authentication</h2>
+        <p>All API requests require an <span class="inline-code">X-API-Key</span> header. API keys are issued per property (hotel) and can be scoped to read-only or read-write.</p>
+
+        <div class="code-block"># Obtain your API key
+curl -X POST https://api.napell.bio/v1/auth/key \
+  -H "Content-Type: application/json" \
+  -d '{
+    "hotel_id": "REGAL-CENTRAL-HKG",
+    "scope": ["read:telemetry", "read:esg"],
+    "expires_at": "2027-06-01T00:00:00Z"
+  }'
+
+# Response
+{
+  "api_key": "npl_live_7f3a9c2e1b4d8f6a0c3e7b9d2a5f1c4",
+  "key_id": "key_8xKq3mPz",
+  "scopes": ["read:telemetry", "read:esg"],
+  "expires_at": "2027-06-01T00:00:00Z"
+}</div>
+
+        <h3>Making Authenticated Requests</h3>
+        <div class="code-block">curl https://api.napell.bio/v1/telemetry/latest \
+  -H "X-API-Key: npl_live_7f3a9c2e1b4d8f6a0c3e7b9d2a5f1c4" \
+  -H "X-Device-ID: NPL-REGAL-0042"</div>
+      </div>
+    </div>
+
+    <!-- Endpoints -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">02</div>
+        <h2>Endpoints</h2>
+
+        <h3>GET /telemetry/latest <span class="badge badge-get">GET</span></h3>
+        <p>Retrieve the most recent telemetry snapshot from a specific device or all devices at a property.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+            <tr><td><span class="inline-code">device_id</span></td><td>string</td><td>No</td><td>If omitted, returns latest for all devices</td></tr>
+            <tr><td><span class="inline-code">hotel_id</span></td><td>string</td><td>Yes</td><td>Your property identifier</td></tr>
+          </table>
+        </div>
+        <div class="code-block"># Response
+{
+  "timestamp": "2026-06-08T04:52:00Z",
+  "devices": [
+    {
+      "device_id": "NPL-REGAL-0042",
+      "water_tank_level_pct": 87.3,
+      "water_consumed_ml": 320,
+      "energy_draw_w": 118,
+      "mist_duty_cycle_pct": 42,
+      "led_ppfd_est": 275,
+      "ambient_temp_c": 23.1,
+      "ambient_rh_pct": 68,
+      "est_carbon_captured_g": 12.7
+    }
+  ],
+  "meta": {
+    "devices_online": 6,
+    "devices_total": 6
+  }
+}</div>
+
+        <h3 style="margin-top:48px;">GET /esg/summary <span class="badge badge-get">GET</span></h3>
+        <p>Retrieve aggregated ESG metrics for a specified time period. Suitable for dashboard integration and automated ESG report generation.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Parameter</th><th>Type</th><th>Required</th><th>Description</th></tr>
+            <tr><td><span class="inline-code">period_start</span></td><td>string (ISO 8601)</td><td>Yes</td><td>Start of reporting period</td></tr>
+            <tr><td><span class="inline-code">period_end</span></td><td>string (ISO 8601)</td><td>Yes</td><td>End of reporting period</td></tr>
+            <tr><td><span class="inline-code">granularity</span></td><td>string</td><td>No</td><td><span class="inline-code">daily</span> | <span class="inline-code">weekly</span> | <span class="inline-code">monthly</span> (default)</td></tr>
+          </table>
+        </div>
+        <div class="code-block"># Request
+curl "https://api.napell.bio/v1/esg/summary?period_start=2026-01-01T00:00:00Z&period_end=2026-06-01T00:00:00Z&granularity=monthly" \
+  -H "X-API-Key: npl_live_..."
+
+# Response
+{
+  "period": { "start": "2026-01-01", "end": "2026-06-01" },
+  "summary": {
+    "water_saved_l": 3840,
+    "water_saved_pct": 96.5,
+    "co2_reduced_kg": 18.7,
+    "wastewater_discharged_l": 0,
+    "energy_consumed_kwh": 89.3,
+    "food_miles_eliminated_km": 2400,
+    "blockchain_batches": 8,
+    "guest_engagement_pct": 84
+  }
+}</div>
+
+        <h3 style="margin-top:48px;">POST /esg/export <span class="badge badge-post">POST</span></h3>
+        <p>Generate and download an ESG report in GRI/SASB-compatible format. Reports are generated asynchronously; a <span class="inline-code">report_id</span> is returned for polling.</p>
+        <div class="code-block"># Request
+curl -X POST https://api.napell.bio/v1/esg/export \
+  -H "X-API-Key: npl_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "period_start": "2026-01-01T00:00:00Z",
+    "period_end": "2026-06-01T00:00:00Z",
+    "format": "gri_csv",
+    "include_blockchain_proofs": true,
+    "webhook_url": "https://regal-hotel.example.com/api/esg-ready"
+  }'
+
+# Response
+{
+  "report_id": "rpt_9aB2cD4eF6g",
+  "status": "processing",
+  "estimated_ready_sec": 45,
+  "poll_url": "https://api.napell.bio/v1/esg/export/rpt_9aB2cD4eF6g"
+}</div>
+      </div>
+    </div>
+
+    <!-- Rate Limits -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">03</div>
+        <h2>Rate Limits & Errors</h2>
+        <p>The API enforces rate limits to ensure fair usage. Limits are applied per <span class="inline-code">hotel_id</span>.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Endpoint Type</th><th>Rate Limit</th><th>Burst</th></tr>
+            <tr><td>GET telemetry/latest</td><td>60 req/min</td><td>10</td></tr>
+            <tr><td>GET esg/*</td><td>30 req/min</td><td>5</td></tr>
+            <tr><td>POST esg/export</td><td>5 req/hour</td><td>1</td></tr>
+          </table>
+        </div>
+
+        <h3>Error Responses</h3>
+        <div class="code-block"># 401 Unauthorized — invalid or missing API key
+{ "error": "unauthorized", "message": "Invalid X-API-Key" }
+
+# 429 Too Many Requests — rate limit exceeded
+{
+  "error": "rate_limited",
+  "message": "Rate limit exceeded. Retry after 23s.",
+  "retry_after": 23
+}
+
+# 400 Bad Request — invalid parameters
+{
+  "error": "invalid_params",
+  "details": {
+    "period_end": "Must be after period_start"
+  }
+}</div>
+      </div>
+    </div>
+
+    <!-- Webhooks -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">04</div>
+        <h2>Webhooks</h2>
+        <p>Configure webhooks to receive real-time notifications for key events. Webhooks are delivered as HTTPS POST requests with a JSON payload and a <span class="inline-code">X-Napell-Signature</span> header for verification.</p>
+
+        <h3>Event Types</h3>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Event</th><th>Description</th></tr>
+            <tr><td><span class="inline-code">telemetry.alert</span></td><td>Water level &lt; 15%, temperature out of range, misting nozzle blockage</td></tr>
+            <tr><td><span class="inline-code">esg.milestone</span></td><td>Carbon offset reaches 10 kg, 50 kg, 100 kg thresholds</td></tr>
+            <tr><td><span class="inline-code">report.ready</span></td><td>An async ESG report export has completed</td></tr>
+            <tr><td><span class="inline-code">device.offline</span></td><td>A device has been offline for &gt; 30 minutes</td></tr>
+          </table>
+        </div>
+
+        <h3>Webhook Payload Example</h3>
+        <div class="code-block">POST https://regal-hotel.example.com/api/napell-webhook
+X-Napell-Signature: t=1717824000,v1=7f3a9c2e1b4d8f6a0c3e7b9d2a5f1c4
+
+{
+  "event": "telemetry.alert",
+  "timestamp": "2026-06-08T05:12:00Z",
+  "device_id": "NPL-REGAL-0042",
+  "alert_type": "water_level_low",
+  "current_level_pct": 12.3,
+  "message": "Water tank level at 12.3%. Please refill within 6 hours."
+}</div>
+
+        <h3>Signature Verification (Node.js)</h3>
+        <div class="code-block">const crypto = require('crypto');
+
+function verifySignature(rawBody, signatureHeader, secret) {
+  const parts = Object.fromEntries(
+    signatureHeader.split(',').map(p => p.split('='))
+  );
+  const timestamp = parts['t'];
+  const expectedSig = parts['v1'];
+  const signedPayload = `${timestamp}.${rawBody}`;
+  const hmac = crypto.createHmac('sha256', secret)
+    .update(signedPayload)
+    .digest('hex');
+  return crypto.timingSafeEqual(
+    Buffer.from(hmac, 'hex'),
+    Buffer.from(expectedSig, 'hex')
+  );
+}</div>
+      </div>
+    </div>
+
+    <!-- SDKs -->
+    <div class="content-section" style="background:var(--surface);">
+      <div class="wrap-content">
+        <div class="section-num">05</div>
+        <h2>Client Libraries</h2>
+        <p>Official client libraries are available for Python and JavaScript/TypeScript. Community-maintained libraries for Go, Java, and PHP are linked in our GitHub organization.</p>
+        <div class="code-block"># Python
+pip install napell-sdk
+
+import napell
+
+client = napell.NapellClient(api_key="npl_live_...")
+
+summary = client.esg.get_summary(
+    hotel_id="REGAL-CENTRAL-HKG",
+    period_start="2026-01-01T00:00:00Z",
+    period_end="2026-06-01T00:00:00Z"
+)
+print(summary)</div>
+
+        <div class="code-block">// JavaScript / TypeScript
+import { NapellClient } from 'napell-sdk';
+
+const client = new NapellClient({
+  apiKey: 'npl_live_...',
+  hotelId: 'REGAL-CENTRAL-HKG',
+});
+
+const summary = await client.esg.getSummary({
+  periodStart: '2026-01-01T00:00:00Z',
+  periodEnd: '2026-06-01T00:00:00Z',
+});
+console.log(summary);</div>
+
+        <p style="margin-top:24px;">For further assistance with API integration, contact our technical team at <a href="mailto:tech@napell.bio" style="color:var(--forest);">tech@napell.bio</a>.</p>
+      </div>
+    </div>
+  </div><!-- /section-api-docs -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- METHODOLOGY SECTION -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="section-methodology" class="page-section">
+    <div class="hero-section content-page">
+      <div class="wrap-content">
+        <div class="hero-label">Carbon Accounting Framework</div>
+        <h1 class="hero-title">Carbon Reduction<br><em style="font-style:italic;color:var(--gold-lt);">Methodology</em></h1>
+        <p class="hero-sub">The quantification methodology for coffee-related carbon reduction under the NAPELL in-hotel aeroponic cultivation system, aligned with GRI 305, SBTi FLAG, and the GHG Protocol.</p>
+      </div>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">01</div>
+        <h2>Scope & System Boundary</h2>
+        <p>This methodology quantifies the net GHG emission reduction achieved by replacing imported coffee with on-site aeroponically cultivated coffee at a hotel property. The system boundary is <strong>partially cradle-to-grave</strong>, limited to the coffee supply chain and the in-hotel cultivation system.</p>
+
+        <div class="highlight-box">
+          <p><strong>Functional Unit:</strong> 1 cup of coffee (7 g roasted coffee beans equivalent, approx. 56 g green coffee cherry equivalent).</p>
+        </div>
+
+        <h3>1.1 Included Emission Sources</h3>
+        <ul>
+          <li><strong>Avoided:</strong> Cultivation (N₂O from fertilizer, CH₄ from composting), processing (wet/de-pulping energy), transportation (sea + road freight), roasting (natural gas or electricity), packaging (multi-layer plastic/foil).</li>
+          <li><strong>New (on-site):</strong> Aeroponic system electricity consumption, nutrient solution production (allocated), and CO₂ uptake via photosynthesis (biomass accumulation).</li>
+          <li><strong>Excluded:</strong> Hotel food waste disposal (coffee grounds to compost/organic waste stream) — treatment is assumed identical for both scenarios.</li>
+        </ul>
+
+        <h3>1.2 Reference Scenario (Baseline)</h3>
+        <p>The reference scenario assumes imported coffee from a representative origin (Colombia or Brazil). Emission factors are sourced from the <span class="inline-code">Table A.1</span> database (see Appendix).</p>
+      </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">02</div>
+        <h2>Carbon Footprint Calculation</h2>
+
+        <h3>2.1 Baseline (Imported Coffee) per Cup</h3>
+        <div class="formula-box">
+          <div class="formula">
+            CF<sub>baseline</sub> = CF<sub>cult</sub> + CF<sub>proc</sub> + CF<sub>trans</sub> + CF<sub>roast</sub> + CF<sub>pack</sub>
+          </div>
+        </div>
+
+        <div class="ref-table">
+          <table>
+            <tr><th>Stage</th><th>EF (kg CO₂e/cup)</th><th>Source</th></tr>
+            <tr><td>Cultivation (conventional, Brazil)</td><td>0.18</td><td>IPCC 2021, FAOSTAT</td></tr>
+            <tr><td>Wet processing (de-pulp, ferment)</td><td>0.07</td><td>ecoinvent v3.9</td></tr>
+            <tr><td>Transportation (sea + road, 11,000 km)</td><td>0.21</td><td>GLEC 2023</td></tr>
+            <tr><td>Roasting (natural gas)</td><td>0.11</td><td>SAss 2022</td></tr>
+            <tr><td>Packaging (1-way valve foil bag)</td><td>0.05</td><td>LCA Lite 2024</td></tr>
+            <tr style="background:var(--forest-pale);"><td><strong>Total Baseline</strong></td><td><strong>0.62</strong></td><td>—</td></tr>
+          </table>
+        </div>
+
+        <h3>2.2 On-Site Aeroponic System per Cup</h3>
+        <div class="formula-box">
+          <div class="formula">
+            CF<sub>on-site</sub> = EF<sub>electricity</sub> × E<sub>cup</sub> − Seq<sub>biomass</sub>
+          </div>
+        </div>
+
+        <p>Where:</p>
+        <ul>
+          <li><span class="inline-code">EFₑlectricity</span> = Grid emission factor for Hong Kong: <strong>0.68 kg CO₂e/kWh</strong> (CLP 2025 data)</li>
+          <li><span class="inline-code">E_cup</span> = Electricity consumed per cup = <strong>0.022 kWh</strong> (system 120 W, 7-day cycle per 672 cups/year)</li>
+          <li><span class="inline-code">Seq_biomass</span> = Carbon sequestered per cup = <strong>0.08 kg CO₂e</strong> (47 g dry biomass/cup × 0.43 kg CO₂/kg biomass)</li>
+        </ul>
+
+        <div class="highlight-box">
+          <p><strong>CF<sub>on-site</sub> = (0.68 × 0.022) − 0.08 = <span style="color:var(--forest);font-weight:600;">0.06 − 0.08 = −0.02 kg CO₂e/cup</span></strong><br>
+          The on-site system achieves <strong>net-negative emissions</strong> at the cultivation stage.</p>
+        </div>
+
+        <h3>2.3 Net Reduction per Cup</h3>
+        <div class="formula-box">
+          <div class="formula" style="font-size:1.3rem;">
+            ΔCF = CF<sub>baseline</sub> − CF<sub>on-site</sub> = <strong>0.62 − (−0.02) = <span style="color:var(--forest);">0.64 kg CO₂e/cup</span></strong>
+          </div>
+        </div>
+        <p>With a conservative uncertainty adjustment (−15%), the <strong>reportable reduction is 0.54 kg CO₂e per cup</strong>.</p>
+      </div>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">03</div>
+        <h2>Biomass Carbon Sequestration Model</h2>
+        <p>Carbon sequestration is estimated using a continuous dry biomass accumulation model, validated against destructive sampling (n=40 plants across 6 units, R² = 0.91).</p>
+
+        <h3>3.1 Daily Biomass Accumulation</h3>
+        <div class="formula-box">
+          <div class="formula">
+            ΔB(t) = R<sub>GR</sub>(t) × W<sub>leaf</sub>(t) × F<sub>allocator</sub>
+          </div>
+        </div>
+
+        <p>Where <span class="inline-code">R_GR</span> (growth rate) is derived from daily PPFD integral, temperature, and VPD using the Thornley model adapted for Coffea arabica:</p>
+
+        <div class="code-block"># Biomass accumulation (simplified)
+def daily_biomass_gain(ppfd_dli, temp_c, vpd_kpa, lai):
+    # PPFD response (photosynthesis curve)
+    p_max = 12.8  # μmol CO₂/m²/s at saturating light
+    α = 0.038  # quantum yield
+    f_light = (α * ppfd_dli * 0.0036) / (α * ppfd_dli * 0.0036 + p_max)
+
+    # Temperature response (optimum 22°C)
+    f_temp = exp(-((temp_c - 22)**2) / (2 * 5.2**2))
+
+    # VPD response (stomatal conductance)
+    f_vpd = 1.0 - max(0, (vpd_kpa - 1.2) / (3.0 - 1.2))
+
+    # LAI scaling
+    f_lai = 1 - exp(-0.67 * lai)
+
+    daily_g_cc = 28.0 * f_light * f_temp * f_vpd * f_lai  # g C/m²/day
+    return daily_g_cc * 0.45  # allocation to harvestable biomass</div>
+
+        <h3>3.2 CO₂ Sequestration from Biomass</h3>
+        <p>The molecular stoichiometry of photosynthesis:</p>
+        <div class="formula-box">
+          <div class="formula">
+            6 CO₂ + 6 H₂O → C₆H₁₂O₆ + 6 O₂
+          </div>
+        </div>
+        <p>Each g of dry biomass (≈45% carbon content for C. arabica) represents <strong>1.63 g CO₂</strong> fixed. The system uses a conservative factor of <strong>0.43 kg CO₂ per kg dry biomass</strong> to account for below-ground allocation and non-photosynthetic tissue.</p>
+      </div>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">04</div>
+        <h2>Water Use Reduction</h2>
+        <p>The water use reduction is calculated from the closed-loop aeroponic water balance.</p>
+
+        <h3>4.1 Water Balance Equation</h3>
+        <div class="formula-box">
+          <div class="formula">
+            W<sub>saved</sub> = W<sub>soil</sub> − (W<sub>mist</sub> + W<sub>condensate</sub> + W<sub>drift</sub>)
+          </div>
+        </div>
+
+        <div class="ref-table">
+          <table>
+            <tr><th>Parameter</th><th>Soil Cultivation</th><th>NAPELL Aeroponic</th></tr>
+            <tr><td>Water input (L/cup)</td><td>5.2</td><td>0.18</td></tr>
+            <tr><td>Transpiration loss</td><td>62%</td><td>&lt;3%</td></tr>
+            <tr><td>Runoff / drainage</td><td>25–40%</td><td>0%</td></tr>
+            <tr><td>Recycling rate</td><td>0%</td><td>97%</td></tr>
+            <tr style="background:var(--forest-pale);"><td><strong>Net water use (L/cup)</strong></td><td><strong>5.2</strong></td><td><strong>0.18</strong></td></tr>
+          </table>
+        </div>
+
+        <p><strong>Water saved per cup = 5.02 L. Annual savings for a 200-room hotel (2 cups/guest/day, 75% occupancy): 551,700 L/year.</strong></p>
+      </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">05</div>
+        <h2>Blockchain Verification & MRV</h2>
+        <p>To ensure additionality and prevent double-counting, each cultivation batch is registered on the Hedera Hashgraph public ledger. The MRV (Monitoring, Reporting, Verification) workflow is:</p>
+
+        <ol>
+          <li><strong>Batch Registration:</strong> When a cultivation cycle begins, a batch ID is generated and registered on-ledger with timestamp, device ID, and initial telemetry baseline.</li>
+          <li><strong>Continuous Telemetry:</strong> Every 60 seconds, the device reports water usage, energy draw, and estimated carbon capture. Each telemetry batch is hashed (SHA-256) and the hash is submitted on-ledger.</li>
+          <li><strong>Harvest Certification:</strong> Upon harvest, the wet-weight is recorded and matched against the accumulated biomass model prediction (±12% tolerance). A "harvest proof" JSON is anchored on-ledger.</li>
+          <li><strong>ESG Report Issuance:</strong> Monthly, the NAPELL platform aggregates all batches and issues a "Carbon Reduction Certificate" in PDF + JSON, with Hedera consensus timestamps.</li>
+        </ol>
+
+        <div class="code-block"># Example on-chain record (Hedera Consensus Service)
+{
+  "batch_id": "NPL-REGAL-2026-0042",
+  "device_id": "NPL-REGAL-UNIT-07",
+  "start_ts": 1717238400,
+  "harvest_ts": 1718203200,
+  "est_carbon_kg": 3.84,
+  "water_saved_l": 1840,
+  "telemetry_hash": "0x3a7f...c9d2",
+  "certificate_url": "https://reports.napell.bio/c/NPL-REGAL-2026-0042.pdf"
+}</div>
+
+        <p>The blockchain anchoring ensures <strong>tamper-evidence</strong> suitable for third-party ESG audit under AA1000AS or ISAE 3000.</p>
+      </div>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="content-section">
+      <div class="wrap-content">
+        <div class="section-num">06</div>
+        <h2>Uncertainty & Quality Assurance</h2>
+        <p>Following IPCC GSG-guided uncertainty assessment (Tier 2 approach), the combined standard error of the reduction estimate is calculated using error propagation:</p>
+
+        <div class="formula-box">
+          <div class="formula">
+            σ<sub>total</sub> = √(σ²<sub>baseline</sub> + σ²<sub>on-site</sub> + σ²<sub>seq</sub>)
+          </div>
+        </div>
+
+        <div class="ref-table">
+          <table>
+            <tr><th>Parameter</th><th>Uncertainty (±σ)</th><th>Distribution</th></tr>
+            <tr><td>Baseline EF (cultivation)</td><td>±18%</td><td>Normal</td></tr>
+            <tr><td>Baseline EF (transport)</td><td>±12%</td><td>Normal</td></tr>
+            <tr><td>On-site electricity EF</td><td>±5%</td><td>Normal</td></tr>
+            <tr><td>Biomass accumulation model</td><td>±12%</td><td>Normal</td></tr>
+            <tr><td>Harvest weight measurement</td><td>±4%</td><td>Uniform</td></tr>
+            <tr style="background:var(--forest-pale);"><td><strong>Combined (95% CI)</strong></td><td><strong>±22%</strong></td><td>—</td></tr>
+          </table>
+        </div>
+
+        <p>To report at 95% confidence, the final reduction figure is discounted by <strong>1.96 × σ_total = 43%</strong>. The <strong>conservative reportable value is therefore 0.54 × 0.57 = <span style="color:var(--forest);font-weight:600;">0.31 kg CO₂e per cup</span></strong>.</p>
+
+        <div class="highlight-box" style="margin-top:32px;">
+          <p><strong>Note on Conservatism:</strong> NAPELL deliberately applies a conservative discount to all ESG claims. The unrounded model output (0.54 kg CO₂e/cup) is used for internal monitoring; the reported value (0.31 kg CO₂e/cup) is used for all external ESG disclosures and guest-facing communications.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-section" style="background:var(--surface);">
+      <div class="wrap-content">
+        <div class="section-num">Contact</div>
+        <h2>Methodology Inquiries</h2>
+        <p>For methodology appendices, third-party audit reports, or to propose methodology improvements, contact our ESG team.</p>
+        <p style="font-family:var(--font-mono); font-size:0.95rem; color:var(--ink);">Dr. S.L. Ng · esg@napell.bio · +852 9318 8252</p>
+      </div>
+    </div>
+  </div><!-- /section-methodology -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- PRIVACY SECTION -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="section-privacy" class="page-section">
+    <div class="hero-section content-page">
+      <div class="wrap-content">
+        <div class="hero-label">Legal & Compliance</div>
+        <h1 class="hero-title">Privacy<br><em style="font-style:italic;color:var(--gold-lt);">Policy</em></h1>
+        <p class="hero-sub">How NAPELL BIOTECH collects, uses, and protects personal data in connection with our aeroponic cultivation systems and ESG data platform.</p>
+        <div class="effective-date">Effective Date: 1 January 2026</div>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <div class="wrap-content">
+
+        <h2>1. Data Controller</h2>
+        <p>NAPELL BIOTECH LIMITED ("we", "us", "our") is the data controller for the purposes of the Personal Data (Privacy) Ordinance (PDPO) of Hong Kong and, where applicable, the GDPR (EU).</p>
+        <div class="contact-box">
+          <p><strong>NAPELL BIOTECH LIMITED</strong><br>
+          Address: Unit 1204, 12/F, Kowloon Building, 555 Nathan Road, Kowloon, Hong Kong<br>
+          Email: <a href="mailto:privacy@napell.bio" style="color:var(--forest);">privacy@napell.bio</a><br>
+          Data Protection Officer: dpo@napell.bio</p>
+        </div>
+
+        <h2>2. Personal Data We Collect</h2>
+
+        <h3>2.1 Hotel Partners & Staff</h3>
+        <ul>
+          <li><strong>Contact persons:</strong> Name, job title, business email, business phone number (collected for partnership management).</li>
+          <li><strong>Technical contacts:</strong> Name, email, IP address of API integration endpoints (collected for technical support).</li>
+        </ul>
+
+        <h3>2.2 Hotel Guests (Indirect Collection)</h3>
+        <p>When a guest interacts with our system (e.g., scanning a QR code to view coffee carbon footprint), we may collect:</p>
+        <ul>
+          <li><strong>Device identifier:</strong> Anonymized device ID (not linked to real-world identity without additional information from the hotel).</li>
+          <li><strong>Interaction timestamp:</strong> Date and time of QR scan (used for ESG reporting — "guest engagement rate").</li>
+          <li><strong>No biometric or location data</strong> is collected. We do not access the guest's contact list, photos, or precise GPS location.</li>
+        </ul>
+
+        <h3>2.3 Website Visitors</h3>
+        <ul>
+          <li><strong>Log data:</strong> IP address, browser type, pages visited, referring URL (collected automatically via server logs).</li>
+          <li><strong>Cookies:</strong> Essential cookies only (session management). No third-party tracking or advertising cookies are used.</li>
+          <li><strong>Contact form:</strong> Name, email address, message content (collected only when you voluntarily submit an inquiry).</li>
+        </ul>
+
+        <h2>3. Purposes of Processing</h2>
+        <p>Personal data is processed for the following purposes:</p>
+        <ul>
+          <li><strong>Contract performance:</strong> Managing the hotel partnership, providing technical support, and delivering ESG reports.</li>
+          <li><strong>Legitimate interests:</strong> Improving system performance, analyzing aggregated guest engagement trends, and preventing fraud/misuse.</li>
+          <li><strong>Legal obligation:</strong> Complying with tax, audit, and ESG reporting requirements under Hong Kong law.</li>
+          <li><strong>Consent:</strong> Sending marketing communications (you may withdraw consent at any time).</li>
+        </ul>
+
+        <h2>4. Legal Basis for Processing (GDPR)</h2>
+        <table style="width:100%; border-collapse:collapse; font-size:0.88rem; margin:16px 0;">
+          <tr style="background:var(--surface);"><th style="text-align:left; padding:10px 16px; border-bottom:2px solid var(--ink-10);">Purpose</th><th style="text-align:left; padding:10px 16px; border-bottom:2px solid var(--ink-10);">Legal Basis</th></tr>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid var(--ink-10); color:var(--ink-60);">Partnership management</td><td style="padding:10px 16px; border-bottom:1px solid var(--ink-10); color:var(--ink-60);">Contract</td></tr>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid var(--ink-10); color:var(--ink-60);">ESG reporting (aggregated)</td><td style="padding:10px 16px; border-bottom:1px solid var(--ink-10); color:var(--ink-60);">Legitimate interest</td></tr>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid var(--ink-10); color:var(--ink-60);">Technical support</td><td style="padding:10px 16px; border-bottom:1px solid var(--ink-10); color:var(--ink-60);">Contract</td></tr>
+          <tr><td style="padding:10px 16px; border-bottom:1px solid var(--ink-10); color:var(--ink-60);">Marketing emails</td><td style="padding:10px 16px; border-bottom:1px solid var(--ink-10); color:var(--ink-60);">Consent (opt-in)</td></tr>
+          <tr><td style="padding:10px 16px; color:var(--ink-60);">Website analytics (anonimized)</td><td style="padding:10px 16px; color:var(--ink-60);">Legitimate interest</td></tr>
+        </table>
+
+        <h2>5. Data Sharing & Disclosure</h2>
+        <p>We do <strong>not</strong> sell personal data to third parties. Data may be shared only in the following circumstances:</p>
+        <ul>
+          <li><strong>Service providers:</strong> Cloud hosting (Tencent Cloud Hong Kong region), email delivery (MF API), and blockchain anchoring (Hedera). These providers are bound by data processing agreements.</li>
+          <li><strong>Hotel partners:</strong> Aggregated (non-personally identifiable) ESG data is shared with the partner hotel for their annual ESG reporting.</li>
+          <li><strong>Legal requirement:</strong> When required by law, court order, or government authority with competent jurisdiction.</li>
+          <li><strong>Business transfer:</strong> In the event of a merger, acquisition, or asset sale, personal data may be transferred as part of the business assets.</li>
+        </ul>
+
+        <h2>6. International Data Transfers</h2>
+        <p>Data is primarily stored on servers located in <strong>Hong Kong S.A.R., China</strong>. For blockchain anchoring, hashed (non-reversible) telemetry data is submitted to the Hedera public ledger (global node network). No personally identifiable information (PII) is included in blockchain records.</p>
+        <p>For GDPR purposes, Hong Kong is recognized as providing an adequate level of data protection. If data is transferred outside Hong Kong/EEA, we implement Standard Contractual Clauses (SCCs) or rely on an adequacy decision.</p>
+
+        <h2>7. Data Retention</h2>
+        <ul>
+          <li><strong>Partnership data:</strong> Retained for the duration of the partnership + 7 years (tax/audit requirement under Hong Kong law).</li>
+          <li><strong>Guest interaction data (anonimized):</strong> Retained for 3 years (ESG trend analysis).</li>
+          <li><strong>Website logs:</strong> Retained for 90 days (security monitoring).</li>
+          <li><strong>Marketing consent records:</strong> Retained until consent is withdrawn + 2 years.</li>
+        </ul>
+
+        <h2>8. Your Rights</h2>
+        <p>Depending on your jurisdiction, you may have the following rights:</p>
+        <ul>
+          <li><strong>Access:</strong> Request a copy of your personal data.</li>
+          <li><strong>Rectification:</strong> Request correction of inaccurate data.</li>
+          <li><strong>Erasure:</strong> Request deletion of your data ("right to be forgotten").</li>
+          <li><strong>Object / Restrict:</strong> Object to processing or request restriction.</li>
+          <li><strong>Data portability:</strong> Request your data in a machine-readable format.</li>
+          <li><strong>Withdraw consent:</strong> Withdraw previously given consent (does not affect lawfulness of prior processing).</li>
+        </ul>
+        <p>To exercise these rights, contact us at <a href="mailto:privacy@napell.bio" style="color:var(--forest);">privacy@napell.bio</a>. We will respond within <strong>30 days</strong>.</p>
+
+        <h2>9. Security Measures</h2>
+        <ul>
+          <li><strong>Encryption:</strong> All data in transit is encrypted via TLS 1.3. Data at rest is encrypted using AES-256.</li>
+          <li><strong>Access control:</strong> Multi-factor authentication (MFA) is required for all internal systems. Access is role-based and reviewed quarterly.</li>
+          <li><strong>Blockchain anchoring:</strong> Only SHA-256 hashes (not raw data) are stored on-ledger, ensuring tamper-evidence without exposing PII.</li>
+          <li><strong>Incident response:</strong> A defined incident response plan is in place. In the event of a data breach, affected users and regulators will be notified within 72 hours as required by law.</li>
+        </ul>
+
+        <h2>10. Cookies</h2>
+        <p>Our website uses only <strong>essential cookies</strong> (session management). We do not use tracking cookies, analytics cookies, or advertising cookies. You can disable cookies in your browser settings; however, this may affect website functionality.</p>
+
+        <h2>11. Children's Privacy</h2>
+        <p>Our services are not directed to children under the age of 13. We do not knowingly collect personal data from children. If you believe a child has provided us with personal data, please contact us immediately.</p>
+
+        <h2>12. Changes to This Policy</h2>
+        <p>We may update this Privacy Policy from time to time. The updated version will be posted on this page with a new effective date. For material changes, we will notify partners via email at least 14 days prior to the change taking effect.</p>
+
+        <h2>13. Contact Us</h2>
+        <div class="contact-box">
+          <p><strong>Data Protection Officer</strong><br>
+          Email: <a href="mailto:dpo@napell.bio" style="color:var(--forest);">dpo@napell.bio</a><br>
+          Postal address: same as above.</p>
+          <p style="margin-top:12px;">For complaints, you also have the right to lodge a complaint with the <strong>Privacy Commissioner for Personal Data, Hong Kong</strong> (https://www.pcpd.org.hk).</p>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /section-privacy -->
+
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <!-- TERMS SECTION -->
+  <!-- ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="section-terms" class="page-section">
+    <div class="hero-section content-page">
+      <div class="wrap-content">
+        <div class="hero-label">Legal & Compliance</div>
+        <h1 class="hero-title">Terms of<br><em style="font-style:italic;color:var(--gold-lt);">Service</em></h1>
+        <p class="hero-sub">These Terms govern your use of NAPELL's aeroponic cultivation systems, ESG Intelligence Platform, and related services.</p>
+        <div class="effective-date">Effective Date: 1 January 2026 · Version 2.0</div>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <div class="wrap-content">
+
+        <h2>1. Definitions</h2>
+        <ul>
+          <li><strong>"Equipment"</strong> means the NAPELL aeroponic cultivation unit(s) and any accessories provided under a Proposal.</li>
+          <li><strong>"ESG Platform"</strong> means the cloud-based dashboard, APIs, and mobile application provided by NAPELL.</li>
+          <li><strong>"Guest Data"</strong> means anonymized interaction data (QR scan timestamps, coffee tree adoption status) collected through the Equipment.</li>
+          <li><strong>"Hotel"</strong> means the partner hotel entity that enters into a Proposal with NAPELL.</li>
+          <li><strong>"Proposal"</strong> means the commercial agreement (including any Order Form, SOW, or SOW) incorporating these Terms.</li>
+        </ul>
+
+        <h2>2. Scope of Service</h2>
+        <p>Subject to your compliance with these Terms and payment of applicable fees, NAPELL shall:</p>
+        <ul>
+          <li>Lease the Equipment to the Hotel for the Term specified in the Proposal.</li>
+          <li>Provide remote monitoring, technical support, and ESG data aggregation via the ESG Platform.</li>
+          <li>Maintain the Equipment in good working order; routine maintenance is remote, non-intrusive, and requires no hotel staff action.</li>
+        </ul>
+        <p>NAPELL does <strong>not</strong> provide horticultural services, food safety certification, or ESG audit services. ESG data is provided for informational and reporting assistance purposes only; NAPELL is not a licensed carbon auditor.</p>
+
+        <h2>3. Installation & Site Requirements</h2>
+        <h3>3.1 Site Preparation</h3>
+        <p>The Hotel shall provide, at its own cost:</p>
+        <ul>
+          <li>A level floor area of 0.23 m² per unit (clearance requirements: 100 mm rear, 300 mm top).</li>
+          <li>A grounded electrical outlet (IEC 60320 C13 compatible, 220–240 V AC, 50 Hz, 3A circuit).</li>
+          <li>Stable Wi-Fi connectivity (2.4 GHz or 5 GHz, minimum 5 Mbps uplink).</li>
+        </ul>
+        <h3>3.2 Access</h3>
+        <p>The Hotel shall grant NAPELL technicians remote access (via ESG Platform) and, if required for hardware replacement, on-site access during business hours with 48 hours' notice.</p>
+
+        <h2>4. Intellectual Property</h2>
+        <h3>4.1 NAPELL IP</h3>
+        <p>All rights, title, and interest in the Equipment, ESG Platform, APIs, firmware, and all improvements thereto remain the exclusive property of NAPELL. No intellectual property rights are transferred to the Hotel under these Terms.</p>
+        <h3>4.2 Hotel Data</h3>
+        <p>The Hotel retains all rights to raw telemetry data generated by the Equipment on its premises. NAPELL is granted a non-exclusive, royalty-free license to use such data for:</p>
+        <ul>
+          <li>Providing and improving the ESG Platform;</li>
+          <li>Aggregated, anonymized benchmarking across multiple hotel properties; and</li>
+          <li>Research and development of cultivation optimization algorithms.</li>
+        </ul>
+        <h3>4.3 Restrictions</h3>
+        <p>The Hotel shall not (i) reverse-engineer, decompile, or disassemble the Equipment or ESG Platform; (ii) copy or modify any software provided by NAPELL; or (iii) sublicense or transfer access credentials to any third party.</p>
+
+        <h2>5. Data Privacy & GDPR / PDPO</h2>
+        <p>Each party shall comply with applicable data protection laws, including the Personal Data (Privacy) Ordinance (PDPO) of Hong Kong and, where applicable, the EU General Data Protection Regulation (GDPR).</p>
+        <p>The parties acknowledge that, for Guest Data, <strong>NAPELL acts as a data processor</strong> and the Hotel acts as the data controller. A separate Data Processing Agreement (DPA) is executed as part of the Proposal where required.</p>
+
+        <h2>6. Payment Terms</h2>
+        <h3>6.1 Fees</h3>
+        <p>Fees are set out in the Proposal. Unless otherwise stated, fees are quoted in Hong Kong Dollars (HKD) and exclude GST / VAT.</p>
+        <h3>6.2 Invoicing & Payment</h3>
+        <p>Invoices are issued monthly in advance. Payment is due within <strong>30 days</strong> of the invoice date. Late payment incurs interest at 1.5% per month.</p>
+        <h3>6.3 Suspension</h3>
+        <p>NAPELL may suspend access to the ESG Platform if fees are more than 15 days overdue. Suspension does not relieve the Hotel of its payment obligations.</p>
+
+        <h2>7. Warranties & Disclaimers</h2>
+        <h3>7.1 Equipment Warranty</h3>
+        <p>NAPELL warrants that the Equipment will be free from material defects in materials and workmanship for a period of <strong>24 months</strong> from the Installation Date.</p>
+        <h3>7.2 Platform Availability</h3>
+        <p>NAPELL targets <strong>99.5% uptime</strong> for the ESG Platform (excluding scheduled maintenance, which is notified ≥48 hours in advance).</p>
+        <h3>7.3 Disclaimer</h3>
+        <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE EQUIPMENT AND ESG PLATFORM ARE PROVIDED "AS IS" AND "AS AVAILABLE". NAPELL DISCLAIMS ALL IMPLIED WARRANTIES, INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.</p>
+
+        <h2>8. Limitation of Liability</h2>
+        <div class="highlight-box">
+          <p><strong>CAP ON LIABILITY:</strong> TO THE MAXIMUM EXTENT PERMITTED BY LAW, NAPELL'S TOTAL AGGREGATE LIABILITY ARISING OUT OF OR RELATING TO THESE TERMS SHALL NOT EXCEED THE TOTAL FEES PAID BY THE HOTEL TO NAPELL IN THE 12 MONTHS PRECEDING THE CLAIM.</p>
+        </div>
+        <p>IN NO EVENT SHALL NAPELL BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES (INCLUDING LOSS OF PROFITS, LOSS OF DATA, OR BUSINESS INTERRUPTION), EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
+        <p>The limitations in this Section 8 do <strong>not</strong> apply to: (a) death or personal injury caused by negligence; (b) fraud or fraudulent misrepresentation; or (c) any liability that cannot be excluded under applicable law.</p>
+
+        <h2>9. Indemnification</h2>
+        <h3>9.1 By NAPELL</h3>
+        <p>NAPELL shall defend, indemnify, and hold harmless the Hotel from and against any third-party claim that the Equipment or ESG Platform infringes such third party's intellectual property rights.</p>
+        <h3>9.2 By Hotel</h3>
+        <p>The Hotel shall defend, indemnify, and hold harmless NAPELL from and against any third-party claim arising from: (a) the Hotel's misuse of the Equipment; (b) the Hotel's breach of data protection obligations; or (c) personal injury or property damage caused by the Hotel's negligence in site preparation or maintenance.</p>
+
+        <h2>10. Term & Termination</h2>
+        <h3>10.1 Term</h3>
+        <p>These Terms commence on the Effective Date and continue for the initial term specified in the Proposal. Thereafter, the agreement renews automatically for successive 12-month periods unless either party gives <strong>60 days' written notice</strong> prior to the end of the then-current term.</p>
+        <h3>10.2 Termination for Cause</h3>
+        <p>Either party may terminate these Terms with immediate effect by written notice if the other party: (a) breaches a material term and fails to cure within 30 days of notice; or (b) becomes insolvent, enters bankruptcy, or ceases business operations.</p>
+        <h3>10.3 Effect of Termination</h3>
+        <p>Upon termination: (i) the Hotel shall return or destroy (at NAPELL's option) all NAPELL confidential information and equipment; (ii) the Hotel shall pay all outstanding fees; and (iii) Sections 4, 7, 8, 9, 10.3, and 11 shall survive termination.</p>
+
+        <h2>11. Confidentiality</h2>
+        <p>Each party may receive Confidential Information from the other. "Confidential Information" includes the Proposal terms, ESG data not publicly disclosed, and any non-public technical or commercial information marked "confidential".</p>
+        <p>Each party shall: (i) maintain the confidentiality of the other's Confidential Information; (ii) not disclose it to any third party without prior written consent; and (iii) use it solely for the purposes of these Terms. This obligation survives termination for <strong>3 years</strong>.</p>
+        <p>Confidential Information does <strong>not</strong> include information that: (a) is or becomes publicly available without breach; (b) was rightfully known prior to disclosure; (c) is independently developed; or (d) is required to be disclosed by law or court order (subject to prior notice to the disclosing party).</p>
+
+        <h2>12. Governing Law & Dispute Resolution</h2>
+        <p>These Terms are governed by, and construed in accordance with, the laws of the <strong>Hong Kong Special Administrative Region of the People's Republic of China</strong>, without regard to its conflict of laws principles.</p>
+        <p>Any dispute, controversy, or claim arising out of or relating to these Terms shall be referred to and finally resolved by <strong>arbitration</strong> administered by the Hong Kong International Arbitration Centre (HKIAC) under the HKIAC Administered Arbitration Rules in force when the notice of arbitration is submitted. The seat of arbitration shall be Hong Kong. The language of arbitration shall be English.</p>
+
+        <h2>13. Force Majeure</h2>
+        <p>Neither party shall be liable for any delay or failure to perform its obligations under these Terms (other than payment obligations) due to causes beyond its reasonable control, including but not limited to: act of God, natural disaster, war, civil unrest, government action, epidemic, or failure of the internet (each, a "Force Majeure Event").</p>
+        <p>The affected party shall promptly notify the other party and use reasonable efforts to mitigate the effects of the Force Majeure Event. If a Force Majeure Event continues for more than <strong>60 consecutive days</strong>, either party may terminate these Terms with immediate effect by written notice.</p>
+
+        <h2>14. Miscellaneous</h2>
+        <h3>14.1 Entire Agreement</h3>
+        <p>These Terms, together with the Proposal and any DPA, constitute the entire agreement between the parties and supersede all prior agreements, understandings, and communications, whether written or oral.</p>
+        <h3>14.2 Amendment</h3>
+        <p>No amendment to these Terms shall be effective unless in writing and signed by both parties' authorized representatives.</p>
+        <h3>14.3 Assignment</h3>
+        <p>The Hotel shall not assign or transfer these Terms (in whole or in part) without NAPELL's prior written consent. NAPELL may assign these Terms in connection with a merger, acquisition, or sale of substantially all assets.</p>
+        <h3>14.4 Severability</h3>
+        <p>If any provision of these Terms is held to be invalid or unenforceable, the remaining provisions shall continue in full force and effect.</p>
+        <h3>14.5 Waiver</h3>
+        <p>No waiver of any term shall be deemed a further or continuing waiver of such term or any other term.</p>
+        <h3>14.6 Notices</h3>
+        <p>All notices shall be in writing and delivered by email (with confirmation of transmission) or registered mail to the addresses specified in the Proposal.</p>
+
+        <h2>15. Contact</h2>
+        <div class="contact-box">
+          <p><strong>NAPELL BIOTECH LIMITED</strong><br>
+          Address: Unit 1204, 12/F, Kowloon Building, 555 Nathan Road, Kowloon, Hong Kong<br>
+          Email: <a href="mailto:legal@napell.bio" style="color:var(--forest);">legal@napell.bio</a><br>
+          Attention: Legal Department</p>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /section-terms -->
 
   <!-- FOOTER -->
   <footer class="footer">
@@ -1033,31 +2355,31 @@ h2 {
         <div class="footer-col">
           <div class="footer-col-head">Products</div>
           <ul>
-            <li><a href="#">Aeroponic Cultivation Unit</a></li>
-            <li><a href="#">ESG Intelligence Platform</a></li>
-            <li><a href="#">Carbon Traceability System</a></li>
+            <li><a onclick="showSection('home')">Aeroponic Cultivation Unit</a></li>
+            <li><a onclick="showSection('home')">ESG Intelligence Platform</a></li>
+            <li><a onclick="showSection('home')">Carbon Traceability System</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <div class="footer-col-head">Resources</div>
           <ul>
-            <li><a href="#">Technical Whitepaper</a></li>
-            <li><a href="#">API Documentation</a></li>
-            <li><a href="#">Reduction Methodology</a></li>
+            <li><a onclick="showSection('whitepaper')">Technical Whitepaper</a></li>
+            <li><a onclick="showSection('api-docs')">API Documentation</a></li>
+            <li><a onclick="showSection('methodology')">Reduction Methodology</a></li>
           </ul>
         </div>
         <div class="footer-col">
           <div class="footer-col-head">Legal</div>
           <ul>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Contact NAPELL</a></li>
+            <li><a onclick="showSection('privacy')">Privacy Policy</a></li>
+            <li><a onclick="showSection('terms')">Terms of Service</a></li>
+            <li><a onclick="showSection('home')">Contact NAPELL</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
         <p class="footer-copy">
-          © 2026 NAPELL BIOTECH · For Ms. Lo Bo Man &amp; Regal Hotel Group · Co-creating the world's first self-producing zero-carbon coffee hotel<br>
+          © 2026 NAPELL BIOTECH · For Ms. Lo Poman &amp; Regal Hotel Group · Co-creating the world's first self-producing zero-carbon coffee hotel<br>
           <a href="mailto:erik.wong@napell.bio">erik.wong@napell.bio</a>
         </p>
         <div class="footer-contact-pill">
@@ -1116,14 +2438,72 @@ h2 {
   </div>
 </div>
 
+<!-- BACK TO TOP -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 (function() {
+  // Section switching with page navigation
+  function showSection(sectionName) {
+    // Hide all sections
+    document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+    // Show target section
+    const target = document.getElementById('section-' + sectionName);
+    if (target) {
+      target.classList.add('active');
+    }
+    // Update all nav links (desktop dropdown + mobile panel)
+    document.querySelectorAll('.nav-links a, .nav-dropdown a, .mobile-nav-panel a').forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('data-section') === sectionName) {
+        a.classList.add('active');
+      }
+    });
+    // Update parent nav-item > a for dropdown triggers
+    document.querySelectorAll('.nav-item > a').forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('data-section') === sectionName) {
+        a.classList.add('active');
+      }
+    });
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Scroll to element within current page
+  function scrollToElement(elementId) {
+    // Ensure home section is visible
+    showSection('home');
+    // Small delay to let section become visible
+    setTimeout(() => {
+      const el = document.getElementById(elementId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Account for fixed nav height
+        const navH = 68;
+        window.scrollBy(0, -navH);
+      }
+    }, 100);
+  }
+
+  // Mobile nav toggle
+  function closeMobileNav() {
+    document.getElementById('mobileNavPanel').classList.remove('open');
+  }
+
+  // Make globally available
+  window.showSection = showSection;
+  window.scrollToElement = scrollToElement;
+  window.closeMobileNav = closeMobileNav;
+
   // Date
   const now = new Date();
   const pad = n => String(n).padStart(2,'0');
-  document.getElementById('currentDate').textContent =
-    `${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())}`;
+  const dateEl = document.getElementById('currentDate');
+  if (dateEl) {
+    dateEl.textContent = `${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())}`;
+  }
 
   // KPI counter animation
   function animCount(el, start, end, decimals, suffix, duration) {
@@ -1139,6 +2519,16 @@ h2 {
     };
     requestAnimationFrame(step);
   }
+
+  // Back to top button
+  const backToTopBtn = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 400) {
+      backToTopBtn.classList.add('visible');
+    } else {
+      backToTopBtn.classList.remove('visible');
+    }
+  });
 
   window.addEventListener('load', () => {
     animCount(document.getElementById('waterSavings'), 85, 97, 0, '%', 900);
@@ -1320,9 +2710,24 @@ h2 {
       if (btn) { btn.style.transform = 'scale(1)'; btn.style.background = 'rgba(255,255,255,0.92)'; }
     });
   }
+
+  // Mobile hamburger menu
+  const hamburger = document.getElementById('navHamburger');
+  const mobilePanel = document.getElementById('mobileNavPanel');
+  if (hamburger && mobilePanel) {
+    hamburger.addEventListener('click', () => {
+      mobilePanel.classList.toggle('open');
+    });
+    // Close mobile panel when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!hamburger.contains(e.target) && !mobilePanel.contains(e.target)) {
+        mobilePanel.classList.remove('open');
+      }
+    });
+  }
 })();
 
-// Load YouTube iframe on click (avoids Error 153 in local/file:// context)
+// Load YouTube iframe on click
 function loadYouTube(el) {
   el.style.cursor = 'default';
   el.onclick = null;

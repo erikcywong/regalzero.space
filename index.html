@@ -171,6 +171,71 @@ body {
   background: var(--forest);
 }
 
+/* Sub-dropdown (level 2 - for ESG Data Cards sub-items) */
+.submenu-wrap {
+  position: relative;
+}
+
+.nav-dropdown .has-submenu {
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.nav-dropdown .has-submenu .sub-arrow {
+  font-size: 0.7rem;
+  margin-left: 8px;
+  opacity: 0.5;
+  transition: transform 0.2s;
+}
+
+.submenu-wrap:hover .sub-arrow {
+  transform: translateX(2px);
+}
+
+.nav-subdropdown {
+  position: absolute;
+  left: calc(100% + 4px);
+  top: 0;
+  background: var(--white);
+  border: 1px solid var(--ink-10);
+  border-radius: var(--radius-md);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
+  min-width: 260px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 1002;
+}
+
+.submenu-wrap:hover .nav-subdropdown {
+  opacity: 1;
+  visibility: visible;
+}
+
+.nav-subdropdown a {
+  display: block;
+  font-size: 0.8rem; font-weight: 500; color: var(--ink-60);
+  text-decoration: none;
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.nav-subdropdown a:hover {
+  color: var(--forest);
+  background: var(--forest-pale);
+}
+
+.nav-subdropdown a.active {
+  color: var(--white);
+  background: var(--forest);
+}
+
 /* Mobile nav */
 .nav-hamburger {
   display: none;
@@ -645,6 +710,90 @@ li { font-size: 0.93rem; color: var(--ink-60); line-height: 1.8; margin-bottom: 
   transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
 }
 
+/* How it Works toggle button */
+.esg-card-how {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--forest);
+  cursor: pointer;
+  user-select: none;
+  padding: 6px 0;
+  margin-top: 2px;
+  transition: color 0.2s, gap 0.2s;
+  width: fit-content;
+}
+.esg-card-how:hover {
+  color: var(--forest-lt);
+  gap: 10px;
+}
+.esg-card-how .hw-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--forest-pale);
+  font-size: 0.7rem;
+  transition: background 0.2s, transform 0.2s;
+}
+.esg-card-how:hover .hw-icon {
+  background: var(--forest);
+  color: var(--white);
+  transform: rotate(10deg);
+}
+.esg-card-how .hw-arrow {
+  transition: transform 0.25s ease;
+  font-size: 0.7rem;
+}
+.esg-card-how.expanded .hw-arrow {
+  transform: rotate(90deg);
+}
+.esg-card-how.expanded .hw-icon {
+  background: var(--forest);
+  color: var(--white);
+}
+
+/* ESG card detail section — hidden by default, toggled via icon click */
+.esg-card-detail {
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ink-10);
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease, margin-top 0.35s ease, padding-top 0.35s ease;
+}
+.esg-card-detail.expanded {
+  max-height: 800px;
+  opacity: 1;
+}
+
+.esg-card-detail p {
+  font-size: 0.82rem;
+  color: var(--ink-60);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.esg-card-detail p:last-of-type {
+  margin-bottom: 16px;
+}
+
+.esg-card-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-sm {
+  padding: 7px 16px;
+  font-size: 0.78rem;
+  border-radius: var(--radius-sm);
+}
+
 /* ─── TECH CTA ─── */
 .tech-section {
   background: var(--ink);
@@ -1076,7 +1225,17 @@ tr:last-child td { border-bottom: none; }
         <a data-section="home" onclick="scrollToElement('kpi-section')">ESG KPIs</a>
         <a data-section="home" onclick="scrollToElement('video-section')">System Demo</a>
         <a data-section="home" onclick="scrollToElement('products-section')">ESG Ecosystem</a>
-        <a data-section="home" onclick="scrollToElement('esg-section')">ESG Data Cards</a>
+        <div class="submenu-wrap">
+          <a class="has-submenu" data-section="home" onclick="scrollToElement('esg-section')">ESG Data Cards <span class="sub-arrow">▸</span></a>
+          <div class="nav-subdropdown">
+            <a data-section="home" onclick="scrollToElement('esg-card-inhouse')">In-House Ingredient Rate</a>
+            <a data-section="home" onclick="scrollToElement('esg-card-biocarbon')">Biological Carbon Capture</a>
+            <a data-section="home" onclick="scrollToElement('esg-card-foodmiles')">Food Miles Eliminated</a>
+            <a data-section="home" onclick="scrollToElement('esg-card-blockchain')">Blockchain Certified Batches</a>
+            <a data-section="home" onclick="scrollToElement('esg-card-zerowater')">Zero Wastewater Discharge</a>
+            <a data-section="home" onclick="scrollToElement('esg-card-guest')">Guest Participation Rate</a>
+          </div>
+        </div>
         <a data-section="home" onclick="scrollToElement('tech-section')">Technology</a>
       </div>
     </li>
@@ -1114,16 +1273,23 @@ tr:last-child td { border-bottom: none; }
 <!-- Mobile nav panel -->
 <div class="mobile-nav-panel" id="mobileNavPanel">
   <a class="active" data-section="home" onclick="showSection('home');closeMobileNav()">Home</a>
-  <a data-section="home" onclick="showSection('home');closeMobileNav()">— ESG KPIs</a>
-  <a data-section="home" onclick="showSection('home');closeMobileNav()">— System Demo</a>
-  <a data-section="home" onclick="showSection('home');closeMobileNav()">— ESG Ecosystem</a>
-  <a data-section="home" onclick="showSection('home');closeMobileNav()">— ESG Data Cards</a>
-  <a data-section="home" onclick="showSection('home');closeMobileNav()">— Technology</a>
+  <a data-section="home" onclick="scrollToElement('kpi-section');closeMobileNav()">— ESG KPIs</a>
+  <a data-section="home" onclick="scrollToElement('video-section');closeMobileNav()">— System Demo</a>
+  <a data-section="home" onclick="scrollToElement('products-section');closeMobileNav()">— ESG Ecosystem</a>
+  <a data-section="home" onclick="scrollToElement('esg-section');closeMobileNav()">— ESG Data Cards</a>
+  <a data-section="home" onclick="scrollToElement('esg-card-inhouse');closeMobileNav()">—— In-House Ingredient Rate</a>
+  <a data-section="home" onclick="scrollToElement('esg-card-biocarbon');closeMobileNav()">—— Biological Carbon Capture</a>
+  <a data-section="home" onclick="scrollToElement('esg-card-foodmiles');closeMobileNav()">—— Food Miles Eliminated</a>
+  <a data-section="home" onclick="scrollToElement('esg-card-blockchain');closeMobileNav()">—— Blockchain Certified Batches</a>
+  <a data-section="home" onclick="scrollToElement('esg-card-zerowater');closeMobileNav()">—— Zero Wastewater Discharge</a>
+  <a data-section="home" onclick="scrollToElement('esg-card-guest');closeMobileNav()">—— Guest Participation Rate</a>
+  <a data-section="home" onclick="scrollToElement('tech-section');closeMobileNav()">— Technology</a>
   <a data-section="whitepaper" onclick="showSection('whitepaper');closeMobileNav()">Whitepaper</a>
   <a data-section="api-docs" onclick="showSection('api-docs');closeMobileNav()">API Docs</a>
   <a data-section="methodology" onclick="showSection('methodology');closeMobileNav()">Methodology</a>
   <a data-section="privacy" onclick="showSection('privacy');closeMobileNav()">Privacy Policy</a>
   <a data-section="terms" onclick="showSection('terms');closeMobileNav()">Terms of Service</a>
+  <a data-section="home" onclick="openContact();closeMobileNav()">Contact NAPELL</a>
 </div>
 
 <!-- PAGE -->
@@ -1274,7 +1440,9 @@ tr:last-child td { border-bottom: none; }
         <div class="section-label">Real-Time ESG Intelligence</div>
         <h2>Data that goes<br>straight into your annual report.</h2>
         <div class="esg-grid">
-          <div class="esg-card">
+
+          <!-- 1. In-House Ingredient Rate -->
+          <div class="esg-card" id="esg-card-inhouse">
             <div class="esg-card-head">
               <div class="esg-card-title">In-House Ingredient Rate</div>
               <span class="esg-card-icon">📊</span>
@@ -1282,8 +1450,24 @@ tr:last-child td { border-bottom: none; }
             <div class="esg-card-metric">12%</div>
             <div class="esg-card-desc">Self-produced coffee as a share of total hotel coffee consumption</div>
             <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:12%;"></div></div>
+            <div class="esg-card-how" id="how-esg-card-inhouse" onclick="toggleDetail('esg-card-inhouse')">
+              <span class="hw-icon">?</span>
+              <span>How it Works</span>
+              <span class="hw-arrow">▸</span>
+            </div>
+            <div class="esg-card-detail">
+              <p>The In-House Ingredient Rate measures the proportion of coffee served at Regal Hotel Group that is grown on-site using NAPELL aeroponic units. Currently at 12%, this metric tracks the hotel's progress toward ingredient self-sufficiency — reducing reliance on imported beans while lowering the embedded carbon in every cup served.</p>
+              <p><strong>How it works:</strong> Each NAPELL unit produces approximately 2.4 kg of green coffee cherry per month. The system automatically logs harvest weight via integrated load cells, transmitting data to the ESG Intelligence Platform. The dashboard calculates the ratio against total hotel coffee procurement volume in real time.</p>
+              <p><strong>Target:</strong> 35% by Year 3, 60% by Year 5 — aligning with Regal Hotel Group's net-zero roadmap.</p>
+              <div class="esg-card-actions">
+                <button class="btn btn-outline btn-sm" onclick="openContact()">Request Full Data</button>
+                <button class="btn btn-primary btn-sm" onclick="scrollToElement('tech-section')">View Technology</button>
+              </div>
+            </div>
           </div>
-          <div class="esg-card">
+
+          <!-- 2. Biological Carbon Capture -->
+          <div class="esg-card" id="esg-card-biocarbon">
             <div class="esg-card-head">
               <div class="esg-card-title">Biological Carbon Capture</div>
               <span class="esg-card-icon">🌿</span>
@@ -1291,8 +1475,24 @@ tr:last-child td { border-bottom: none; }
             <div class="esg-card-metric" id="bioCarbon">18.7 kg</div>
             <div class="esg-card-desc">Cumulative real-time carbon simulation from IoT cultivation nodes</div>
             <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:62%;"></div></div>
+            <div class="esg-card-how" id="how-esg-card-biocarbon" onclick="toggleDetail('esg-card-biocarbon')">
+              <span class="hw-icon">?</span>
+              <span>How it Works</span>
+              <span class="hw-arrow">▸</span>
+            </div>
+            <div class="esg-card-detail">
+              <p>Biological Carbon Capture quantifies the CO₂ sequestered by living coffee plants within NAPELL cultivation units. Unlike mechanical carbon capture, this metric represents genuine photosynthetic fixation — plants absorbing atmospheric CO₂ and converting it into biomass.</p>
+              <p><strong>How it works:</strong> The system continuously estimates carbon capture using dry biomass accumulation modeling. Each gram of dry coffee plant biomass sequesters approximately 0.43 g CO₂. The model inputs include leaf area index (LAI) measured via onboard RGB vision, stem diameter growth via capacitive sensors, and chlorophyll fluorescence (Fv/Fm) as a photosynthetic efficiency indicator.</p>
+              <p><strong>Current status:</strong> 18.7 kg cumulative across all active nodes — equivalent to the annual carbon sequestration of approximately 0.85 mature trees. Uncertainty: ±12% (95% CI).</p>
+              <div class="esg-card-actions">
+                <button class="btn btn-outline btn-sm" onclick="openContact()">Download Methodology</button>
+                <button class="btn btn-primary btn-sm" onclick="scrollToElement('video-section')">Watch Demo</button>
+              </div>
+            </div>
           </div>
-          <div class="esg-card">
+
+          <!-- 3. Food Miles Eliminated -->
+          <div class="esg-card" id="esg-card-foodmiles">
             <div class="esg-card-head">
               <div class="esg-card-title">Food Miles Eliminated</div>
               <span class="esg-card-icon">🚚</span>
@@ -1300,8 +1500,24 @@ tr:last-child td { border-bottom: none; }
             <div class="esg-card-metric">2,400 km</div>
             <div class="esg-card-desc">Compared to standard imported coffee bean transportation routes</div>
             <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:80%;"></div></div>
+            <div class="esg-card-how" id="how-esg-card-foodmiles" onclick="toggleDetail('esg-card-foodmiles')">
+              <span class="hw-icon">?</span>
+              <span>How it Works</span>
+              <span class="hw-arrow">▸</span>
+            </div>
+            <div class="esg-card-detail">
+              <p>Food Miles Eliminated tracks the transportation distance saved by growing coffee on-site versus importing beans from traditional growing regions. The average coffee bean travels over 2,500 km from farm to cup — involving shipping, trucking, and warehousing across multiple borders.</p>
+              <p><strong>How it works:</strong> The baseline is calculated using the hotel's previous coffee supply chain: Ethiopian Yirgacheffe beans (origin) → Djibouti port → Hong Kong port → Regal Hotel Group warehouse. The NAPELL system reduces this to zero food miles — coffee is harvested steps from where it's brewed.</p>
+              <p><strong>Impact:</strong> Eliminating 2,400 km per batch avoids approximately 0.18 kg CO₂-eq per kg of coffee from transportation alone (based on standard refrigerated container shipping emission factors).</p>
+              <div class="esg-card-actions">
+                <button class="btn btn-outline btn-sm" onclick="openContact()">Supply Chain Report</button>
+                <button class="btn btn-primary btn-sm" onclick="scrollToElement('esg-card-inhouse')">In-House Rate</button>
+              </div>
+            </div>
           </div>
-          <div class="esg-card">
+
+          <!-- 4. Blockchain Certified Batches -->
+          <div class="esg-card" id="esg-card-blockchain">
             <div class="esg-card-head">
               <div class="esg-card-title">Blockchain Certified Batches</div>
               <span class="esg-card-icon">🔗</span>
@@ -1309,8 +1525,24 @@ tr:last-child td { border-bottom: none; }
             <div class="esg-card-metric">8 batches</div>
             <div class="esg-card-desc">Auditable on-chain carbon reduction proofs — direct ESG report input</div>
             <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:45%;"></div></div>
+            <div class="esg-card-how" id="how-esg-card-blockchain" onclick="toggleDetail('esg-card-blockchain')">
+              <span class="hw-icon">?</span>
+              <span>How it Works</span>
+              <span class="hw-arrow">▸</span>
+            </div>
+            <div class="esg-card-detail">
+              <p>Each coffee harvest batch is certified on-chain, creating an immutable, auditable record of carbon reduction. This transforms ESG reporting from self-declared claims into cryptographically verifiable proofs — suitable for third-party audit and regulatory compliance.</p>
+              <p><strong>How it works:</strong> Every telemetry batch is SHA-256 hashed, and the hash is recorded on the Hedera Hashgraph public ledger (selected for its energy-efficient consensus mechanism). Each batch certification includes: harvest timestamp, cultivation unit ID, water consumption, energy draw, estimated carbon capture, and a unique batch serial number.</p>
+              <p><strong>Current status:</strong> 8 batches certified on-chain. All data importable into GRI 305, SASB AF-WH, and TCFD reporting frameworks.</p>
+              <div class="esg-card-actions">
+                <button class="btn btn-outline btn-sm" onclick="openContact()">Verify on Explorer</button>
+                <button class="btn btn-primary btn-sm" onclick="scrollToElement('esg-card-biocarbon')">Carbon Capture</button>
+              </div>
+            </div>
           </div>
-          <div class="esg-card">
+
+          <!-- 5. Zero Wastewater Discharge -->
+          <div class="esg-card" id="esg-card-zerowater">
             <div class="esg-card-head">
               <div class="esg-card-title">Zero Wastewater Discharge</div>
               <span class="esg-card-icon">💧</span>
@@ -1318,8 +1550,24 @@ tr:last-child td { border-bottom: none; }
             <div class="esg-card-metric">95%+</div>
             <div class="esg-card-desc">Aeroponic closed-loop system water savings vs. traditional soil cultivation</div>
             <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:95%;"></div></div>
+            <div class="esg-card-how" id="how-esg-card-zerowater" onclick="toggleDetail('esg-card-zerowater')">
+              <span class="hw-icon">?</span>
+              <span>How it Works</span>
+              <span class="hw-arrow">▸</span>
+            </div>
+            <div class="esg-card-detail">
+              <p>The NAPELL aeroponic system operates on a fully closed-loop water cycle, achieving over 95% water use efficiency compared to traditional soil cultivation (≈30–40%). This means virtually zero wastewater discharge — a critical advantage for hotels in water-stressed regions.</p>
+              <p><strong>How it works:</strong> High-frequency misting nozzles atomize nutrient solution into droplets of 5–20 μm diameter. Unabsorbed mist condenses on chamber walls and returns to the reservoir via gravity-fed collection channels. The system uses only 0.18 L of water per cup of coffee produced — versus 5.2 L for traditional cultivation.</p>
+              <p><strong>Certification alignment:</strong> This metric directly supports SASB AF-WH (Water & Waste) reporting requirements and contributes to LEED Water Efficiency credits for the hotel property.</p>
+              <div class="esg-card-actions">
+                <button class="btn btn-outline btn-sm" onclick="openContact()">Water Audit Report</button>
+                <button class="btn btn-primary btn-sm" onclick="scrollToElement('tech-section')">Tech Specs</button>
+              </div>
+            </div>
           </div>
-          <div class="esg-card">
+
+          <!-- 6. Guest Participation Rate -->
+          <div class="esg-card" id="esg-card-guest">
             <div class="esg-card-head">
               <div class="esg-card-title">Guest Participation Rate</div>
               <span class="esg-card-icon">📱</span>
@@ -1327,7 +1575,22 @@ tr:last-child td { border-bottom: none; }
             <div class="esg-card-metric">84%</div>
             <div class="esg-card-desc">QR scan interaction rate with social media sharing conversion</div>
             <div class="esg-card-bar"><div class="esg-card-bar-fill" style="width:84%;"></div></div>
+            <div class="esg-card-how" id="how-esg-card-guest" onclick="toggleDetail('esg-card-guest')">
+              <span class="hw-icon">?</span>
+              <span>How it Works</span>
+              <span class="hw-arrow">▸</span>
+            </div>
+            <div class="esg-card-detail">
+              <p>Guest Participation Rate measures how many hotel guests engage with the NAPELL ESG experience — scanning QR codes on coffee cups, adopting digital coffee trees, and sharing their carbon impact on social media. This transforms guests from passive consumers into active climate participants.</p>
+              <p><strong>How it works:</strong> Each coffee cup features a unique QR code. When scanned, guests see their personal carbon reduction contribution in real time. They can also adopt a digital coffee tree, track its growth on their room TV or mobile device, and receive a Low-Carbon Stay Certificate upon departure.</p>
+              <p><strong>Social impact:</strong> 84% scan rate, with 62% sharing their results on social media — generating organic brand exposure and positioning Regal Hotel Group as a sustainability leader.</p>
+              <div class="esg-card-actions">
+                <button class="btn btn-outline btn-sm" onclick="openContact()">Engagement Report</button>
+                <button class="btn btn-primary btn-sm" onclick="scrollToElement('products-section')">Guest Experience</button>
+              </div>
+            </div>
           </div>
+
         </div>
       </div>
     </section>
@@ -2373,7 +2636,7 @@ def daily_biomass_gain(ppfd_dli, temp_c, vpd_kpa, lai):
           <ul>
             <li><a onclick="showSection('privacy')">Privacy Policy</a></li>
             <li><a onclick="showSection('terms')">Terms of Service</a></li>
-            <li><a onclick="showSection('home')">Contact NAPELL</a></li>
+            <li><a onclick="openContact()">Contact NAPELL</a></li>
           </ul>
         </div>
       </div>
@@ -2473,18 +2736,41 @@ def daily_biomass_gain(ppfd_dli, temp_c, vpd_kpa, lai):
 
   // Scroll to element within current page
   function scrollToElement(elementId) {
-    // Ensure home section is visible
-    showSection('home');
-    // Small delay to let section become visible
-    setTimeout(() => {
-      const el = document.getElementById(elementId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // Account for fixed nav height
-        const navH = 68;
-        window.scrollBy(0, -navH);
+    // Ensure home section is visible without auto-scroll to top
+    document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+    const homeSection = document.getElementById('section-home');
+    if (homeSection) {
+      homeSection.classList.add('active');
+    }
+    // Update desktop nav links (top-level and dropdown, excluding subdropdown)
+    document.querySelectorAll('.nav-links > .nav-item > a, .nav-dropdown > a, .nav-dropdown > .submenu-wrap > a').forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('data-section') === 'home') {
+        a.classList.add('active');
       }
-    }, 100);
+    });
+    // Update mobile panel links
+    document.querySelectorAll('.mobile-nav-panel a').forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('data-section') === 'home') {
+        a.classList.add('active');
+      }
+    });
+    // Scroll to target element after DOM update
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const el = document.getElementById(elementId);
+        if (el) {
+          // Auto-expand detail if navigating to an ESG card
+          if (elementId.startsWith('esg-card-')) {
+            expandCardDetail(elementId);
+          }
+          const navH = 68;
+          const top = el.getBoundingClientRect().top + window.pageYOffset - navH;
+          window.scrollTo({ top: top, behavior: 'smooth' });
+        }
+      });
+    });
   }
 
   // Mobile nav toggle
@@ -2677,6 +2963,44 @@ def daily_biomass_gain(ppfd_dli, temp_c, vpd_kpa, lai):
   const contactModal = document.getElementById('contactModal');
   const openContact = () => contactModal.classList.add('open');
   const closeContact = () => contactModal.classList.remove('open');
+  window.openContact = openContact;
+
+  // Toggle ESG card detail visibility
+  const toggleDetail = (cardId) => {
+    const card = document.getElementById(cardId);
+    if (!card) return;
+    const detail = card.querySelector('.esg-card-detail');
+    if (!detail) return;
+    const howBtn = document.getElementById('how-' + cardId);
+    const isExpanded = detail.classList.contains('expanded');
+    // Close all other expanded details and reset their buttons
+    document.querySelectorAll('.esg-card-detail.expanded').forEach(d => d.classList.remove('expanded'));
+    document.querySelectorAll('.esg-card-how.expanded').forEach(b => b.classList.remove('expanded'));
+    // Toggle current one
+    if (!isExpanded) {
+      detail.classList.add('expanded');
+      if (howBtn) howBtn.classList.add('expanded');
+      // Scroll into view with smooth animation
+      setTimeout(() => {
+        const navH = 68;
+        const top = card.getBoundingClientRect().top + window.pageYOffset - navH - 20;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      }, 100);
+    }
+  };
+  window.toggleDetail = toggleDetail;
+
+  // Auto-expand card detail when navigating from sub-nav
+  const expandCardDetail = (cardId) => {
+    const card = document.getElementById(cardId);
+    if (!card) return;
+    const detail = card.querySelector('.esg-card-detail');
+    if (!detail || detail.classList.contains('expanded')) return;
+    detail.classList.add('expanded');
+    const howBtn = document.getElementById('how-' + cardId);
+    if (howBtn) howBtn.classList.add('expanded');
+  };
+  window.expandCardDetail = expandCardDetail;
 
   ['openContactModal','openContactModal2','openContactModal3','openContactModal4',
    'footerContact1','footerContact2','footerContact3'].forEach(id => {
